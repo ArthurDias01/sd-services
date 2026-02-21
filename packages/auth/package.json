@@ -1,0 +1,24 @@
+{
+  "name": "@sd-services/auth",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {},
+  "dependencies": {
+    "@sd-services/db": "workspace:*",
+    "@sd-services/env": "workspace:*",
+    "better-auth": "catalog:",
+    "dotenv": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@sd-services/config": "workspace:*",
+    "typescript": "catalog:"
+  }
+}
