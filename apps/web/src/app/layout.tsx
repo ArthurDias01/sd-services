@@ -17,8 +17,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "sd-services",
-  description: "sd-services",
+  title: {
+    default: "High-end custom cabinetry",
+    template: "%s | Custom cabinetry",
+  },
+  description:
+    "Brazilian cabinetry for kitchens, closets, and every detail of your space.",
 };
 
 export default function RootLayout({
@@ -30,7 +34,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Providers>
-          <div className="grid grid-rows-[auto_1fr] h-svh">
+          <div className="grid min-h-dvh grid-rows-[auto_1fr]">
             <Header />
             {children}
           </div>

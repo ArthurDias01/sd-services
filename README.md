@@ -30,13 +30,21 @@ bun install
 This project uses PostgreSQL with Drizzle ORM.
 
 1. Make sure you have a PostgreSQL database set up.
-2. Update your `apps/server/.env` file with your PostgreSQL connection details.
-
+2. Create `apps/server/.env` with at least: `DATABASE_URL`, `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, `CORS_ORIGIN`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`. See the Authentication section below for Google OAuth. Optional: `CMS_ALLOWED_EMAILS` (comma-separated emails allowed to access the CMS).
 3. Apply the schema to your database:
 
 ```bash
 bun run db:push
 ```
+
+## Authentication (Google OAuth for CMS)
+
+CMS access uses Google sign-in only (no passwords).
+
+1. In [Google Cloud Console](https://console.cloud.google.com/apis/credentials), create OAuth 2.0 Client ID credentials (Web application).
+2. Set the authorized redirect URI to `{BETTER_AUTH_URL}/api/auth/callback/google` (e.g. `http://localhost:3000/api/auth/callback/google` for local dev).
+3. Set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in `apps/server/.env`.
+4. Optional: set `CMS_ALLOWED_EMAILS` to a comma-separated list of emails that may access the CMS. If unset, any signed-in Google user can access it.
 
 Then, run the development server:
 

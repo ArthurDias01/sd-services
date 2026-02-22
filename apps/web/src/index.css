@@ -5,6 +5,18 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  /* Public site palette (luxury cabinetry): 50% white + browns/tans */
+  --p-white: #ffffff;
+  --p-deep-walnut: #553725;
+  --p-sunlit-clay: #dea258;
+  --p-dark-walnut: #532b14;
+  --p-coffee-bean: #69452e;
+  --p-toffee: #875936;
+  --p-tan: #d7b58f;
+  --p-camel: #c69a65;
+  --p-cream: #faf8f5;
+  --p-warm-white: #f5f0e8;
+
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -126,3 +138,4 @@
     @apply font-sans;
   }
 }
+

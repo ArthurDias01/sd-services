@@ -12,12 +12,18 @@ export const auth = betterAuth({
   }),
   trustedOrigins: [env.CORS_ORIGIN],
   emailAndPassword: {
-    enabled: true,
+    enabled: false,
+  },
+  socialProviders: {
+    google: {
+      clientId: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
+    },
   },
   advanced: {
     defaultCookieAttributes: {
-      sameSite: "none",
-      secure: true,
+      sameSite: "lax",
+      secure: env.NODE_ENV === "production",
       httpOnly: true,
     },
   },
