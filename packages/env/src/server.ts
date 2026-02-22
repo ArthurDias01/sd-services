@@ -7,7 +7,7 @@ export const env = createEnv({
     DATABASE_URL: z.string().min(1),
     BETTER_AUTH_SECRET: z.string().min(32),
     BETTER_AUTH_URL: z.url(),
-    CORS_ORIGIN: z.url(),
+    CORS_ORIGIN: z.string().min(1), // One URL, or comma-separated list for production + preview
     GOOGLE_CLIENT_ID: z.string().min(1),
     GOOGLE_CLIENT_SECRET: z.string().min(1),
     CMS_ALLOWED_EMAILS: z.string().optional(),

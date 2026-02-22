@@ -5,7 +5,12 @@ import { client } from "@/utils/orpc";
 import { cn } from "@/lib/utils";
 
 export default async function ProjectsPage() {
-  const projects = await client.project.list();
+  let projects: Awaited<ReturnType<typeof client.project.list>> = [];
+  try {
+    projects = await client.project.list();
+  } catch {
+    // API unreachable (e.g. NEXT_PUBLIC_SERVER_URL not set in production)
+  }
 
   return (
     <div className="min-h-dvh bg-[var(--p-white)] text-[var(--p-dark-walnut)]">

@@ -30,10 +30,10 @@ const apiHandler = new OpenAPIHandler(appRouter, {
   ],
 });
 
-new Elysia()
+const app = new Elysia()
   .use(
     cors({
-      origin: env.CORS_ORIGIN,
+      origin: env.CORS_ORIGIN.split(",").map((s) => s.trim()),
       methods: ["GET", "POST", "OPTIONS"],
       allowedHeaders: ["Content-Type", "Authorization"],
       credentials: true,
@@ -72,7 +72,8 @@ new Elysia()
       parse: "none",
     },
   )
-  .get("/", () => "OK")
-  .listen(3000, () => {
-    console.log("Server is running on http://localhost:3000");
-  });
+  .get("/", () => "OK");
+
+// Vercel runs the app as a serverless handler (no .listen).
+// For local dev, use: bun run dev (runs src/dev.ts which calls app.listen).
+export default app;

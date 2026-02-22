@@ -22,17 +22,22 @@ export default async function CmsLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const result = await authClient.getSession({
-    fetchOptions: {
-      headers: await headers(),
-      throw: false,
-    },
-  });
-
-  const session =
-    result && typeof result === "object" && "data" in result
-      ? (result as { data: { user?: { email?: string | null } } | null }).data
-      : null;
+  let session: { user?: { email?: string | null } } | null = null;
+  try {
+    const result = await authClient.getSession({
+      fetchOptions: {
+        headers: await headers(),
+        throw: false,
+      },
+    });
+    session =
+      result && typeof result === "object" && "data" in result
+        ? (result as { data: { user?: { email?: string | null } } | null }).data
+        : null;
+  } catch {
+    // API unreachable (e.g. NEXT_PUBLIC_SERVER_URL not set in production)
+    session = null;
+  }
 
   if (!session?.user) {
     redirect("/login");

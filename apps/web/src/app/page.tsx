@@ -28,13 +28,20 @@ const SERVICES = [
 ];
 
 export default async function Home() {
-  const [projects, heroImageSetting, contactEmail, contactPhone] =
-    await Promise.all([
+  let projects: Awaited<ReturnType<typeof client.project.list>> = [];
+  let heroImageSetting: string | null = null;
+  let contactEmail: string | null = null;
+  let contactPhone: string | null = null;
+  try {
+    [projects, heroImageSetting, contactEmail, contactPhone] = await Promise.all([
       client.project.list(),
       client.setting.get({ key: "hero_image_url" }),
       client.setting.get({ key: "contact_email" }),
       client.setting.get({ key: "contact_phone" }),
     ]);
+  } catch {
+    // API unreachable (e.g. NEXT_PUBLIC_SERVER_URL not set in production)
+  }
   const heroImage = heroImageSetting || projects[0]?.featuredImageUrl || null;
   const email = contactEmail || "contact@example.com";
   const phone = contactPhone || null;

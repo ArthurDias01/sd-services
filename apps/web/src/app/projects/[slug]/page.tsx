@@ -13,7 +13,12 @@ type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const project = await client.project.getBySlug({ slug });
+  let project: Awaited<ReturnType<typeof client.project.getBySlug>> = null;
+  try {
+    project = await client.project.getBySlug({ slug });
+  } catch {
+    return { title: "Not found" };
+  }
   if (!project) return { title: "Not found" };
   const desc = project.description.slice(0, 160).replace(/\s+/g, " ").trim();
   return {
@@ -24,10 +29,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ProjectPage({ params }: Props) {
   const { slug } = await params;
-  const [project, list] = await Promise.all([
-    client.project.getBySlug({ slug }),
-    client.project.list(),
-  ]);
+  let project: Awaited<ReturnType<typeof client.project.getBySlug>> = null;
+  let list: Awaited<ReturnType<typeof client.project.list>> = [];
+  try {
+    [project, list] = await Promise.all([
+      client.project.getBySlug({ slug }),
+      client.project.list(),
+    ]);
+  } catch {
+    notFound();
+  }
 
   if (!project) notFound();
 

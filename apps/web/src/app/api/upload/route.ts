@@ -5,15 +5,19 @@ import { authClient } from "@/lib/auth-client";
 import { uploadFile } from "@/lib/r2";
 
 async function getAdminSession() {
-  const result = await authClient.getSession({
-    fetchOptions: { headers: await headers(), throw: false },
-  });
-
   type SessionData = { user?: { email?: string | null } } | null;
-  const session: SessionData =
-    result && typeof result === "object" && "data" in result
-      ? (result as { data: SessionData }).data
-      : null;
+  let session: SessionData = null;
+  try {
+    const result = await authClient.getSession({
+      fetchOptions: { headers: await headers(), throw: false },
+    });
+    session =
+      result && typeof result === "object" && "data" in result
+        ? (result as { data: SessionData }).data
+        : null;
+  } catch {
+    return null;
+  }
 
   if (!session?.user) return null;
 
