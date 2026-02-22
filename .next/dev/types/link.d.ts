@@ -9,29 +9,28 @@
  * @internal
  */
 declare namespace __next_route_internal_types__ {
-  type SearchOrHash = `?${string}` | `#${string}`
-  type WithProtocol = `${string}:${string}`
+  type SearchOrHash = `?${string}` | `#${string}`;
+  type WithProtocol = `${string}:${string}`;
 
-  type Suffix = '' | SearchOrHash
+  type Suffix = "" | SearchOrHash;
 
   type SafeSlug<S extends string> = S extends `${string}/${string}`
     ? never
     : S extends `${string}${SearchOrHash}`
-    ? never
-    : S extends ''
-    ? never
-    : S
+      ? never
+      : S extends ""
+        ? never
+        : S;
 
   type CatchAllSlug<S extends string> = S extends `${string}${SearchOrHash}`
     ? never
-    : S extends ''
-    ? never
-    : S
+    : S extends ""
+      ? never
+      : S;
 
-  type OptionalCatchAllSlug<S extends string> =
-    S extends `${string}${SearchOrHash}` ? never : S
+  type OptionalCatchAllSlug<S extends string> = S extends `${string}${SearchOrHash}` ? never : S;
 
-  type StaticRoutes = 
+  type StaticRoutes =
     | `/`
     | `/api/image`
     | `/api/upload`
@@ -41,85 +40,89 @@ declare namespace __next_route_internal_types__ {
     | `/cms/settings`
     | `/dashboard`
     | `/login`
-    | `/projects`
-  type DynamicRoutes<T extends string = string> = 
+    | `/projects`;
+  type DynamicRoutes<T extends string = string> =
     | `/api/auth/${CatchAllSlug<T>}`
     | `/api/rpc/${OptionalCatchAllSlug<T>}`
     | `/cms/projects/${SafeSlug<T>}/edit`
-    | `/projects/${SafeSlug<T>}`
+    | `/projects/${SafeSlug<T>}`;
 
-  type RouteImpl<T> = 
+  type RouteImpl<T> =
     | StaticRoutes
     | SearchOrHash
     | WithProtocol
     | `${StaticRoutes}${SearchOrHash}`
-    | (T extends `${DynamicRoutes<infer _>}${Suffix}` ? T : never)
-    
+    | (T extends `${DynamicRoutes<infer _>}${Suffix}` ? T : never);
 }
 
-declare module 'next' {
-  export { default } from 'next/types.js'
-  export * from 'next/types.js'
+declare module "next" {
+  export { default } from "next/types.js";
+  export * from "next/types.js";
 
-  export type Route<T extends string = string> =
-    __next_route_internal_types__.RouteImpl<T>
+  export type Route<T extends string = string> = __next_route_internal_types__.RouteImpl<T>;
 }
 
-declare module 'next/link' {
-  export { useLinkStatus } from 'next/dist/client/link.js'
+declare module "next/link" {
+  export { useLinkStatus } from "next/dist/client/link.js";
 
-  import type { LinkProps as OriginalLinkProps } from 'next/dist/client/link.js'
-  import type { AnchorHTMLAttributes, DetailedHTMLProps } from 'react'
-  import type { UrlObject } from 'url'
+  import type { LinkProps as OriginalLinkProps } from "next/dist/client/link.js";
+  import type { AnchorHTMLAttributes, DetailedHTMLProps } from "react";
+  import type { UrlObject } from "url";
 
   type LinkRestProps = Omit<
     Omit<
-      DetailedHTMLProps<
-        AnchorHTMLAttributes<HTMLAnchorElement>,
-        HTMLAnchorElement
-      >,
+      DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>,
       keyof OriginalLinkProps
     > &
       OriginalLinkProps,
-    'href'
-  >
+    "href"
+  >;
 
   export type LinkProps<RouteInferType> = LinkRestProps & {
     /**
      * The path or URL to navigate to. This is the only required prop. It can also be an object.
      * @see https://nextjs.org/docs/api-reference/next/link
      */
-    href: __next_route_internal_types__.RouteImpl<RouteInferType> | UrlObject
-  }
+    href: __next_route_internal_types__.RouteImpl<RouteInferType> | UrlObject;
+  };
 
-  export default function Link<RouteType>(props: LinkProps<RouteType>): JSX.Element
+  export default function Link<RouteType>(props: LinkProps<RouteType>): JSX.Element;
 }
 
-declare module 'next/navigation' {
-  export * from 'next/dist/client/components/navigation.js'
+declare module "next/navigation" {
+  export * from "next/dist/client/components/navigation.js";
 
-  import type { NavigateOptions, AppRouterInstance as OriginalAppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime.js'
-  import type { RedirectType } from 'next/dist/client/components/redirect-error.js'
-  
+  import type {
+    NavigateOptions,
+    AppRouterInstance as OriginalAppRouterInstance,
+  } from "next/dist/shared/lib/app-router-context.shared-runtime.js";
+  import type { RedirectType } from "next/dist/client/components/redirect-error.js";
+
   interface AppRouterInstance extends OriginalAppRouterInstance {
     /**
      * Navigate to the provided href.
      * Pushes a new history entry.
      */
-    push<RouteType>(href: __next_route_internal_types__.RouteImpl<RouteType>, options?: NavigateOptions): void
+    push<RouteType>(
+      href: __next_route_internal_types__.RouteImpl<RouteType>,
+      options?: NavigateOptions,
+    ): void;
     /**
      * Navigate to the provided href.
      * Replaces the current history entry.
      */
-    replace<RouteType>(href: __next_route_internal_types__.RouteImpl<RouteType>, options?: NavigateOptions): void
+    replace<RouteType>(
+      href: __next_route_internal_types__.RouteImpl<RouteType>,
+      options?: NavigateOptions,
+    ): void;
     /**
      * Prefetch the provided href.
      */
-    prefetch<RouteType>(href: __next_route_internal_types__.RouteImpl<RouteType>): void
+    prefetch<RouteType>(href: __next_route_internal_types__.RouteImpl<RouteType>): void;
   }
 
   export function useRouter(): AppRouterInstance;
-  
+
   /**
    * This function allows you to redirect the user to another URL. It can be used in
    * [Server Components](https://nextjs.org/docs/app/building-your-application/rendering/server-components),
@@ -135,9 +138,9 @@ declare module 'next/navigation' {
   export function redirect<RouteType>(
     /** The URL to redirect to */
     url: __next_route_internal_types__.RouteImpl<RouteType>,
-    type?: RedirectType
+    type?: RedirectType,
   ): never;
-  
+
   /**
    * This function allows you to redirect the user to another URL. It can be used in
    * [Server Components](https://nextjs.org/docs/app/building-your-application/rendering/server-components),
@@ -152,14 +155,14 @@ declare module 'next/navigation' {
   export function permanentRedirect<RouteType>(
     /** The URL to redirect to */
     url: __next_route_internal_types__.RouteImpl<RouteType>,
-    type?: RedirectType
+    type?: RedirectType,
   ): never;
 }
 
-declare module 'next/form' {
-  import type { FormProps as OriginalFormProps } from 'next/dist/client/form.js'
+declare module "next/form" {
+  import type { FormProps as OriginalFormProps } from "next/dist/client/form.js";
 
-  type FormRestProps = Omit<OriginalFormProps, 'action'>
+  type FormRestProps = Omit<OriginalFormProps, "action">;
 
   export type FormProps<RouteInferType> = {
     /**
@@ -168,8 +171,10 @@ declare module 'next/form' {
      *   The path will be prefetched when the form becomes visible.
      * - If `action` is a function, it will be called when the form is submitted. See the [React docs](https://react.dev/reference/react-dom/components/form#props) for more.
      */
-    action: __next_route_internal_types__.RouteImpl<RouteInferType> | ((formData: FormData) => void)
-  } & FormRestProps
+    action:
+      | __next_route_internal_types__.RouteImpl<RouteInferType>
+      | ((formData: FormData) => void);
+  } & FormRestProps;
 
-  export default function Form<RouteType>(props: FormProps<RouteType>): JSX.Element
+  export default function Form<RouteType>(props: FormProps<RouteType>): JSX.Element;
 }

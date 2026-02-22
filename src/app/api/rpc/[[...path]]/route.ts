@@ -23,10 +23,7 @@ export async function GET(request: Request) {
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     console.error("[api/rpc] GET error:", err);
-    return Response.json(
-      { error: { code: "INTERNAL_SERVER_ERROR", message } },
-      { status: 500 },
-    );
+    return Response.json({ error: { code: "INTERNAL_SERVER_ERROR", message } }, { status: 500 });
   }
 }
 
@@ -41,9 +38,6 @@ export async function POST(request: Request) {
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     console.error("[api/rpc] POST error:", err);
-    return Response.json(
-      { error: { code: "INTERNAL_SERVER_ERROR", message } },
-      { status: 500 },
-    );
+    return Response.json({ error: { code: "INTERNAL_SERVER_ERROR", message } }, { status: 500 });
   }
 }

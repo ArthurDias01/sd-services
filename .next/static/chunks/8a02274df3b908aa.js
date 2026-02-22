@@ -1,1 +1,25 @@
-(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,23426,t=>{"use strict";let e=/^https:\/\/[a-zA-Z0-9.-]+\.r2\.dev(\/|$)/;function r(t){return!t||t.startsWith("/")||!function(t){if(t.startsWith("/"))return!0;try{return new URL(t),!0}catch{return!1}}(t)?t:e.test(t)?`/api/image?url=${encodeURIComponent(t)}`:t}t.s(["proxyImageUrlIfNeeded",()=>r])}]);
+(globalThis.TURBOPACK || (globalThis.TURBOPACK = [])).push([
+  "object" == typeof document ? document.currentScript : void 0,
+  23426,
+  (t) => {
+    "use strict";
+    let e = /^https:\/\/[a-zA-Z0-9.-]+\.r2\.dev(\/|$)/;
+    function r(t) {
+      return !t ||
+        t.startsWith("/") ||
+        !(function (t) {
+          if (t.startsWith("/")) return !0;
+          try {
+            return (new URL(t), !0);
+          } catch {
+            return !1;
+          }
+        })(t)
+        ? t
+        : e.test(t)
+          ? `/api/image?url=${encodeURIComponent(t)}`
+          : t;
+    }
+    t.s(["proxyImageUrlIfNeeded", () => r]);
+  },
+]);

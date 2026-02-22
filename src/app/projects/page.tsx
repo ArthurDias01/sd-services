@@ -24,9 +24,7 @@ export default async function ProjectsPage() {
         </div>
 
         {projects.length === 0 ? (
-          <p className="text-pretty text-[var(--p-coffee-bean)]">
-            No projects to show yet.
-          </p>
+          <p className="text-pretty text-[var(--p-coffee-bean)]">No projects to show yet.</p>
         ) : (
           <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
             {projects.map((p) => (

@@ -17,11 +17,7 @@ const navItems = [
   { href: "/cms/settings", label: "Site settings" },
 ] as const;
 
-export default async function CmsLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function CmsLayout({ children }: { children: React.ReactNode }) {
   let session: { user?: { email?: string | null } } | null = null;
   try {
     const result = await authClient.getSession({
@@ -83,9 +79,7 @@ export default async function CmsLayout({
           </div>
         </div>
       </nav>
-      <main className="mx-auto w-full max-w-5xl flex-1 px-6 py-8">
-        {children}
-      </main>
+      <main className="mx-auto w-full max-w-5xl flex-1 px-6 py-8">{children}</main>
     </div>
   );
 }

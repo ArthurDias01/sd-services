@@ -1,9 +1,2988 @@
-(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,12598,e=>{"use strict";var t=e.i(71645),i=e.i(43476),r=t.createContext(void 0),s=e=>{let i=t.useContext(r);if(e)return e;if(!i)throw Error("No QueryClient set, use QueryClientProvider to set one");return i},n=({client:e,children:s})=>(t.useEffect(()=>(e.mount(),()=>{e.unmount()}),[e]),(0,i.jsx)(r.Provider,{value:e,children:s}));e.s(["QueryClientProvider",()=>n,"useQueryClient",()=>s])},97357,30592,74487,e=>{"use strict";function t(e){return e[0]??{}}function i(e){return Array.isArray(e)?e:null==e?[]:[e]}let r="orpc";class s extends Error{constructor(...e){super(...e),this.name="AbortError"}}function n(e){let t;return()=>{if(t)return t.result;let i=e();return t={result:i},i}}function a(){return globalThis["__@orpc/shared@1.13.5/otel/config__"]}function o(e,t={},i){let r=a()?.tracer;return r?.startSpan(e,t,i)}function u(e,t,i={}){if(!e)return;let r=function(e){if(e instanceof Error){let t={message:e.message,name:e.name,stack:e.stack};return"code"in e&&("string"==typeof e.code||"number"==typeof e.code)&&(t.code=e.code),t}return{message:String(e)}}(t);e.recordException(r),i.signal?.aborted&&i.signal.reason===t||e.setStatus({code:2,message:r.message})}async function l({name:e,context:t,...i},r){let s=a()?.tracer;if(!s)return r();let n=async e=>{try{return await r(e)}catch(t){throw u(e,t,i),t}finally{e.end()}};return t?s.startActiveSpan(e,i,t,n):s.startActiveSpan(e,i,n)}async function c(e,t){let i=a();if(!e||!i)return t();let r=i.trace.setSpan(i.context.active(),e);return i.context.with(r,t)}class h{openIds=new Set;queues=new Map;waiters=new Map;get length(){return this.openIds.size}get waiterIds(){return Array.from(this.waiters.keys())}hasBufferedItems(e){return!!this.queues.get(e)?.length}open(e){this.openIds.add(e)}isOpen(e){return this.openIds.has(e)}push(e,t){this.assertOpen(e);let i=this.waiters.get(e);if(i?.length)i.shift()[0](t),0===i.length&&this.waiters.delete(e);else{let i=this.queues.get(e);i?i.push(t):this.queues.set(e,[t])}}async pull(e){this.assertOpen(e);let t=this.queues.get(e);if(t?.length){let i=t.shift();return 0===t.length&&this.queues.delete(e),i}return new Promise((t,i)=>{let r=this.waiters.get(e),s=[t,i];r?r.push(s):this.waiters.set(e,[s])})}close({id:e,reason:t}={}){if(void 0===e){this.waiters.forEach((e,i)=>{let r=t??new s(`[AsyncIdQueue] Queue[${i}] was closed or aborted while waiting for pulling.`);e.forEach(([,e])=>e(r))}),this.waiters.clear(),this.openIds.clear(),this.queues.clear();return}let i=t??new s(`[AsyncIdQueue] Queue[${e}] was closed or aborted while waiting for pulling.`);this.waiters.get(e)?.forEach(([,e])=>e(i)),this.waiters.delete(e),this.openIds.delete(e),this.queues.delete(e)}assertOpen(e){if(!this.isOpen(e))throw Error(`[AsyncIdQueue] Cannot access queue[${e}] because it is not open or aborted.`)}}function d(e){return!!e&&"object"==typeof e&&"next"in e&&"function"==typeof e.next&&Symbol.asyncIterator in e&&"function"==typeof e[Symbol.asyncIterator]}let p=Symbol.for("asyncDispose"),f=Symbol.asyncDispose??p;class y{#e=!1;#t=!1;#i;#r;constructor(e,t){this.#i=t,this.#r=function(e){let t=Promise.resolve();return(...i)=>t=t.catch(()=>{}).then(()=>e(...i))}(async()=>{if(this.#e)return{done:!0,value:void 0};try{let t=await e();return t.done&&(this.#e=!0),t}catch(e){throw this.#e=!0,e}finally{this.#e&&!this.#t&&(this.#t=!0,await this.#i("next"))}})}next(){return this.#r()}async return(e){return this.#e=!0,this.#t||(this.#t=!0,await this.#i("return")),{done:!0,value:e}}async throw(e){throw this.#e=!0,this.#t||(this.#t=!0,await this.#i("throw")),e}async [f](){this.#e=!0,this.#t||(this.#t=!0,await this.#i("dispose"))}[Symbol.asyncIterator](){return this}}function m(e,t){let i=new h,r=Array.from({length:t},(e,t)=>t.toString()),s=!1,a=n(async()=>{try{for(;;){let t=await e.next();if(r.forEach(e=>{i.isOpen(e)&&i.push(e,{next:t})}),t.done)break}}catch(e){r.forEach(t=>{i.isOpen(t)&&i.push(t,{error:e})})}finally{s=!0}});return r.map(t=>(i.open(t),new y(async()=>{a();let e=await i.pull(t);if(e.next)return e.next;throw e.error},async r=>{i.close({id:t}),"next"===r||i.length||s||(s=!0,await e?.return?.())})))}function g({name:e,...t},i){let r;return new y(async()=>{r??=o(e);try{let e=await c(r,()=>i.next());return r?.addEvent(e.done?"completed":"yielded"),e}catch(e){throw u(r,e,t),e}},async e=>{try{"next"!==e&&await c(r,()=>i.return?.())}catch(e){throw u(r,e,t),e}finally{r?.end()}})}function v(e,t,i){let r=(t,s)=>{let n=e[s];return n?n({...t,next:(e=t)=>r(e,s+1)}):i(t)};return r(t,0)}function b(e){if(e)return JSON.parse(e)}function w(e){return JSON.stringify(e)}function O(e){return E(e)?Object.getPrototypeOf(e)?.constructor:null}function S(e){if(!e||"object"!=typeof e)return!1;let t=Object.getPrototypeOf(e);return t===Object.prototype||!t||!t.constructor}function E(e){return!!e&&("object"==typeof e||"function"==typeof e)}function C(e,t){let i=e;for(let e of t){if(!E(i))return;i=i[e]}return i}function q(e,...t){return"function"==typeof e?e(...t):e}function x(e){return new Proxy(e,{get(e,t,i){let r=Reflect.get(e,t,i);return"then"!==t||"function"!=typeof r?r:new Proxy(r,{apply(t,i,r){if(2!==r.length||r.some(e=>{var t;return!("function"==typeof(t=e)&&T.test(t.toString()))}))return Reflect.apply(t,i,r);let s=!0;r[0].call(i,x(new Proxy(e,{get:(e,t,i)=>{if(s&&"then"===t){s=!1;return}return Reflect.get(e,t,i)}})))}})}})}let T=/^\s*function\s*\(\)\s*\{\s*\[native code\]\s*\}\s*$/;function R(e){try{return decodeURIComponent(e)}catch{return e}}e.s(["AbortError",()=>s,"AsyncIteratorClass",()=>y,"ORPC_NAME",()=>r,"asyncIteratorWithSpan",()=>g,"get",()=>C,"getConstructor",()=>O,"getGlobalOtelConfig",()=>a,"intercept",()=>v,"isAsyncIteratorObject",()=>d,"isObject",()=>S,"isTypescriptObject",()=>E,"once",()=>n,"parseEmptyableJSON",()=>b,"preventNativeAwait",()=>x,"replicateAsyncIterator",()=>m,"resolveMaybeOptionalOptions",()=>t,"runInSpanContext",()=>c,"runWithSpan",()=>l,"setSpanError",()=>u,"startSpan",()=>o,"stringifyJSON",()=>w,"toArray",()=>i,"tryDecodeURIComponent",()=>R,"value",()=>q],30592);let A={BAD_REQUEST:{status:400,message:"Bad Request"},UNAUTHORIZED:{status:401,message:"Unauthorized"},FORBIDDEN:{status:403,message:"Forbidden"},NOT_FOUND:{status:404,message:"Not Found"},METHOD_NOT_SUPPORTED:{status:405,message:"Method Not Supported"},NOT_ACCEPTABLE:{status:406,message:"Not Acceptable"},TIMEOUT:{status:408,message:"Request Timeout"},CONFLICT:{status:409,message:"Conflict"},PRECONDITION_FAILED:{status:412,message:"Precondition Failed"},PAYLOAD_TOO_LARGE:{status:413,message:"Payload Too Large"},UNSUPPORTED_MEDIA_TYPE:{status:415,message:"Unsupported Media Type"},UNPROCESSABLE_CONTENT:{status:422,message:"Unprocessable Content"},TOO_MANY_REQUESTS:{status:429,message:"Too Many Requests"},CLIENT_CLOSED_REQUEST:{status:499,message:"Client Closed Request"},INTERNAL_SERVER_ERROR:{status:500,message:"Internal Server Error"},NOT_IMPLEMENTED:{status:501,message:"Not Implemented"},BAD_GATEWAY:{status:502,message:"Bad Gateway"},SERVICE_UNAVAILABLE:{status:503,message:"Service Unavailable"},GATEWAY_TIMEOUT:{status:504,message:"Gateway Timeout"}},P=Symbol.for("__@orpc/client@1.13.5/error/ORPC_ERROR_CONSTRUCTORS__");globalThis[P]??=new WeakSet;let I=globalThis[P];class M extends Error{defined;code;status;data;constructor(e,...i){const r=t(i);if(void 0!==r.status&&!D(r.status))throw Error("[ORPCError] Invalid error status code.");super(function(e,t){return t||A[e]?.message||e}(e,r.message),r),this.code=e,this.status=function(e,t){return t??A[e]?.status??500}(e,r.status),this.defined=r.defined??!1,this.data=r.data}toJSON(){return{defined:this.defined,code:this.code,status:this.status,message:this.message,data:this.data}}static[Symbol.hasInstance](e){if(I.has(this)){let t=O(e);if(t&&I.has(t))return!0}return super[Symbol.hasInstance](e)}}function D(e){return e<200||e>=400}function k(e){if(!S(e))return!1;let t=["defined","code","status","message","data"];return!Object.keys(e).some(e=>!t.includes(e))&&"defined"in e&&"boolean"==typeof e.defined&&"code"in e&&"string"==typeof e.code&&"status"in e&&"number"==typeof e.status&&D(e.status)&&"message"in e&&"string"==typeof e.message}function F(e,t={}){return new M(e.code,{...t,...e})}I.add(M);class _ extends TypeError{}class Q extends TypeError{}class U extends Error{data;constructor(e){super(e?.message??"An error event was received",e),this.data=e?.data}}class K{constructor(e={}){this.options=e}incomplete="";feed(e){this.incomplete+=e;let t=this.incomplete.lastIndexOf("\n\n");if(-1===t)return;let i=this.incomplete.slice(0,t).split(/\n\n/);for(let e of(this.incomplete=this.incomplete.slice(t+2),i)){let t=function(e){let t=e.replace(/\n+$/,"").split(/\n/),i={data:void 0,event:void 0,id:void 0,retry:void 0,comments:[]};for(let e of t){let t=e.indexOf(":"),r=-1===t?e:e.slice(0,t),s=-1===t?"":e.slice(t+1).replace(/^\s/,"");if(0===t)i.comments.push(s);else if("data"===r)i.data??="",i.data+=`${s}
-`;else if("event"===r)i.event=s;else if("id"===r)i.id=s;else if("retry"===r){let e=Number.parseInt(s);Number.isInteger(e)&&e>=0&&e.toString()===s&&(i.retry=e)}}return i.data=i.data?.replace(/\n$/,""),i}(`${e}
+(globalThis.TURBOPACK || (globalThis.TURBOPACK = [])).push([
+  "object" == typeof document ? document.currentScript : void 0,
+  12598,
+  (e) => {
+    "use strict";
+    var t = e.i(71645),
+      i = e.i(43476),
+      r = t.createContext(void 0),
+      s = (e) => {
+        let i = t.useContext(r);
+        if (e) return e;
+        if (!i) throw Error("No QueryClient set, use QueryClientProvider to set one");
+        return i;
+      },
+      n = ({ client: e, children: s }) => (
+        t.useEffect(
+          () => (
+            e.mount(),
+            () => {
+              e.unmount();
+            }
+          ),
+          [e],
+        ),
+        (0, i.jsx)(r.Provider, { value: e, children: s })
+      );
+    e.s(["QueryClientProvider", () => n, "useQueryClient", () => s]);
+  },
+  97357,
+  30592,
+  74487,
+  (e) => {
+    "use strict";
+    function t(e) {
+      return e[0] ?? {};
+    }
+    function i(e) {
+      return Array.isArray(e) ? e : null == e ? [] : [e];
+    }
+    let r = "orpc";
+    class s extends Error {
+      constructor(...e) {
+        (super(...e), (this.name = "AbortError"));
+      }
+    }
+    function n(e) {
+      let t;
+      return () => {
+        if (t) return t.result;
+        let i = e();
+        return ((t = { result: i }), i);
+      };
+    }
+    function a() {
+      return globalThis["__@orpc/shared@1.13.5/otel/config__"];
+    }
+    function o(e, t = {}, i) {
+      let r = a()?.tracer;
+      return r?.startSpan(e, t, i);
+    }
+    function u(e, t, i = {}) {
+      if (!e) return;
+      let r = (function (e) {
+        if (e instanceof Error) {
+          let t = { message: e.message, name: e.name, stack: e.stack };
+          return (
+            "code" in e &&
+              ("string" == typeof e.code || "number" == typeof e.code) &&
+              (t.code = e.code),
+            t
+          );
+        }
+        return { message: String(e) };
+      })(t);
+      (e.recordException(r),
+        (i.signal?.aborted && i.signal.reason === t) ||
+          e.setStatus({ code: 2, message: r.message }));
+    }
+    async function l({ name: e, context: t, ...i }, r) {
+      let s = a()?.tracer;
+      if (!s) return r();
+      let n = async (e) => {
+        try {
+          return await r(e);
+        } catch (t) {
+          throw (u(e, t, i), t);
+        } finally {
+          e.end();
+        }
+      };
+      return t ? s.startActiveSpan(e, i, t, n) : s.startActiveSpan(e, i, n);
+    }
+    async function c(e, t) {
+      let i = a();
+      if (!e || !i) return t();
+      let r = i.trace.setSpan(i.context.active(), e);
+      return i.context.with(r, t);
+    }
+    class h {
+      openIds = new Set();
+      queues = new Map();
+      waiters = new Map();
+      get length() {
+        return this.openIds.size;
+      }
+      get waiterIds() {
+        return Array.from(this.waiters.keys());
+      }
+      hasBufferedItems(e) {
+        return !!this.queues.get(e)?.length;
+      }
+      open(e) {
+        this.openIds.add(e);
+      }
+      isOpen(e) {
+        return this.openIds.has(e);
+      }
+      push(e, t) {
+        this.assertOpen(e);
+        let i = this.waiters.get(e);
+        if (i?.length) (i.shift()[0](t), 0 === i.length && this.waiters.delete(e));
+        else {
+          let i = this.queues.get(e);
+          i ? i.push(t) : this.queues.set(e, [t]);
+        }
+      }
+      async pull(e) {
+        this.assertOpen(e);
+        let t = this.queues.get(e);
+        if (t?.length) {
+          let i = t.shift();
+          return (0 === t.length && this.queues.delete(e), i);
+        }
+        return new Promise((t, i) => {
+          let r = this.waiters.get(e),
+            s = [t, i];
+          r ? r.push(s) : this.waiters.set(e, [s]);
+        });
+      }
+      close({ id: e, reason: t } = {}) {
+        if (void 0 === e) {
+          (this.waiters.forEach((e, i) => {
+            let r =
+              t ??
+              new s(`[AsyncIdQueue] Queue[${i}] was closed or aborted while waiting for pulling.`);
+            e.forEach(([, e]) => e(r));
+          }),
+            this.waiters.clear(),
+            this.openIds.clear(),
+            this.queues.clear());
+          return;
+        }
+        let i =
+          t ?? new s(`[AsyncIdQueue] Queue[${e}] was closed or aborted while waiting for pulling.`);
+        (this.waiters.get(e)?.forEach(([, e]) => e(i)),
+          this.waiters.delete(e),
+          this.openIds.delete(e),
+          this.queues.delete(e));
+      }
+      assertOpen(e) {
+        if (!this.isOpen(e))
+          throw Error(
+            `[AsyncIdQueue] Cannot access queue[${e}] because it is not open or aborted.`,
+          );
+      }
+    }
+    function d(e) {
+      return (
+        !!e &&
+        "object" == typeof e &&
+        "next" in e &&
+        "function" == typeof e.next &&
+        Symbol.asyncIterator in e &&
+        "function" == typeof e[Symbol.asyncIterator]
+      );
+    }
+    let p = Symbol.for("asyncDispose"),
+      f = Symbol.asyncDispose ?? p;
+    class y {
+      #e = !1;
+      #t = !1;
+      #i;
+      #r;
+      constructor(e, t) {
+        ((this.#i = t),
+          (this.#r = (function (e) {
+            let t = Promise.resolve();
+            return (...i) => (t = t.catch(() => {}).then(() => e(...i)));
+          })(async () => {
+            if (this.#e) return { done: !0, value: void 0 };
+            try {
+              let t = await e();
+              return (t.done && (this.#e = !0), t);
+            } catch (e) {
+              throw ((this.#e = !0), e);
+            } finally {
+              this.#e && !this.#t && ((this.#t = !0), await this.#i("next"));
+            }
+          })));
+      }
+      next() {
+        return this.#r();
+      }
+      async return(e) {
+        return (
+          (this.#e = !0),
+          this.#t || ((this.#t = !0), await this.#i("return")),
+          { done: !0, value: e }
+        );
+      }
+      async throw(e) {
+        throw ((this.#e = !0), this.#t || ((this.#t = !0), await this.#i("throw")), e);
+      }
+      async [f]() {
+        ((this.#e = !0), this.#t || ((this.#t = !0), await this.#i("dispose")));
+      }
+      [Symbol.asyncIterator]() {
+        return this;
+      }
+    }
+    function m(e, t) {
+      let i = new h(),
+        r = Array.from({ length: t }, (e, t) => t.toString()),
+        s = !1,
+        a = n(async () => {
+          try {
+            for (;;) {
+              let t = await e.next();
+              if (
+                (r.forEach((e) => {
+                  i.isOpen(e) && i.push(e, { next: t });
+                }),
+                t.done)
+              )
+                break;
+            }
+          } catch (e) {
+            r.forEach((t) => {
+              i.isOpen(t) && i.push(t, { error: e });
+            });
+          } finally {
+            s = !0;
+          }
+        });
+      return r.map(
+        (t) => (
+          i.open(t),
+          new y(
+            async () => {
+              a();
+              let e = await i.pull(t);
+              if (e.next) return e.next;
+              throw e.error;
+            },
+            async (r) => {
+              (i.close({ id: t }),
+                "next" === r || i.length || s || ((s = !0), await e?.return?.()));
+            },
+          )
+        ),
+      );
+    }
+    function g({ name: e, ...t }, i) {
+      let r;
+      return new y(
+        async () => {
+          r ??= o(e);
+          try {
+            let e = await c(r, () => i.next());
+            return (r?.addEvent(e.done ? "completed" : "yielded"), e);
+          } catch (e) {
+            throw (u(r, e, t), e);
+          }
+        },
+        async (e) => {
+          try {
+            "next" !== e && (await c(r, () => i.return?.()));
+          } catch (e) {
+            throw (u(r, e, t), e);
+          } finally {
+            r?.end();
+          }
+        },
+      );
+    }
+    function v(e, t, i) {
+      let r = (t, s) => {
+        let n = e[s];
+        return n ? n({ ...t, next: (e = t) => r(e, s + 1) }) : i(t);
+      };
+      return r(t, 0);
+    }
+    function b(e) {
+      if (e) return JSON.parse(e);
+    }
+    function w(e) {
+      return JSON.stringify(e);
+    }
+    function O(e) {
+      return E(e) ? Object.getPrototypeOf(e)?.constructor : null;
+    }
+    function S(e) {
+      if (!e || "object" != typeof e) return !1;
+      let t = Object.getPrototypeOf(e);
+      return t === Object.prototype || !t || !t.constructor;
+    }
+    function E(e) {
+      return !!e && ("object" == typeof e || "function" == typeof e);
+    }
+    function C(e, t) {
+      let i = e;
+      for (let e of t) {
+        if (!E(i)) return;
+        i = i[e];
+      }
+      return i;
+    }
+    function q(e, ...t) {
+      return "function" == typeof e ? e(...t) : e;
+    }
+    function x(e) {
+      return new Proxy(e, {
+        get(e, t, i) {
+          let r = Reflect.get(e, t, i);
+          return "then" !== t || "function" != typeof r
+            ? r
+            : new Proxy(r, {
+                apply(t, i, r) {
+                  if (
+                    2 !== r.length ||
+                    r.some((e) => {
+                      var t;
+                      return !("function" == typeof (t = e) && T.test(t.toString()));
+                    })
+                  )
+                    return Reflect.apply(t, i, r);
+                  let s = !0;
+                  r[0].call(
+                    i,
+                    x(
+                      new Proxy(e, {
+                        get: (e, t, i) => {
+                          if (s && "then" === t) {
+                            s = !1;
+                            return;
+                          }
+                          return Reflect.get(e, t, i);
+                        },
+                      }),
+                    ),
+                  );
+                },
+              });
+        },
+      });
+    }
+    let T = /^\s*function\s*\(\)\s*\{\s*\[native code\]\s*\}\s*$/;
+    function R(e) {
+      try {
+        return decodeURIComponent(e);
+      } catch {
+        return e;
+      }
+    }
+    e.s(
+      [
+        "AbortError",
+        () => s,
+        "AsyncIteratorClass",
+        () => y,
+        "ORPC_NAME",
+        () => r,
+        "asyncIteratorWithSpan",
+        () => g,
+        "get",
+        () => C,
+        "getConstructor",
+        () => O,
+        "getGlobalOtelConfig",
+        () => a,
+        "intercept",
+        () => v,
+        "isAsyncIteratorObject",
+        () => d,
+        "isObject",
+        () => S,
+        "isTypescriptObject",
+        () => E,
+        "once",
+        () => n,
+        "parseEmptyableJSON",
+        () => b,
+        "preventNativeAwait",
+        () => x,
+        "replicateAsyncIterator",
+        () => m,
+        "resolveMaybeOptionalOptions",
+        () => t,
+        "runInSpanContext",
+        () => c,
+        "runWithSpan",
+        () => l,
+        "setSpanError",
+        () => u,
+        "startSpan",
+        () => o,
+        "stringifyJSON",
+        () => w,
+        "toArray",
+        () => i,
+        "tryDecodeURIComponent",
+        () => R,
+        "value",
+        () => q,
+      ],
+      30592,
+    );
+    let A = {
+        BAD_REQUEST: { status: 400, message: "Bad Request" },
+        UNAUTHORIZED: { status: 401, message: "Unauthorized" },
+        FORBIDDEN: { status: 403, message: "Forbidden" },
+        NOT_FOUND: { status: 404, message: "Not Found" },
+        METHOD_NOT_SUPPORTED: { status: 405, message: "Method Not Supported" },
+        NOT_ACCEPTABLE: { status: 406, message: "Not Acceptable" },
+        TIMEOUT: { status: 408, message: "Request Timeout" },
+        CONFLICT: { status: 409, message: "Conflict" },
+        PRECONDITION_FAILED: { status: 412, message: "Precondition Failed" },
+        PAYLOAD_TOO_LARGE: { status: 413, message: "Payload Too Large" },
+        UNSUPPORTED_MEDIA_TYPE: { status: 415, message: "Unsupported Media Type" },
+        UNPROCESSABLE_CONTENT: { status: 422, message: "Unprocessable Content" },
+        TOO_MANY_REQUESTS: { status: 429, message: "Too Many Requests" },
+        CLIENT_CLOSED_REQUEST: { status: 499, message: "Client Closed Request" },
+        INTERNAL_SERVER_ERROR: { status: 500, message: "Internal Server Error" },
+        NOT_IMPLEMENTED: { status: 501, message: "Not Implemented" },
+        BAD_GATEWAY: { status: 502, message: "Bad Gateway" },
+        SERVICE_UNAVAILABLE: { status: 503, message: "Service Unavailable" },
+        GATEWAY_TIMEOUT: { status: 504, message: "Gateway Timeout" },
+      },
+      P = Symbol.for("__@orpc/client@1.13.5/error/ORPC_ERROR_CONSTRUCTORS__");
+    globalThis[P] ??= new WeakSet();
+    let I = globalThis[P];
+    class M extends Error {
+      defined;
+      code;
+      status;
+      data;
+      constructor(e, ...i) {
+        const r = t(i);
+        if (void 0 !== r.status && !D(r.status))
+          throw Error("[ORPCError] Invalid error status code.");
+        (super(
+          (function (e, t) {
+            return t || A[e]?.message || e;
+          })(e, r.message),
+          r,
+        ),
+          (this.code = e),
+          (this.status = (function (e, t) {
+            return t ?? A[e]?.status ?? 500;
+          })(e, r.status)),
+          (this.defined = r.defined ?? !1),
+          (this.data = r.data));
+      }
+      toJSON() {
+        return {
+          defined: this.defined,
+          code: this.code,
+          status: this.status,
+          message: this.message,
+          data: this.data,
+        };
+      }
+      static [Symbol.hasInstance](e) {
+        if (I.has(this)) {
+          let t = O(e);
+          if (t && I.has(t)) return !0;
+        }
+        return super[Symbol.hasInstance](e);
+      }
+    }
+    function D(e) {
+      return e < 200 || e >= 400;
+    }
+    function k(e) {
+      if (!S(e)) return !1;
+      let t = ["defined", "code", "status", "message", "data"];
+      return (
+        !Object.keys(e).some((e) => !t.includes(e)) &&
+        "defined" in e &&
+        "boolean" == typeof e.defined &&
+        "code" in e &&
+        "string" == typeof e.code &&
+        "status" in e &&
+        "number" == typeof e.status &&
+        D(e.status) &&
+        "message" in e &&
+        "string" == typeof e.message
+      );
+    }
+    function F(e, t = {}) {
+      return new M(e.code, { ...t, ...e });
+    }
+    I.add(M);
+    class _ extends TypeError {}
+    class Q extends TypeError {}
+    class U extends Error {
+      data;
+      constructor(e) {
+        (super(e?.message ?? "An error event was received", e), (this.data = e?.data));
+      }
+    }
+    class K {
+      constructor(e = {}) {
+        this.options = e;
+      }
+      incomplete = "";
+      feed(e) {
+        this.incomplete += e;
+        let t = this.incomplete.lastIndexOf("\n\n");
+        if (-1 === t) return;
+        let i = this.incomplete.slice(0, t).split(/\n\n/);
+        for (let e of ((this.incomplete = this.incomplete.slice(t + 2)), i)) {
+          let t = (function (e) {
+            let t = e.replace(/\n+$/, "").split(/\n/),
+              i = { data: void 0, event: void 0, id: void 0, retry: void 0, comments: [] };
+            for (let e of t) {
+              let t = e.indexOf(":"),
+                r = -1 === t ? e : e.slice(0, t),
+                s = -1 === t ? "" : e.slice(t + 1).replace(/^\s/, "");
+              if (0 === t) i.comments.push(s);
+              else if ("data" === r)
+                ((i.data ??= ""),
+                  (i.data += `${s}
+`));
+              else if ("event" === r) i.event = s;
+              else if ("id" === r) i.id = s;
+              else if ("retry" === r) {
+                let e = Number.parseInt(s);
+                Number.isInteger(e) && e >= 0 && e.toString() === s && (i.retry = e);
+              }
+            }
+            return ((i.data = i.data?.replace(/\n$/, "")), i);
+          })(`${e}
 
-`);this.options.onEvent&&this.options.onEvent(t)}}end(){if(this.incomplete)throw new Q("Event Iterator ended before complete")}}class j extends TransformStream{constructor(){let e;super({start(t){e=new K({onEvent:e=>{t.enqueue(e)}})},transform(t){e.feed(t)},flush(){e.end()}})}}function N(e){if(e.includes("\n"))throw new _("Event's id must not contain a newline character")}function z(e){if(!Number.isInteger(e)||e<0)throw new _("Event's retry must be a integer and >= 0")}function L(e){if(e.includes("\n"))throw new _("Event's comment must not contain a newline character")}function $(e){let t="";if(t+=function(e){let t="";for(let i of e??[])L(i),t+=`: ${i}
-`;return t}(e.comments),void 0!==e.event){if(e.event.includes("\n"))throw new _("Event's event must not contain a newline character");t+=`event: ${e.event}
-`}return void 0!==e.retry&&(z(e.retry),t+=`retry: ${e.retry}
-`),void 0!==e.id&&(N(e.id),t+=`id: ${e.id}
-`),t+=function(e){let t=e?.split(/\n/)??[],i="";for(let e of t)i+=`data: ${e}
-`;return i}(e.data),t+="\n"}let G=Symbol("ORPC_EVENT_SOURCE_META");function B(e,t){if(void 0===t.id&&void 0===t.retry&&!t.comments?.length)return e;if(void 0!==t.id&&N(t.id),void 0!==t.retry&&z(t.retry),void 0!==t.comments)for(let e of t.comments)L(e);return new Proxy(e,{get:(e,i,r)=>i===G?t:Reflect.get(e,i,r)})}function H(e){return E(e)?Reflect.get(e,G):void 0}function J(e,t){let i=async e=>{let i=await t.error(e);if(i!==e){let t=H(e);t&&E(i)&&(i=B(i,t))}return i};return new y(async()=>{let{done:r,value:s}=await (async()=>{try{return await e.next()}catch(e){throw await i(e)}})(),n=await t.value(s,r);if(n!==s){let e=H(s);e&&E(n)&&(n=B(n,e))}return{done:r,value:n}},async()=>{try{await e.return?.()}catch(e){throw await i(e)}})}function W(e,t={}){return e.forEach((e,i)=>{Array.isArray(t[i])?t[i].push(e):void 0!==t[i]?t[i]=[t[i],e]:t[i]=e}),t}e.s(["createORPCClient",()=>function e(t,i={}){let r=i.path??[];return x(new Proxy(async(...[e,i={}])=>await t.call(r,e,{...i,context:i.context??{}}),{get:(s,n)=>"string"!=typeof n?Reflect.get(s,n):e(t,{...i,path:[...r,n]})}))}],97357);class V{plugins;constructor(e=[]){this.plugins=[...e].sort((e,t)=>(e.order??0)-(t.order??0))}init(e){for(let t of this.plugins)t.init?.(e)}}class Y{constructor(e,t,r={}){this.codec=e,this.sender=t,new V(r.plugins).init(r),this.interceptors=i(r.interceptors),this.clientInterceptors=i(r.clientInterceptors)}interceptors;clientInterceptors;call(e,t,i){return l({name:`${r}.${e.join("/")}`,signal:i.signal},s=>(s?.setAttribute("rpc.system",r),s?.setAttribute("rpc.method",e.join(".")),d(t)&&(t=g({name:"consume_event_iterator_input",signal:i.signal},t)),v(this.interceptors,{...i,path:e,input:t},async({path:e,input:t,...i})=>{let r,n=a(),o=n?.trace.getActiveSpan()??s;o&&n&&(r=n?.trace.setSpan(n.context.active(),o));let u=await l({name:"encode_request",context:r},()=>this.codec.encode(e,t,i)),c=await v(this.clientInterceptors,{...i,input:t,path:e,request:u},({input:e,path:t,request:i,...s})=>l({name:"send_request",signal:s.signal,context:r},()=>this.sender.call(i,s,t,e))),h=await l({name:"decode_response",context:r},()=>this.codec.decode(c,i,e,t));return d(h)?g({name:"consume_event_iterator_output",signal:i.signal},h):h})))}}class Z{customSerializers;constructor(e={}){if(this.customSerializers=e.customJsonSerializers??[],this.customSerializers.length!==new Set(this.customSerializers.map(e=>e.type)).size)throw Error("Custom serializer type must be unique.")}serialize(e,t=[],i=[],r=[],s=[]){for(let n of this.customSerializers)if(n.condition(e)){let a=this.serialize(n.serialize(e),t,i,r,s);return i.push([n.type,...t]),a}if(e instanceof Blob)return r.push(t),s.push(e),[e,i,r,s];if("bigint"==typeof e)return i.push([0,...t]),[e.toString(),i,r,s];if(e instanceof Date)return(i.push([1,...t]),Number.isNaN(e.getTime()))?[null,i,r,s]:[e.toISOString(),i,r,s];if(Number.isNaN(e))return i.push([2,...t]),[null,i,r,s];if(e instanceof URL)return i.push([4,...t]),[e.toString(),i,r,s];if(e instanceof RegExp)return i.push([5,...t]),[e.toString(),i,r,s];if(e instanceof Set){let n=this.serialize(Array.from(e),t,i,r,s);return i.push([6,...t]),n}if(e instanceof Map){let n=this.serialize(Array.from(e.entries()),t,i,r,s);return i.push([7,...t]),n}if(Array.isArray(e))return[e.map((e,n)=>void 0===e?(i.push([3,...t,n]),e):this.serialize(e,[...t,n],i,r,s)[0]),i,r,s];if(S(e)){let n={};for(let a in e)("toJSON"!==a||"function"!=typeof e[a])&&(n[a]=this.serialize(e[a],[...t,a],i,r,s)[0]);return[n,i,r,s]}return[e,i,r,s]}deserialize(e,t,i,r){let s={data:e};for(let e of(i&&r&&i.forEach((e,t)=>{let i=s,n="data";e.forEach(e=>{i=i[n],n=e}),i[n]=r(t)}),t)){let t=e[0],i=s,r="data";for(let t=1;t<e.length;t++)i=i[r],r=e[t];for(let e of this.customSerializers)if(e.type===t){i[r]=e.deserialize(i[r]);break}switch(t){case 0:i[r]=BigInt(i[r]);break;case 1:i[r]=new Date(i[r]??"Invalid Date");break;case 2:i[r]=NaN;break;case 3:i[r]=void 0;break;case 4:i[r]=new URL(i[r]);break;case 5:{let[,e,t]=i[r].match(/^\/(.*)\/([a-z]*)$/);i[r]=new RegExp(e,t);break}case 6:i[r]=new Set(i[r]);break;case 7:i[r]=new Map(i[r])}}return s.data}}class X{constructor(e,t){this.serializer=e,this.baseUrl=t.url,this.maxUrlLength=t.maxUrlLength??2083,this.fallbackMethod=t.fallbackMethod??"POST",this.expectedMethod=t.method??this.fallbackMethod,this.headers=t.headers??{}}baseUrl;maxUrlLength;fallbackMethod;expectedMethod;headers;async encode(e,t,r){var s;let n="function"==typeof(s=await q(this.headers,r,e,t)).forEach?W(s):s;void 0!==r.lastEventId&&(n=function(e,t){let r={...e};for(let e in t)Array.isArray(t[e])?r[e]=[...i(r[e]),...t[e]]:void 0!==t[e]&&(Array.isArray(r[e])?r[e]=[...r[e],t[e]]:void 0!==r[e]?r[e]=[r[e],t[e]]:r[e]=t[e]);return r}(n,{"last-event-id":r.lastEventId}));let a=await q(this.expectedMethod,r,e,t),o=new URL(await q(this.baseUrl,r,e,t));o.pathname=`${o.pathname.replace(/\/$/,"")}/${e.map(encodeURIComponent).join("/")}`;let u=this.serializer.serialize(t);if("GET"===a&&!(u instanceof FormData)&&!d(u)){let i=await q(this.maxUrlLength,r,e,t),s=new URL(o);if(s.searchParams.append("data",w(u)),s.toString().length<=i)return{body:void 0,method:a,headers:n,url:s,signal:r.signal}}return{url:o,method:"GET"===a?this.fallbackMethod:a,headers:n,body:u,signal:r.signal}}async decode(e){let t=!D(e.status),i=await (async()=>{let t=!1;try{let i=await e.body();return t=!0,this.serializer.deserialize(i)}catch(e){if(!t)throw Error("Cannot parse response body, please check the response body and content-type.",{cause:e});throw Error("Invalid RPC response format.",{cause:e})}})();if(!t){var r;if(k(i))throw F(i);throw new M((r=e.status,Object.entries(A).find(([,e])=>e.status===r)?.[0]??"MALFORMED_ORPC_ERROR_RESPONSE"),{status:e.status,data:{...e,body:i}})}return i}}class ee{constructor(e){this.jsonSerializer=e}serialize(e){return d(e)?J(e,{value:async e=>this.#s(e,!1),error:async e=>new U({data:this.#s((e instanceof M?e:new M("INTERNAL_SERVER_ERROR",{message:"Internal server error",cause:e})).toJSON(),!1),cause:e})}):this.#s(e,!0)}#s(e,t){let[i,r,s,n]=this.jsonSerializer.serialize(e),a=0===r.length?void 0:r;if(!t||0===n.length)return{json:i,meta:a};let o=new FormData;return o.set("data",w({json:i,meta:a,maps:s})),n.forEach((e,t)=>{o.set(t.toString(),e)}),o}deserialize(e){return d(e)?J(e,{value:async e=>this.#n(e),error:async e=>{if(!(e instanceof U))return e;let t=this.#n(e.data);return k(t)?F(t,{cause:e}):new U({data:t,cause:e})}}):this.#n(e)}#n(e){if(void 0===e)return;if(!(e instanceof FormData))return this.jsonSerializer.deserialize(e.json,e.meta??[]);let t=JSON.parse(e.get("data"));return this.jsonSerializer.deserialize(t.json,t.meta??[],t.maps,t=>e.get(t.toString()))}}class et extends Y{constructor(e,t){super(new X(new ee(new Z(t)),t),e,t)}}class ei extends V{initRuntimeAdapter(e){for(let t of this.plugins)t.initRuntimeAdapter?.(e)}}class er{fetch;toFetchRequestOptions;adapterInterceptors;constructor(e){new ei(e.plugins).initRuntimeAdapter(e),this.fetch=e.fetch??globalThis.fetch.bind(globalThis),this.toFetchRequestOptions=e,this.adapterInterceptors=i(e.adapterInterceptors)}async call(e,t,i,r){let a=function(e,t={}){let i=function(e,t=new Headers){for(let[i,r]of Object.entries(e))if(Array.isArray(r))for(let e of r)t.append(i,e);else void 0!==r&&t.append(i,r);return t}(e.headers),r=function(e,t,i={}){let r=t.get("content-disposition");if(t.delete("content-type"),t.delete("content-disposition"),void 0!==e){if(e instanceof Blob){var s;let i,n;return t.set("content-type",e.type),t.set("content-length",e.size.toString()),t.set("content-disposition",r??(i=(s=e instanceof File?e.name:"blob").replace(/"/g,'\\"'),n=encodeURIComponent(s).replace(/['()*]/g,e=>`%${e.charCodeAt(0).toString(16).toUpperCase()}`).replace(/%(7C|60|5E)/g,(e,t)=>String.fromCharCode(Number.parseInt(t,16))),`inline; filename="${i}"; filename*=utf-8''${n}`)),e}return e instanceof FormData||e instanceof URLSearchParams?e:d(e)?(t.set("content-type","text/event-stream"),function(e,t={}){let i,r,s=t.eventIteratorKeepAliveEnabled??!0,n=t.eventIteratorKeepAliveInterval??5e3,a=t.eventIteratorKeepAliveComment??"",l=t.eventIteratorInitialCommentEnabled??!0,h=t.eventIteratorInitialComment??"",d=!1;return new ReadableStream({start(e){r=o("stream_event_iterator"),l&&e.enqueue($({comments:[h]}))},async pull(t){try{s&&(i=setInterval(()=>{t.enqueue($({comments:[a]})),r?.addEvent("keepalive")},n));let o=await c(r,()=>e.next());if(clearInterval(i),d)return;let u=H(o.value);if(!o.done||void 0!==o.value||void 0!==u){let e=o.done?"done":"message";t.enqueue($({...u,event:e,data:w(o.value)})),r?.addEvent(e)}o.done&&(t.close(),r?.end())}catch(e){if(clearInterval(i),d)return;e instanceof U?(t.enqueue($({...H(e),event:"error",data:w(e.data)})),r?.addEvent("error"),t.close()):(u(r,e),t.error(e)),r?.end()}},async cancel(){try{d=!0,clearInterval(i),r?.addEvent("cancelled"),await c(r,()=>e.return?.())}catch(e){throw u(r,e),e}finally{r?.end()}}}).pipeThrough(new TextEncoderStream)}(e,i)):(t.set("content-type","application/json"),w(e))}}(e.body,i,t);return new Request(e.url,{signal:e.signal,method:e.method,headers:i,body:r})}(e,this.toFetchRequestOptions);return function(e,t={}){return{body:n(()=>(function(e,t={}){return l({name:"parse_standard_body",signal:t.signal},async()=>{let i=e.headers.get("content-disposition");if("string"==typeof i){let t=function(e){let t=e.match(/filename\*=(UTF-8'')?([^;]*)/i);if(t&&"string"==typeof t[2])return R(t[2]);let i=e.match(/filename="((?:\\"|[^"])*)"/i);if(i&&"string"==typeof i[1])return i[1].replace(/\\"/g,'"')}(i)??"blob",r=await e.blob();return new File([r],t,{type:r.type})}let r=e.headers.get("content-type");if(!r||r.startsWith("application/json"))return b(await e.text());if(r.startsWith("multipart/form-data"))return await e.formData();if(r.startsWith("application/x-www-form-urlencoded"))return new URLSearchParams(await e.text());if(r.startsWith("text/event-stream"))return function(e,t={}){let i,r=e?.pipeThrough(new TextDecoderStream).pipeThrough(new j),n=r?.getReader(),a=!1;return new y(async()=>{i??=o("consume_event_iterator_stream");try{for(;;){if(void 0===n)return{done:!0,value:void 0};let{done:e,value:t}=await c(i,()=>n.read());if(e){if(a)throw new s("Stream was cancelled");return{done:!0,value:void 0}}switch(t.event){case"message":{let e=b(t.data);return E(e)&&(e=B(e,t)),i?.addEvent("message"),{done:!1,value:e}}case"error":{let e=new U({data:b(t.data)});throw e=B(e,t),i?.addEvent("error"),e}case"done":{let e=b(t.data);return E(e)&&(e=B(e,t)),i?.addEvent("done"),{done:!0,value:e}}default:i?.addEvent("maybe_keepalive")}}}catch(e){throw e instanceof U||u(i,e,t),e}},async e=>{try{"next"!==e&&(a=!0,i?.addEvent("cancelled")),await c(i,()=>n?.cancel())}catch(e){throw u(i,e,t),e}finally{i?.end()}})}(e.body,t);if(r.startsWith("text/plain"))return await e.text();let n=await e.blob();return new File([n],"blob",{type:n.type})})})(e,t)),status:e.status,get headers(){let t=W(e.headers);return Object.defineProperty(this,"headers",{value:t,writable:!0}),t},set headers(value){Object.defineProperty(this,"headers",{value,writable:!0})}}}(await v(this.adapterInterceptors,{...t,request:a,path:i,input:r,init:{redirect:"manual"}},({request:e,path:t,input:i,init:r,...s})=>this.fetch(e,r,s,t,i)),{signal:a.signal})}}class es extends et{constructor(e){super(new er(e),e)}}e.s(["RPCLink",()=>es],74487)},80166,e=>{"use strict";var t={setTimeout:(e,t)=>setTimeout(e,t),clearTimeout:e=>clearTimeout(e),setInterval:(e,t)=>setInterval(e,t),clearInterval:e=>clearInterval(e)},i=new class{#a=t;#o=!1;setTimeoutProvider(e){this.#a=e}setTimeout(e,t){return this.#a.setTimeout(e,t)}clearTimeout(e){this.#a.clearTimeout(e)}setInterval(e,t){return this.#a.setInterval(e,t)}clearInterval(e){this.#a.clearInterval(e)}};function r(e){setTimeout(e,0)}e.s(["systemSetTimeoutZero",()=>r,"timeoutManager",()=>i])},19273,e=>{"use strict";var t=e.i(80166),i="u"<typeof window||"Deno"in globalThis;function r(){}function s(e,t){return"function"==typeof e?e(t):e}function n(e){return"number"==typeof e&&e>=0&&e!==1/0}function a(e,t){return Math.max(e+(t||0)-Date.now(),0)}function o(e,t){return"function"==typeof e?e(t):e}function u(e,t){return"function"==typeof e?e(t):e}function l(e,t){let{type:i="all",exact:r,fetchStatus:s,predicate:n,queryKey:a,stale:o}=e;if(a){if(r){if(t.queryHash!==h(a,t.options))return!1}else if(!p(t.queryKey,a))return!1}if("all"!==i){let e=t.isActive();if("active"===i&&!e||"inactive"===i&&e)return!1}return("boolean"!=typeof o||t.isStale()===o)&&(!s||s===t.state.fetchStatus)&&(!n||!!n(t))}function c(e,t){let{exact:i,status:r,predicate:s,mutationKey:n}=e;if(n){if(!t.options.mutationKey)return!1;if(i){if(d(t.options.mutationKey)!==d(n))return!1}else if(!p(t.options.mutationKey,n))return!1}return(!r||t.state.status===r)&&(!s||!!s(t))}function h(e,t){return(t?.queryKeyHashFn||d)(e)}function d(e){return JSON.stringify(e,(e,t)=>g(t)?Object.keys(t).sort().reduce((e,i)=>(e[i]=t[i],e),{}):t)}function p(e,t){return e===t||typeof e==typeof t&&!!e&&!!t&&"object"==typeof e&&"object"==typeof t&&Object.keys(t).every(i=>p(e[i],t[i]))}var f=Object.prototype.hasOwnProperty;function y(e,t){if(!t||Object.keys(e).length!==Object.keys(t).length)return!1;for(let i in e)if(e[i]!==t[i])return!1;return!0}function m(e){return Array.isArray(e)&&e.length===Object.keys(e).length}function g(e){if(!v(e))return!1;let t=e.constructor;if(void 0===t)return!0;let i=t.prototype;return!!v(i)&&!!i.hasOwnProperty("isPrototypeOf")&&Object.getPrototypeOf(e)===Object.prototype}function v(e){return"[object Object]"===Object.prototype.toString.call(e)}function b(e){return new Promise(i=>{t.timeoutManager.setTimeout(i,e)})}function w(e,t,i){return"function"==typeof i.structuralSharing?i.structuralSharing(e,t):!1!==i.structuralSharing?function e(t,i,r=0){if(t===i)return t;if(r>500)return i;let s=m(t)&&m(i);if(!s&&!(g(t)&&g(i)))return i;let n=(s?t:Object.keys(t)).length,a=s?i:Object.keys(i),o=a.length,u=s?Array(o):{},l=0;for(let c=0;c<o;c++){let o=s?c:a[c],h=t[o],d=i[o];if(h===d){u[o]=h,(s?c<n:f.call(t,o))&&l++;continue}if(null===h||null===d||"object"!=typeof h||"object"!=typeof d){u[o]=d;continue}let p=e(h,d,r+1);u[o]=p,p===h&&l++}return n===o&&l===n?t:u}(e,t):t}function O(e,t,i=0){let r=[...e,t];return i&&r.length>i?r.slice(1):r}function S(e,t,i=0){let r=[t,...e];return i&&r.length>i?r.slice(0,-1):r}var E=Symbol();function C(e,t){return!e.queryFn&&t?.initialPromise?()=>t.initialPromise:e.queryFn&&e.queryFn!==E?e.queryFn:()=>Promise.reject(Error(`Missing queryFn: '${e.queryHash}'`))}function q(e,t){return"function"==typeof e?e(...t):!!e}function x(e,t,i){let r,s=!1;return Object.defineProperty(e,"signal",{enumerable:!0,get:()=>(r??=t(),s||(s=!0,r.aborted?i():r.addEventListener("abort",i,{once:!0})),r)}),e}e.s(["addConsumeAwareSignal",()=>x,"addToEnd",()=>O,"addToStart",()=>S,"ensureQueryFn",()=>C,"functionalUpdate",()=>s,"hashKey",()=>d,"hashQueryKeyByOptions",()=>h,"isServer",()=>i,"isValidTimeout",()=>n,"matchMutation",()=>c,"matchQuery",()=>l,"noop",()=>r,"partialMatchKey",()=>p,"replaceData",()=>w,"resolveEnabled",()=>u,"resolveStaleTime",()=>o,"shallowEqualObjects",()=>y,"shouldThrowError",()=>q,"skipToken",()=>E,"sleep",()=>b,"timeUntilStale",()=>a])},61682,e=>{"use strict";var t=e.i(30592),i=e.i(19273);function r(e,t={}){return[e,{...void 0!==t.input?{input:t.input}:{},...void 0!==t.type?{type:t.type}:{},...void 0!==t.fnOptions?{fnOptions:t.fnOptions}:{}}]}function s(e,t){return e.length<=t?e:e.slice(e.length-t)}let n=Symbol("ORPC_OPERATION_CONTEXT");e.s(["createTanstackQueryUtils",()=>function e(a,o={}){var u;let l,c=(0,t.toArray)(o.path),h={key:e=>r(c,e)},d=(u={path:c,experimental_defaults:o.experimental_defaults},l={call:a,queryKey:(...[e={}])=>(e={...u.experimental_defaults?.queryKey,...e}).queryKey??r(u.path,{type:"query",input:e.input}),queryOptions(...[e={}]){e={...u.experimental_defaults?.queryOptions,...e};let t=l.queryKey(e);return{queryFn:({signal:r})=>{if(e.input===i.skipToken)throw Error("queryFn should not be called with skipToken used as input");return a(e.input,{signal:r,context:{[n]:{key:t,type:"query"},...e.context}})},...e.input===i.skipToken?{enabled:!1}:{},...e,queryKey:t}},experimental_streamedKey:(...[e={}])=>(e={...u.experimental_defaults?.experimental_streamedKey,...e}).queryKey??r(u.path,{type:"streamed",input:e.input,fnOptions:e.queryFnOptions}),experimental_streamedOptions(...[e={}]){e={...u.experimental_defaults?.experimental_streamedOptions,...e};let r=l.experimental_streamedKey(e);return{queryFn:function(e,{refetchMode:t="reset",maxChunks:i=1/0}={}){return async r=>{let n=r.client.getQueryCache().find({queryKey:r.queryKey,exact:!0}),a=!!n&&void 0!==n.state.data;a&&("reset"===t?n.setState({status:"pending",data:void 0,error:null,fetchStatus:"fetching"}):r.client.setQueryData(r.queryKey,(e=[])=>s(e,i)));let o=[],u=await e(r),l=!a||"replace"!==t;for await(let e of(r.client.setQueryData(r.queryKey,(e=[])=>s(e,i)),u)){if(r.signal.aborted)throw r.signal.reason;o.push(e),o=s(o,i),l&&r.client.setQueryData(r.queryKey,(t=[])=>s([...t,e],i))}l||r.client.setQueryData(r.queryKey,o);let c=r.client.getQueryData(r.queryKey);return c?s(c,i):o}}(async({signal:s})=>{if(e.input===i.skipToken)throw Error("queryFn should not be called with skipToken used as input");let o=await a(e.input,{signal:s,context:{[n]:{key:r,type:"streamed"},...e.context}});if(!(0,t.isAsyncIteratorObject)(o))throw Error("streamedQuery requires an event iterator output");return o},e.queryFnOptions),...e.input===i.skipToken?{enabled:!1}:{},...e,queryKey:r}},experimental_liveKey:(...[e={}])=>(e={...u.experimental_defaults?.experimental_liveKey,...e}).queryKey??r(u.path,{type:"live",input:e.input}),experimental_liveOptions(...[e={}]){var r;e={...u.experimental_defaults?.experimental_liveOptions,...e};let s=l.experimental_liveKey(e);return{queryFn:(r=async({signal:r})=>{if(e.input===i.skipToken)throw Error("queryFn should not be called with skipToken used as input");let o=await a(e.input,{signal:r,context:{[n]:{key:s,type:"live"},...e.context}});if(!(0,t.isAsyncIteratorObject)(o))throw Error("liveQuery requires an event iterator output");return o},async e=>{let i;for await(let t of(await r(e))){if(e.signal.aborted)throw e.signal.reason;i={chunk:t},e.client.setQueryData(e.queryKey,t)}if(!i)throw Error(`Live query for ${(0,t.stringifyJSON)(e.queryKey)} did not yield any data. Ensure the query function returns an AsyncIterable with at least one chunk.`);return i.chunk}),...e.input===i.skipToken?{enabled:!1}:{},...e,queryKey:s}},infiniteKey:e=>(e={...u.experimental_defaults?.infiniteKey,...e}).queryKey??r(u.path,{type:"infinite",input:e.input===i.skipToken?i.skipToken:e.input(e.initialPageParam)}),infiniteOptions(e){e={...u.experimental_defaults?.infiniteOptions,...e};let t=l.infiniteKey(e);return{queryFn:({pageParam:r,signal:s})=>{if(e.input===i.skipToken)throw Error("queryFn should not be called with skipToken used as input");return a(e.input(r),{signal:s,context:{[n]:{key:t,type:"infinite"},...e.context}})},...e.input===i.skipToken?{enabled:!1}:{},...e,queryKey:t}},mutationKey:(...[e={}])=>(e={...u.experimental_defaults?.mutationKey,...e}).mutationKey??r(u.path,{type:"mutation"}),mutationOptions(...[e={}]){e={...u.experimental_defaults?.mutationOptions,...e};let t=l.mutationKey(e);return{mutationFn:i=>a(i,{context:{[n]:{key:t,type:"mutation"},...e.context}}),...e,mutationKey:t}}});return new Proxy({...h,...d},{get(i,r){let s=Reflect.get(i,r);if("string"!=typeof r)return s;let n=e(a[r],{...o,path:[...c,r],experimental_defaults:(0,t.get)(o.experimental_defaults,[r])});return"function"!=typeof s?n:new Proxy(s,{get:(e,t)=>Reflect.get(n,t)})}})}])},40143,e=>{"use strict";let t,i,r,s,n,a;var o=e.i(80166).systemSetTimeoutZero,u=(t=[],i=0,r=e=>{e()},s=e=>{e()},n=o,{batch:e=>{let a;i++;try{a=e()}finally{let e;--i||(e=t,t=[],e.length&&n(()=>{s(()=>{e.forEach(e=>{r(e)})})}))}return a},batchCalls:e=>(...t)=>{a(()=>{e(...t)})},schedule:a=e=>{i?t.push(e):n(()=>{r(e)})},setNotifyFunction:e=>{r=e},setBatchNotifyFunction:e=>{s=e},setScheduler:e=>{n=e}});e.s(["notifyManager",()=>u])},15823,e=>{"use strict";var t=class{constructor(){this.listeners=new Set,this.subscribe=this.subscribe.bind(this)}subscribe(e){return this.listeners.add(e),this.onSubscribe(),()=>{this.listeners.delete(e),this.onUnsubscribe()}}hasListeners(){return this.listeners.size>0}onSubscribe(){}onUnsubscribe(){}};e.s(["Subscribable",()=>t])},75555,e=>{"use strict";var t=e.i(15823),i=e.i(19273),r=new class extends t.Subscribable{#u;#i;#l;constructor(){super(),this.#l=e=>{if(!i.isServer&&window.addEventListener){let t=()=>e();return window.addEventListener("visibilitychange",t,!1),()=>{window.removeEventListener("visibilitychange",t)}}}}onSubscribe(){this.#i||this.setEventListener(this.#l)}onUnsubscribe(){this.hasListeners()||(this.#i?.(),this.#i=void 0)}setEventListener(e){this.#l=e,this.#i?.(),this.#i=e(e=>{"boolean"==typeof e?this.setFocused(e):this.onFocus()})}setFocused(e){this.#u!==e&&(this.#u=e,this.onFocus())}onFocus(){let e=this.isFocused();this.listeners.forEach(t=>{t(e)})}isFocused(){return"boolean"==typeof this.#u?this.#u:globalThis.document?.visibilityState!=="hidden"}};e.s(["focusManager",()=>r])},36553,14448,93803,e=>{"use strict";var t=e.i(75555),i=e.i(15823),r=e.i(19273),s=new class extends i.Subscribable{#c=!0;#i;#l;constructor(){super(),this.#l=e=>{if(!r.isServer&&window.addEventListener){let t=()=>e(!0),i=()=>e(!1);return window.addEventListener("online",t,!1),window.addEventListener("offline",i,!1),()=>{window.removeEventListener("online",t),window.removeEventListener("offline",i)}}}}onSubscribe(){this.#i||this.setEventListener(this.#l)}onUnsubscribe(){this.hasListeners()||(this.#i?.(),this.#i=void 0)}setEventListener(e){this.#l=e,this.#i?.(),this.#i=e(this.setOnline.bind(this))}setOnline(e){this.#c!==e&&(this.#c=e,this.listeners.forEach(t=>{t(e)}))}isOnline(){return this.#c}};function n(){let e,t,i=new Promise((i,r)=>{e=i,t=r});function r(e){Object.assign(i,e),delete i.resolve,delete i.reject}return i.status="pending",i.catch(()=>{}),i.resolve=t=>{r({status:"fulfilled",value:t}),e(t)},i.reject=e=>{r({status:"rejected",reason:e}),t(e)},i}function a(e){return Math.min(1e3*2**e,3e4)}function o(e){return(e??"online")!=="online"||s.isOnline()}e.s(["onlineManager",()=>s],14448),e.s(["pendingThenable",()=>n],93803);var u=class extends Error{constructor(e){super("CancelledError"),this.revert=e?.revert,this.silent=e?.silent}};function l(e){let i,l=!1,c=0,h=n(),d=()=>t.focusManager.isFocused()&&("always"===e.networkMode||s.isOnline())&&e.canRun(),p=()=>o(e.networkMode)&&e.canRun(),f=e=>{"pending"===h.status&&(i?.(),h.resolve(e))},y=e=>{"pending"===h.status&&(i?.(),h.reject(e))},m=()=>new Promise(t=>{i=e=>{("pending"!==h.status||d())&&t(e)},e.onPause?.()}).then(()=>{i=void 0,"pending"===h.status&&e.onContinue?.()}),g=()=>{let t;if("pending"!==h.status)return;let i=0===c?e.initialPromise:void 0;try{t=i??e.fn()}catch(e){t=Promise.reject(e)}Promise.resolve(t).then(f).catch(t=>{if("pending"!==h.status)return;let i=e.retry??3*!r.isServer,s=e.retryDelay??a,n="function"==typeof s?s(c,t):s,o=!0===i||"number"==typeof i&&c<i||"function"==typeof i&&i(c,t);l||!o?y(t):(c++,e.onFail?.(c,t),(0,r.sleep)(n).then(()=>d()?void 0:m()).then(()=>{l?y(t):g()}))})};return{promise:h,status:()=>h.status,cancel:t=>{if("pending"===h.status){let i=new u(t);y(i),e.onCancel?.(i)}},continue:()=>(i?.(),h),cancelRetry:()=>{l=!0},continueRetry:()=>{l=!1},canStart:p,start:()=>(p()?g():m().then(g),h)}}e.s(["CancelledError",()=>u,"canFetch",()=>o,"createRetryer",()=>l],36553)},88587,e=>{"use strict";var t=e.i(80166),i=e.i(19273),r=class{#h;destroy(){this.clearGcTimeout()}scheduleGc(){this.clearGcTimeout(),(0,i.isValidTimeout)(this.gcTime)&&(this.#h=t.timeoutManager.setTimeout(()=>{this.optionalRemove()},this.gcTime))}updateGcTime(e){this.gcTime=Math.max(this.gcTime||0,e??(i.isServer?1/0:3e5))}clearGcTimeout(){this.#h&&(t.timeoutManager.clearTimeout(this.#h),this.#h=void 0)}};e.s(["Removable",()=>r])},86491,e=>{"use strict";var t=e.i(19273),i=e.i(40143),r=e.i(36553),s=e.i(88587),n=class extends s.Removable{#d;#p;#f;#y;#m;#g;#v;constructor(e){super(),this.#v=!1,this.#g=e.defaultOptions,this.setOptions(e.options),this.observers=[],this.#y=e.client,this.#f=this.#y.getQueryCache(),this.queryKey=e.queryKey,this.queryHash=e.queryHash,this.#d=u(this.options),this.state=e.state??this.#d,this.scheduleGc()}get meta(){return this.options.meta}get promise(){return this.#m?.promise}setOptions(e){if(this.options={...this.#g,...e},this.updateGcTime(this.options.gcTime),this.state&&void 0===this.state.data){let e=u(this.options);void 0!==e.data&&(this.setState(o(e.data,e.dataUpdatedAt)),this.#d=e)}}optionalRemove(){this.observers.length||"idle"!==this.state.fetchStatus||this.#f.remove(this)}setData(e,i){let r=(0,t.replaceData)(this.state.data,e,this.options);return this.#b({data:r,type:"success",dataUpdatedAt:i?.updatedAt,manual:i?.manual}),r}setState(e,t){this.#b({type:"setState",state:e,setStateOptions:t})}cancel(e){let i=this.#m?.promise;return this.#m?.cancel(e),i?i.then(t.noop).catch(t.noop):Promise.resolve()}destroy(){super.destroy(),this.cancel({silent:!0})}reset(){this.destroy(),this.setState(this.#d)}isActive(){return this.observers.some(e=>!1!==(0,t.resolveEnabled)(e.options.enabled,this))}isDisabled(){return this.getObserversCount()>0?!this.isActive():this.options.queryFn===t.skipToken||this.state.dataUpdateCount+this.state.errorUpdateCount===0}isStatic(){return this.getObserversCount()>0&&this.observers.some(e=>"static"===(0,t.resolveStaleTime)(e.options.staleTime,this))}isStale(){return this.getObserversCount()>0?this.observers.some(e=>e.getCurrentResult().isStale):void 0===this.state.data||this.state.isInvalidated}isStaleByTime(e=0){return void 0===this.state.data||"static"!==e&&(!!this.state.isInvalidated||!(0,t.timeUntilStale)(this.state.dataUpdatedAt,e))}onFocus(){let e=this.observers.find(e=>e.shouldFetchOnWindowFocus());e?.refetch({cancelRefetch:!1}),this.#m?.continue()}onOnline(){let e=this.observers.find(e=>e.shouldFetchOnReconnect());e?.refetch({cancelRefetch:!1}),this.#m?.continue()}addObserver(e){this.observers.includes(e)||(this.observers.push(e),this.clearGcTimeout(),this.#f.notify({type:"observerAdded",query:this,observer:e}))}removeObserver(e){this.observers.includes(e)&&(this.observers=this.observers.filter(t=>t!==e),this.observers.length||(this.#m&&(this.#v?this.#m.cancel({revert:!0}):this.#m.cancelRetry()),this.scheduleGc()),this.#f.notify({type:"observerRemoved",query:this,observer:e}))}getObserversCount(){return this.observers.length}invalidate(){this.state.isInvalidated||this.#b({type:"invalidate"})}async fetch(e,i){let s;if("idle"!==this.state.fetchStatus&&this.#m?.status()!=="rejected"){if(void 0!==this.state.data&&i?.cancelRefetch)this.cancel({silent:!0});else if(this.#m)return this.#m.continueRetry(),this.#m.promise}if(e&&this.setOptions(e),!this.options.queryFn){let e=this.observers.find(e=>e.options.queryFn);e&&this.setOptions(e.options)}let n=new AbortController,a=e=>{Object.defineProperty(e,"signal",{enumerable:!0,get:()=>(this.#v=!0,n.signal)})},o=()=>{let e,r=(0,t.ensureQueryFn)(this.options,i),s=(a(e={client:this.#y,queryKey:this.queryKey,meta:this.meta}),e);return(this.#v=!1,this.options.persister)?this.options.persister(r,s,this):r(s)},u=(a(s={fetchOptions:i,options:this.options,queryKey:this.queryKey,client:this.#y,state:this.state,fetchFn:o}),s);this.options.behavior?.onFetch(u,this),this.#p=this.state,("idle"===this.state.fetchStatus||this.state.fetchMeta!==u.fetchOptions?.meta)&&this.#b({type:"fetch",meta:u.fetchOptions?.meta}),this.#m=(0,r.createRetryer)({initialPromise:i?.initialPromise,fn:u.fetchFn,onCancel:e=>{e instanceof r.CancelledError&&e.revert&&this.setState({...this.#p,fetchStatus:"idle"}),n.abort()},onFail:(e,t)=>{this.#b({type:"failed",failureCount:e,error:t})},onPause:()=>{this.#b({type:"pause"})},onContinue:()=>{this.#b({type:"continue"})},retry:u.options.retry,retryDelay:u.options.retryDelay,networkMode:u.options.networkMode,canRun:()=>!0});try{let e=await this.#m.start();if(void 0===e)throw Error(`${this.queryHash} data is undefined`);return this.setData(e),this.#f.config.onSuccess?.(e,this),this.#f.config.onSettled?.(e,this.state.error,this),e}catch(e){if(e instanceof r.CancelledError){if(e.silent)return this.#m.promise;else if(e.revert){if(void 0===this.state.data)throw e;return this.state.data}}throw this.#b({type:"error",error:e}),this.#f.config.onError?.(e,this),this.#f.config.onSettled?.(this.state.data,e,this),e}finally{this.scheduleGc()}}#b(e){let t=t=>{switch(e.type){case"failed":return{...t,fetchFailureCount:e.failureCount,fetchFailureReason:e.error};case"pause":return{...t,fetchStatus:"paused"};case"continue":return{...t,fetchStatus:"fetching"};case"fetch":return{...t,...a(t.data,this.options),fetchMeta:e.meta??null};case"success":let i={...t,...o(e.data,e.dataUpdatedAt),dataUpdateCount:t.dataUpdateCount+1,...!e.manual&&{fetchStatus:"idle",fetchFailureCount:0,fetchFailureReason:null}};return this.#p=e.manual?i:void 0,i;case"error":let r=e.error;return{...t,error:r,errorUpdateCount:t.errorUpdateCount+1,errorUpdatedAt:Date.now(),fetchFailureCount:t.fetchFailureCount+1,fetchFailureReason:r,fetchStatus:"idle",status:"error",isInvalidated:!0};case"invalidate":return{...t,isInvalidated:!0};case"setState":return{...t,...e.state}}};this.state=t(this.state),i.notifyManager.batch(()=>{this.observers.forEach(e=>{e.onQueryUpdate()}),this.#f.notify({query:this,type:"updated",action:e})})}};function a(e,t){return{fetchFailureCount:0,fetchFailureReason:null,fetchStatus:(0,r.canFetch)(t.networkMode)?"fetching":"paused",...void 0===e&&{error:null,status:"pending"}}}function o(e,t){return{data:e,dataUpdatedAt:t??Date.now(),error:null,isInvalidated:!1,status:"success"}}function u(e){let t="function"==typeof e.initialData?e.initialData():e.initialData,i=void 0!==t,r=i?"function"==typeof e.initialDataUpdatedAt?e.initialDataUpdatedAt():e.initialDataUpdatedAt:0;return{data:t,dataUpdateCount:0,dataUpdatedAt:i?r??Date.now():0,error:null,errorUpdateCount:0,errorUpdatedAt:0,fetchFailureCount:0,fetchFailureReason:null,fetchMeta:null,isInvalidated:!1,status:i?"success":"pending",fetchStatus:"idle"}}e.s(["Query",()=>n,"fetchState",()=>a])},58345,e=>{"use strict";var t=e.i(19273),i=e.i(86491),r=e.i(40143),s=e.i(15823),n=class extends s.Subscribable{constructor(e={}){super(),this.config=e,this.#w=new Map}#w;build(e,r,s){let n=r.queryKey,a=r.queryHash??(0,t.hashQueryKeyByOptions)(n,r),o=this.get(a);return o||(o=new i.Query({client:e,queryKey:n,queryHash:a,options:e.defaultQueryOptions(r),state:s,defaultOptions:e.getQueryDefaults(n)}),this.add(o)),o}add(e){this.#w.has(e.queryHash)||(this.#w.set(e.queryHash,e),this.notify({type:"added",query:e}))}remove(e){let t=this.#w.get(e.queryHash);t&&(e.destroy(),t===e&&this.#w.delete(e.queryHash),this.notify({type:"removed",query:e}))}clear(){r.notifyManager.batch(()=>{this.getAll().forEach(e=>{this.remove(e)})})}get(e){return this.#w.get(e)}getAll(){return[...this.#w.values()]}find(e){let i={exact:!0,...e};return this.getAll().find(e=>(0,t.matchQuery)(i,e))}findAll(e={}){let i=this.getAll();return Object.keys(e).length>0?i.filter(i=>(0,t.matchQuery)(e,i)):i}notify(e){r.notifyManager.batch(()=>{this.listeners.forEach(t=>{t(e)})})}onFocus(){r.notifyManager.batch(()=>{this.getAll().forEach(e=>{e.onFocus()})})}onOnline(){r.notifyManager.batch(()=>{this.getAll().forEach(e=>{e.onOnline()})})}};e.s(["QueryCache",()=>n])},14272,e=>{"use strict";var t=e.i(40143),i=e.i(88587),r=e.i(36553),s=class extends i.Removable{#y;#O;#S;#m;constructor(e){super(),this.#y=e.client,this.mutationId=e.mutationId,this.#S=e.mutationCache,this.#O=[],this.state=e.state||n(),this.setOptions(e.options),this.scheduleGc()}setOptions(e){this.options=e,this.updateGcTime(this.options.gcTime)}get meta(){return this.options.meta}addObserver(e){this.#O.includes(e)||(this.#O.push(e),this.clearGcTimeout(),this.#S.notify({type:"observerAdded",mutation:this,observer:e}))}removeObserver(e){this.#O=this.#O.filter(t=>t!==e),this.scheduleGc(),this.#S.notify({type:"observerRemoved",mutation:this,observer:e})}optionalRemove(){this.#O.length||("pending"===this.state.status?this.scheduleGc():this.#S.remove(this))}continue(){return this.#m?.continue()??this.execute(this.state.variables)}async execute(e){let t=()=>{this.#b({type:"continue"})},i={client:this.#y,meta:this.options.meta,mutationKey:this.options.mutationKey};this.#m=(0,r.createRetryer)({fn:()=>this.options.mutationFn?this.options.mutationFn(e,i):Promise.reject(Error("No mutationFn found")),onFail:(e,t)=>{this.#b({type:"failed",failureCount:e,error:t})},onPause:()=>{this.#b({type:"pause"})},onContinue:t,retry:this.options.retry??0,retryDelay:this.options.retryDelay,networkMode:this.options.networkMode,canRun:()=>this.#S.canRun(this)});let s="pending"===this.state.status,n=!this.#m.canStart();try{if(s)t();else{this.#b({type:"pending",variables:e,isPaused:n}),this.#S.config.onMutate&&await this.#S.config.onMutate(e,this,i);let t=await this.options.onMutate?.(e,i);t!==this.state.context&&this.#b({type:"pending",context:t,variables:e,isPaused:n})}let r=await this.#m.start();return await this.#S.config.onSuccess?.(r,e,this.state.context,this,i),await this.options.onSuccess?.(r,e,this.state.context,i),await this.#S.config.onSettled?.(r,null,this.state.variables,this.state.context,this,i),await this.options.onSettled?.(r,null,e,this.state.context,i),this.#b({type:"success",data:r}),r}catch(t){try{await this.#S.config.onError?.(t,e,this.state.context,this,i)}catch(e){Promise.reject(e)}try{await this.options.onError?.(t,e,this.state.context,i)}catch(e){Promise.reject(e)}try{await this.#S.config.onSettled?.(void 0,t,this.state.variables,this.state.context,this,i)}catch(e){Promise.reject(e)}try{await this.options.onSettled?.(void 0,t,e,this.state.context,i)}catch(e){Promise.reject(e)}throw this.#b({type:"error",error:t}),t}finally{this.#S.runNext(this)}}#b(e){this.state=(t=>{switch(e.type){case"failed":return{...t,failureCount:e.failureCount,failureReason:e.error};case"pause":return{...t,isPaused:!0};case"continue":return{...t,isPaused:!1};case"pending":return{...t,context:e.context,data:void 0,failureCount:0,failureReason:null,error:null,isPaused:e.isPaused,status:"pending",variables:e.variables,submittedAt:Date.now()};case"success":return{...t,data:e.data,failureCount:0,failureReason:null,error:null,status:"success",isPaused:!1};case"error":return{...t,data:void 0,error:e.error,failureCount:t.failureCount+1,failureReason:e.error,isPaused:!1,status:"error"}}})(this.state),t.notifyManager.batch(()=>{this.#O.forEach(t=>{t.onMutationUpdate(e)}),this.#S.notify({mutation:this,type:"updated",action:e})})}};function n(){return{context:void 0,data:void 0,error:null,failureCount:0,failureReason:null,isPaused:!1,status:"idle",variables:void 0,submittedAt:0}}e.s(["Mutation",()=>s,"getDefaultState",()=>n])},26121,e=>{"use strict";var t=e.i(97357),i=e.i(74487),r=e.i(61682),s=e.i(58345),n=e.i(19273),a=e.i(40143),o=e.i(14272),u=e.i(15823),l=class extends u.Subscribable{constructor(e={}){super(),this.config=e,this.#E=new Set,this.#C=new Map,this.#q=0}#E;#C;#q;build(e,t,i){let r=new o.Mutation({client:e,mutationCache:this,mutationId:++this.#q,options:e.defaultMutationOptions(t),state:i});return this.add(r),r}add(e){this.#E.add(e);let t=c(e);if("string"==typeof t){let i=this.#C.get(t);i?i.push(e):this.#C.set(t,[e])}this.notify({type:"added",mutation:e})}remove(e){if(this.#E.delete(e)){let t=c(e);if("string"==typeof t){let i=this.#C.get(t);if(i)if(i.length>1){let t=i.indexOf(e);-1!==t&&i.splice(t,1)}else i[0]===e&&this.#C.delete(t)}}this.notify({type:"removed",mutation:e})}canRun(e){let t=c(e);if("string"!=typeof t)return!0;{let i=this.#C.get(t),r=i?.find(e=>"pending"===e.state.status);return!r||r===e}}runNext(e){let t=c(e);if("string"!=typeof t)return Promise.resolve();{let i=this.#C.get(t)?.find(t=>t!==e&&t.state.isPaused);return i?.continue()??Promise.resolve()}}clear(){a.notifyManager.batch(()=>{this.#E.forEach(e=>{this.notify({type:"removed",mutation:e})}),this.#E.clear(),this.#C.clear()})}getAll(){return Array.from(this.#E)}find(e){let t={exact:!0,...e};return this.getAll().find(e=>(0,n.matchMutation)(t,e))}findAll(e={}){return this.getAll().filter(t=>(0,n.matchMutation)(e,t))}notify(e){a.notifyManager.batch(()=>{this.listeners.forEach(t=>{t(e)})})}resumePausedMutations(){let e=this.getAll().filter(e=>e.state.isPaused);return a.notifyManager.batch(()=>Promise.all(e.map(e=>e.continue().catch(n.noop))))}};function c(e){return e.options.scope?.id}var h=e.i(75555),d=e.i(14448);function p(e){return{onFetch:(t,i)=>{let r=t.options,s=t.fetchOptions?.meta?.fetchMore?.direction,a=t.state.data?.pages||[],o=t.state.data?.pageParams||[],u={pages:[],pageParams:[]},l=0,c=async()=>{let i=!1,c=(0,n.ensureQueryFn)(t.options,t.fetchOptions),h=async(e,r,s)=>{let a;if(i)return Promise.reject();if(null==r&&e.pages.length)return Promise.resolve(e);let o=(a={client:t.client,queryKey:t.queryKey,pageParam:r,direction:s?"backward":"forward",meta:t.options.meta},(0,n.addConsumeAwareSignal)(a,()=>t.signal,()=>i=!0),a),u=await c(o),{maxPages:l}=t.options,h=s?n.addToStart:n.addToEnd;return{pages:h(e.pages,u,l),pageParams:h(e.pageParams,r,l)}};if(s&&a.length){let e="backward"===s,t={pages:a,pageParams:o},i=(e?function(e,{pages:t,pageParams:i}){return t.length>0?e.getPreviousPageParam?.(t[0],t,i[0],i):void 0}:f)(r,t);u=await h(t,i,e)}else{let t=e??a.length;do{let e=0===l?o[0]??r.initialPageParam:f(r,u);if(l>0&&null==e)break;u=await h(u,e),l++}while(l<t)}return u};t.options.persister?t.fetchFn=()=>t.options.persister?.(c,{client:t.client,queryKey:t.queryKey,meta:t.options.meta,signal:t.signal},i):t.fetchFn=c}}}function f(e,{pages:t,pageParams:i}){let r=t.length-1;return t.length>0?e.getNextPageParam(t[r],t,i[r],i):void 0}var y=class{#x;#S;#g;#T;#R;#A;#P;#I;constructor(e={}){this.#x=e.queryCache||new s.QueryCache,this.#S=e.mutationCache||new l,this.#g=e.defaultOptions||{},this.#T=new Map,this.#R=new Map,this.#A=0}mount(){this.#A++,1===this.#A&&(this.#P=h.focusManager.subscribe(async e=>{e&&(await this.resumePausedMutations(),this.#x.onFocus())}),this.#I=d.onlineManager.subscribe(async e=>{e&&(await this.resumePausedMutations(),this.#x.onOnline())}))}unmount(){this.#A--,0===this.#A&&(this.#P?.(),this.#P=void 0,this.#I?.(),this.#I=void 0)}isFetching(e){return this.#x.findAll({...e,fetchStatus:"fetching"}).length}isMutating(e){return this.#S.findAll({...e,status:"pending"}).length}getQueryData(e){let t=this.defaultQueryOptions({queryKey:e});return this.#x.get(t.queryHash)?.state.data}ensureQueryData(e){let t=this.defaultQueryOptions(e),i=this.#x.build(this,t),r=i.state.data;return void 0===r?this.fetchQuery(e):(e.revalidateIfStale&&i.isStaleByTime((0,n.resolveStaleTime)(t.staleTime,i))&&this.prefetchQuery(t),Promise.resolve(r))}getQueriesData(e){return this.#x.findAll(e).map(({queryKey:e,state:t})=>[e,t.data])}setQueryData(e,t,i){let r=this.defaultQueryOptions({queryKey:e}),s=this.#x.get(r.queryHash),a=s?.state.data,o=(0,n.functionalUpdate)(t,a);if(void 0!==o)return this.#x.build(this,r).setData(o,{...i,manual:!0})}setQueriesData(e,t,i){return a.notifyManager.batch(()=>this.#x.findAll(e).map(({queryKey:e})=>[e,this.setQueryData(e,t,i)]))}getQueryState(e){let t=this.defaultQueryOptions({queryKey:e});return this.#x.get(t.queryHash)?.state}removeQueries(e){let t=this.#x;a.notifyManager.batch(()=>{t.findAll(e).forEach(e=>{t.remove(e)})})}resetQueries(e,t){let i=this.#x;return a.notifyManager.batch(()=>(i.findAll(e).forEach(e=>{e.reset()}),this.refetchQueries({type:"active",...e},t)))}cancelQueries(e,t={}){let i={revert:!0,...t};return Promise.all(a.notifyManager.batch(()=>this.#x.findAll(e).map(e=>e.cancel(i)))).then(n.noop).catch(n.noop)}invalidateQueries(e,t={}){return a.notifyManager.batch(()=>(this.#x.findAll(e).forEach(e=>{e.invalidate()}),e?.refetchType==="none")?Promise.resolve():this.refetchQueries({...e,type:e?.refetchType??e?.type??"active"},t))}refetchQueries(e,t={}){let i={...t,cancelRefetch:t.cancelRefetch??!0};return Promise.all(a.notifyManager.batch(()=>this.#x.findAll(e).filter(e=>!e.isDisabled()&&!e.isStatic()).map(e=>{let t=e.fetch(void 0,i);return i.throwOnError||(t=t.catch(n.noop)),"paused"===e.state.fetchStatus?Promise.resolve():t}))).then(n.noop)}fetchQuery(e){let t=this.defaultQueryOptions(e);void 0===t.retry&&(t.retry=!1);let i=this.#x.build(this,t);return i.isStaleByTime((0,n.resolveStaleTime)(t.staleTime,i))?i.fetch(t):Promise.resolve(i.state.data)}prefetchQuery(e){return this.fetchQuery(e).then(n.noop).catch(n.noop)}fetchInfiniteQuery(e){return e.behavior=p(e.pages),this.fetchQuery(e)}prefetchInfiniteQuery(e){return this.fetchInfiniteQuery(e).then(n.noop).catch(n.noop)}ensureInfiniteQueryData(e){return e.behavior=p(e.pages),this.ensureQueryData(e)}resumePausedMutations(){return d.onlineManager.isOnline()?this.#S.resumePausedMutations():Promise.resolve()}getQueryCache(){return this.#x}getMutationCache(){return this.#S}getDefaultOptions(){return this.#g}setDefaultOptions(e){this.#g=e}setQueryDefaults(e,t){this.#T.set((0,n.hashKey)(e),{queryKey:e,defaultOptions:t})}getQueryDefaults(e){let t=[...this.#T.values()],i={};return t.forEach(t=>{(0,n.partialMatchKey)(e,t.queryKey)&&Object.assign(i,t.defaultOptions)}),i}setMutationDefaults(e,t){this.#R.set((0,n.hashKey)(e),{mutationKey:e,defaultOptions:t})}getMutationDefaults(e){let t=[...this.#R.values()],i={};return t.forEach(t=>{(0,n.partialMatchKey)(e,t.mutationKey)&&Object.assign(i,t.defaultOptions)}),i}defaultQueryOptions(e){if(e._defaulted)return e;let t={...this.#g.queries,...this.getQueryDefaults(e.queryKey),...e,_defaulted:!0};return t.queryHash||(t.queryHash=(0,n.hashQueryKeyByOptions)(t.queryKey,t)),void 0===t.refetchOnReconnect&&(t.refetchOnReconnect="always"!==t.networkMode),void 0===t.throwOnError&&(t.throwOnError=!!t.suspense),!t.networkMode&&t.persister&&(t.networkMode="offlineFirst"),t.queryFn===n.skipToken&&(t.enabled=!1),t}defaultMutationOptions(e){return e?._defaulted?e:{...this.#g.mutations,...e?.mutationKey&&this.getMutationDefaults(e.mutationKey),...e,_defaulted:!0}}clear(){this.#x.clear(),this.#S.clear()}},m=e.i(46696);let g=new y({queryCache:new s.QueryCache({onError:(e,t)=>{m.toast.error(`Error: ${e.message}`,{action:{label:"retry",onClick:()=>{null!=t&&"function"==typeof t.invalidate&&t.invalidate()}}})}})}),v=new i.RPCLink({url:`${window.location.origin}/api/rpc`,fetch:(e,t)=>fetch(e,{...t,credentials:"include"}),headers:async()=>({})}),b=(0,t.createORPCClient)(v);(0,r.createTanstackQueryUtils)(b),e.s(["client",0,b,"queryClient",0,g],26121)}]);
+`);
+          this.options.onEvent && this.options.onEvent(t);
+        }
+      }
+      end() {
+        if (this.incomplete) throw new Q("Event Iterator ended before complete");
+      }
+    }
+    class j extends TransformStream {
+      constructor() {
+        let e;
+        super({
+          start(t) {
+            e = new K({
+              onEvent: (e) => {
+                t.enqueue(e);
+              },
+            });
+          },
+          transform(t) {
+            e.feed(t);
+          },
+          flush() {
+            e.end();
+          },
+        });
+      }
+    }
+    function N(e) {
+      if (e.includes("\n")) throw new _("Event's id must not contain a newline character");
+    }
+    function z(e) {
+      if (!Number.isInteger(e) || e < 0) throw new _("Event's retry must be a integer and >= 0");
+    }
+    function L(e) {
+      if (e.includes("\n")) throw new _("Event's comment must not contain a newline character");
+    }
+    function $(e) {
+      let t = "";
+      if (
+        ((t += (function (e) {
+          let t = "";
+          for (let i of e ?? [])
+            (L(i),
+              (t += `: ${i}
+`));
+          return t;
+        })(e.comments)),
+        void 0 !== e.event)
+      ) {
+        if (e.event.includes("\n"))
+          throw new _("Event's event must not contain a newline character");
+        t += `event: ${e.event}
+`;
+      }
+      return (
+        void 0 !== e.retry &&
+          (z(e.retry),
+          (t += `retry: ${e.retry}
+`)),
+        void 0 !== e.id &&
+          (N(e.id),
+          (t += `id: ${e.id}
+`)),
+        (t += (function (e) {
+          let t = e?.split(/\n/) ?? [],
+            i = "";
+          for (let e of t)
+            i += `data: ${e}
+`;
+          return i;
+        })(e.data)),
+        (t += "\n")
+      );
+    }
+    let G = Symbol("ORPC_EVENT_SOURCE_META");
+    function B(e, t) {
+      if (void 0 === t.id && void 0 === t.retry && !t.comments?.length) return e;
+      if ((void 0 !== t.id && N(t.id), void 0 !== t.retry && z(t.retry), void 0 !== t.comments))
+        for (let e of t.comments) L(e);
+      return new Proxy(e, { get: (e, i, r) => (i === G ? t : Reflect.get(e, i, r)) });
+    }
+    function H(e) {
+      return E(e) ? Reflect.get(e, G) : void 0;
+    }
+    function J(e, t) {
+      let i = async (e) => {
+        let i = await t.error(e);
+        if (i !== e) {
+          let t = H(e);
+          t && E(i) && (i = B(i, t));
+        }
+        return i;
+      };
+      return new y(
+        async () => {
+          let { done: r, value: s } = await (async () => {
+              try {
+                return await e.next();
+              } catch (e) {
+                throw await i(e);
+              }
+            })(),
+            n = await t.value(s, r);
+          if (n !== s) {
+            let e = H(s);
+            e && E(n) && (n = B(n, e));
+          }
+          return { done: r, value: n };
+        },
+        async () => {
+          try {
+            await e.return?.();
+          } catch (e) {
+            throw await i(e);
+          }
+        },
+      );
+    }
+    function W(e, t = {}) {
+      return (
+        e.forEach((e, i) => {
+          Array.isArray(t[i]) ? t[i].push(e) : void 0 !== t[i] ? (t[i] = [t[i], e]) : (t[i] = e);
+        }),
+        t
+      );
+    }
+    e.s(
+      [
+        "createORPCClient",
+        () =>
+          function e(t, i = {}) {
+            let r = i.path ?? [];
+            return x(
+              new Proxy(
+                async (...[e, i = {}]) => await t.call(r, e, { ...i, context: i.context ?? {} }),
+                {
+                  get: (s, n) =>
+                    "string" != typeof n ? Reflect.get(s, n) : e(t, { ...i, path: [...r, n] }),
+                },
+              ),
+            );
+          },
+      ],
+      97357,
+    );
+    class V {
+      plugins;
+      constructor(e = []) {
+        this.plugins = [...e].sort((e, t) => (e.order ?? 0) - (t.order ?? 0));
+      }
+      init(e) {
+        for (let t of this.plugins) t.init?.(e);
+      }
+    }
+    class Y {
+      constructor(e, t, r = {}) {
+        ((this.codec = e),
+          (this.sender = t),
+          new V(r.plugins).init(r),
+          (this.interceptors = i(r.interceptors)),
+          (this.clientInterceptors = i(r.clientInterceptors)));
+      }
+      interceptors;
+      clientInterceptors;
+      call(e, t, i) {
+        return l(
+          { name: `${r}.${e.join("/")}`, signal: i.signal },
+          (s) => (
+            s?.setAttribute("rpc.system", r),
+            s?.setAttribute("rpc.method", e.join(".")),
+            d(t) && (t = g({ name: "consume_event_iterator_input", signal: i.signal }, t)),
+            v(
+              this.interceptors,
+              { ...i, path: e, input: t },
+              async ({ path: e, input: t, ...i }) => {
+                let r,
+                  n = a(),
+                  o = n?.trace.getActiveSpan() ?? s;
+                o && n && (r = n?.trace.setSpan(n.context.active(), o));
+                let u = await l({ name: "encode_request", context: r }, () =>
+                    this.codec.encode(e, t, i),
+                  ),
+                  c = await v(
+                    this.clientInterceptors,
+                    { ...i, input: t, path: e, request: u },
+                    ({ input: e, path: t, request: i, ...s }) =>
+                      l({ name: "send_request", signal: s.signal, context: r }, () =>
+                        this.sender.call(i, s, t, e),
+                      ),
+                  ),
+                  h = await l({ name: "decode_response", context: r }, () =>
+                    this.codec.decode(c, i, e, t),
+                  );
+                return d(h) ? g({ name: "consume_event_iterator_output", signal: i.signal }, h) : h;
+              },
+            )
+          ),
+        );
+      }
+    }
+    class Z {
+      customSerializers;
+      constructor(e = {}) {
+        if (
+          ((this.customSerializers = e.customJsonSerializers ?? []),
+          this.customSerializers.length !== new Set(this.customSerializers.map((e) => e.type)).size)
+        )
+          throw Error("Custom serializer type must be unique.");
+      }
+      serialize(e, t = [], i = [], r = [], s = []) {
+        for (let n of this.customSerializers)
+          if (n.condition(e)) {
+            let a = this.serialize(n.serialize(e), t, i, r, s);
+            return (i.push([n.type, ...t]), a);
+          }
+        if (e instanceof Blob) return (r.push(t), s.push(e), [e, i, r, s]);
+        if ("bigint" == typeof e) return (i.push([0, ...t]), [e.toString(), i, r, s]);
+        if (e instanceof Date)
+          return (i.push([1, ...t]), Number.isNaN(e.getTime()))
+            ? [null, i, r, s]
+            : [e.toISOString(), i, r, s];
+        if (Number.isNaN(e)) return (i.push([2, ...t]), [null, i, r, s]);
+        if (e instanceof URL) return (i.push([4, ...t]), [e.toString(), i, r, s]);
+        if (e instanceof RegExp) return (i.push([5, ...t]), [e.toString(), i, r, s]);
+        if (e instanceof Set) {
+          let n = this.serialize(Array.from(e), t, i, r, s);
+          return (i.push([6, ...t]), n);
+        }
+        if (e instanceof Map) {
+          let n = this.serialize(Array.from(e.entries()), t, i, r, s);
+          return (i.push([7, ...t]), n);
+        }
+        if (Array.isArray(e))
+          return [
+            e.map((e, n) =>
+              void 0 === e ? (i.push([3, ...t, n]), e) : this.serialize(e, [...t, n], i, r, s)[0],
+            ),
+            i,
+            r,
+            s,
+          ];
+        if (S(e)) {
+          let n = {};
+          for (let a in e)
+            ("toJSON" !== a || "function" != typeof e[a]) &&
+              (n[a] = this.serialize(e[a], [...t, a], i, r, s)[0]);
+          return [n, i, r, s];
+        }
+        return [e, i, r, s];
+      }
+      deserialize(e, t, i, r) {
+        let s = { data: e };
+        for (let e of (i &&
+          r &&
+          i.forEach((e, t) => {
+            let i = s,
+              n = "data";
+            (e.forEach((e) => {
+              ((i = i[n]), (n = e));
+            }),
+              (i[n] = r(t)));
+          }),
+        t)) {
+          let t = e[0],
+            i = s,
+            r = "data";
+          for (let t = 1; t < e.length; t++) ((i = i[r]), (r = e[t]));
+          for (let e of this.customSerializers)
+            if (e.type === t) {
+              i[r] = e.deserialize(i[r]);
+              break;
+            }
+          switch (t) {
+            case 0:
+              i[r] = BigInt(i[r]);
+              break;
+            case 1:
+              i[r] = new Date(i[r] ?? "Invalid Date");
+              break;
+            case 2:
+              i[r] = NaN;
+              break;
+            case 3:
+              i[r] = void 0;
+              break;
+            case 4:
+              i[r] = new URL(i[r]);
+              break;
+            case 5: {
+              let [, e, t] = i[r].match(/^\/(.*)\/([a-z]*)$/);
+              i[r] = new RegExp(e, t);
+              break;
+            }
+            case 6:
+              i[r] = new Set(i[r]);
+              break;
+            case 7:
+              i[r] = new Map(i[r]);
+          }
+        }
+        return s.data;
+      }
+    }
+    class X {
+      constructor(e, t) {
+        ((this.serializer = e),
+          (this.baseUrl = t.url),
+          (this.maxUrlLength = t.maxUrlLength ?? 2083),
+          (this.fallbackMethod = t.fallbackMethod ?? "POST"),
+          (this.expectedMethod = t.method ?? this.fallbackMethod),
+          (this.headers = t.headers ?? {}));
+      }
+      baseUrl;
+      maxUrlLength;
+      fallbackMethod;
+      expectedMethod;
+      headers;
+      async encode(e, t, r) {
+        var s;
+        let n = "function" == typeof (s = await q(this.headers, r, e, t)).forEach ? W(s) : s;
+        void 0 !== r.lastEventId &&
+          (n = (function (e, t) {
+            let r = { ...e };
+            for (let e in t)
+              Array.isArray(t[e])
+                ? (r[e] = [...i(r[e]), ...t[e]])
+                : void 0 !== t[e] &&
+                  (Array.isArray(r[e])
+                    ? (r[e] = [...r[e], t[e]])
+                    : void 0 !== r[e]
+                      ? (r[e] = [r[e], t[e]])
+                      : (r[e] = t[e]));
+            return r;
+          })(n, { "last-event-id": r.lastEventId }));
+        let a = await q(this.expectedMethod, r, e, t),
+          o = new URL(await q(this.baseUrl, r, e, t));
+        o.pathname = `${o.pathname.replace(/\/$/, "")}/${e.map(encodeURIComponent).join("/")}`;
+        let u = this.serializer.serialize(t);
+        if ("GET" === a && !(u instanceof FormData) && !d(u)) {
+          let i = await q(this.maxUrlLength, r, e, t),
+            s = new URL(o);
+          if ((s.searchParams.append("data", w(u)), s.toString().length <= i))
+            return { body: void 0, method: a, headers: n, url: s, signal: r.signal };
+        }
+        return {
+          url: o,
+          method: "GET" === a ? this.fallbackMethod : a,
+          headers: n,
+          body: u,
+          signal: r.signal,
+        };
+      }
+      async decode(e) {
+        let t = !D(e.status),
+          i = await (async () => {
+            let t = !1;
+            try {
+              let i = await e.body();
+              return ((t = !0), this.serializer.deserialize(i));
+            } catch (e) {
+              if (!t)
+                throw Error(
+                  "Cannot parse response body, please check the response body and content-type.",
+                  { cause: e },
+                );
+              throw Error("Invalid RPC response format.", { cause: e });
+            }
+          })();
+        if (!t) {
+          var r;
+          if (k(i)) throw F(i);
+          throw new M(
+            ((r = e.status),
+            Object.entries(A).find(([, e]) => e.status === r)?.[0] ??
+              "MALFORMED_ORPC_ERROR_RESPONSE"),
+            { status: e.status, data: { ...e, body: i } },
+          );
+        }
+        return i;
+      }
+    }
+    class ee {
+      constructor(e) {
+        this.jsonSerializer = e;
+      }
+      serialize(e) {
+        return d(e)
+          ? J(e, {
+              value: async (e) => this.#s(e, !1),
+              error: async (e) =>
+                new U({
+                  data: this.#s(
+                    (e instanceof M
+                      ? e
+                      : new M("INTERNAL_SERVER_ERROR", {
+                          message: "Internal server error",
+                          cause: e,
+                        })
+                    ).toJSON(),
+                    !1,
+                  ),
+                  cause: e,
+                }),
+            })
+          : this.#s(e, !0);
+      }
+      #s(e, t) {
+        let [i, r, s, n] = this.jsonSerializer.serialize(e),
+          a = 0 === r.length ? void 0 : r;
+        if (!t || 0 === n.length) return { json: i, meta: a };
+        let o = new FormData();
+        return (
+          o.set("data", w({ json: i, meta: a, maps: s })),
+          n.forEach((e, t) => {
+            o.set(t.toString(), e);
+          }),
+          o
+        );
+      }
+      deserialize(e) {
+        return d(e)
+          ? J(e, {
+              value: async (e) => this.#n(e),
+              error: async (e) => {
+                if (!(e instanceof U)) return e;
+                let t = this.#n(e.data);
+                return k(t) ? F(t, { cause: e }) : new U({ data: t, cause: e });
+              },
+            })
+          : this.#n(e);
+      }
+      #n(e) {
+        if (void 0 === e) return;
+        if (!(e instanceof FormData)) return this.jsonSerializer.deserialize(e.json, e.meta ?? []);
+        let t = JSON.parse(e.get("data"));
+        return this.jsonSerializer.deserialize(t.json, t.meta ?? [], t.maps, (t) =>
+          e.get(t.toString()),
+        );
+      }
+    }
+    class et extends Y {
+      constructor(e, t) {
+        super(new X(new ee(new Z(t)), t), e, t);
+      }
+    }
+    class ei extends V {
+      initRuntimeAdapter(e) {
+        for (let t of this.plugins) t.initRuntimeAdapter?.(e);
+      }
+    }
+    class er {
+      fetch;
+      toFetchRequestOptions;
+      adapterInterceptors;
+      constructor(e) {
+        (new ei(e.plugins).initRuntimeAdapter(e),
+          (this.fetch = e.fetch ?? globalThis.fetch.bind(globalThis)),
+          (this.toFetchRequestOptions = e),
+          (this.adapterInterceptors = i(e.adapterInterceptors)));
+      }
+      async call(e, t, i, r) {
+        let a = (function (e, t = {}) {
+          let i = (function (e, t = new Headers()) {
+              for (let [i, r] of Object.entries(e))
+                if (Array.isArray(r)) for (let e of r) t.append(i, e);
+                else void 0 !== r && t.append(i, r);
+              return t;
+            })(e.headers),
+            r = (function (e, t, i = {}) {
+              let r = t.get("content-disposition");
+              if ((t.delete("content-type"), t.delete("content-disposition"), void 0 !== e)) {
+                if (e instanceof Blob) {
+                  var s;
+                  let i, n;
+                  return (
+                    t.set("content-type", e.type),
+                    t.set("content-length", e.size.toString()),
+                    t.set(
+                      "content-disposition",
+                      r ??
+                        ((i = (s = e instanceof File ? e.name : "blob").replace(/"/g, '\\"')),
+                        (n = encodeURIComponent(s)
+                          .replace(
+                            /['()*]/g,
+                            (e) => `%${e.charCodeAt(0).toString(16).toUpperCase()}`,
+                          )
+                          .replace(/%(7C|60|5E)/g, (e, t) =>
+                            String.fromCharCode(Number.parseInt(t, 16)),
+                          )),
+                        `inline; filename="${i}"; filename*=utf-8''${n}`),
+                    ),
+                    e
+                  );
+                }
+                return e instanceof FormData || e instanceof URLSearchParams
+                  ? e
+                  : d(e)
+                    ? (t.set("content-type", "text/event-stream"),
+                      (function (e, t = {}) {
+                        let i,
+                          r,
+                          s = t.eventIteratorKeepAliveEnabled ?? !0,
+                          n = t.eventIteratorKeepAliveInterval ?? 5e3,
+                          a = t.eventIteratorKeepAliveComment ?? "",
+                          l = t.eventIteratorInitialCommentEnabled ?? !0,
+                          h = t.eventIteratorInitialComment ?? "",
+                          d = !1;
+                        return new ReadableStream({
+                          start(e) {
+                            ((r = o("stream_event_iterator")),
+                              l && e.enqueue($({ comments: [h] })));
+                          },
+                          async pull(t) {
+                            try {
+                              s &&
+                                (i = setInterval(() => {
+                                  (t.enqueue($({ comments: [a] })), r?.addEvent("keepalive"));
+                                }, n));
+                              let o = await c(r, () => e.next());
+                              if ((clearInterval(i), d)) return;
+                              let u = H(o.value);
+                              if (!o.done || void 0 !== o.value || void 0 !== u) {
+                                let e = o.done ? "done" : "message";
+                                (t.enqueue($({ ...u, event: e, data: w(o.value) })),
+                                  r?.addEvent(e));
+                              }
+                              o.done && (t.close(), r?.end());
+                            } catch (e) {
+                              if ((clearInterval(i), d)) return;
+                              (e instanceof U
+                                ? (t.enqueue($({ ...H(e), event: "error", data: w(e.data) })),
+                                  r?.addEvent("error"),
+                                  t.close())
+                                : (u(r, e), t.error(e)),
+                                r?.end());
+                            }
+                          },
+                          async cancel() {
+                            try {
+                              ((d = !0),
+                                clearInterval(i),
+                                r?.addEvent("cancelled"),
+                                await c(r, () => e.return?.()));
+                            } catch (e) {
+                              throw (u(r, e), e);
+                            } finally {
+                              r?.end();
+                            }
+                          },
+                        }).pipeThrough(new TextEncoderStream());
+                      })(e, i))
+                    : (t.set("content-type", "application/json"), w(e));
+              }
+            })(e.body, i, t);
+          return new Request(e.url, { signal: e.signal, method: e.method, headers: i, body: r });
+        })(e, this.toFetchRequestOptions);
+        return (function (e, t = {}) {
+          return {
+            body: n(() =>
+              (function (e, t = {}) {
+                return l({ name: "parse_standard_body", signal: t.signal }, async () => {
+                  let i = e.headers.get("content-disposition");
+                  if ("string" == typeof i) {
+                    let t =
+                        (function (e) {
+                          let t = e.match(/filename\*=(UTF-8'')?([^;]*)/i);
+                          if (t && "string" == typeof t[2]) return R(t[2]);
+                          let i = e.match(/filename="((?:\\"|[^"])*)"/i);
+                          if (i && "string" == typeof i[1]) return i[1].replace(/\\"/g, '"');
+                        })(i) ?? "blob",
+                      r = await e.blob();
+                    return new File([r], t, { type: r.type });
+                  }
+                  let r = e.headers.get("content-type");
+                  if (!r || r.startsWith("application/json")) return b(await e.text());
+                  if (r.startsWith("multipart/form-data")) return await e.formData();
+                  if (r.startsWith("application/x-www-form-urlencoded"))
+                    return new URLSearchParams(await e.text());
+                  if (r.startsWith("text/event-stream"))
+                    return (function (e, t = {}) {
+                      let i,
+                        r = e?.pipeThrough(new TextDecoderStream()).pipeThrough(new j()),
+                        n = r?.getReader(),
+                        a = !1;
+                      return new y(
+                        async () => {
+                          i ??= o("consume_event_iterator_stream");
+                          try {
+                            for (;;) {
+                              if (void 0 === n) return { done: !0, value: void 0 };
+                              let { done: e, value: t } = await c(i, () => n.read());
+                              if (e) {
+                                if (a) throw new s("Stream was cancelled");
+                                return { done: !0, value: void 0 };
+                              }
+                              switch (t.event) {
+                                case "message": {
+                                  let e = b(t.data);
+                                  return (
+                                    E(e) && (e = B(e, t)),
+                                    i?.addEvent("message"),
+                                    { done: !1, value: e }
+                                  );
+                                }
+                                case "error": {
+                                  let e = new U({ data: b(t.data) });
+                                  throw ((e = B(e, t)), i?.addEvent("error"), e);
+                                }
+                                case "done": {
+                                  let e = b(t.data);
+                                  return (
+                                    E(e) && (e = B(e, t)),
+                                    i?.addEvent("done"),
+                                    { done: !0, value: e }
+                                  );
+                                }
+                                default:
+                                  i?.addEvent("maybe_keepalive");
+                              }
+                            }
+                          } catch (e) {
+                            throw (e instanceof U || u(i, e, t), e);
+                          }
+                        },
+                        async (e) => {
+                          try {
+                            ("next" !== e && ((a = !0), i?.addEvent("cancelled")),
+                              await c(i, () => n?.cancel()));
+                          } catch (e) {
+                            throw (u(i, e, t), e);
+                          } finally {
+                            i?.end();
+                          }
+                        },
+                      );
+                    })(e.body, t);
+                  if (r.startsWith("text/plain")) return await e.text();
+                  let n = await e.blob();
+                  return new File([n], "blob", { type: n.type });
+                });
+              })(e, t),
+            ),
+            status: e.status,
+            get headers() {
+              let t = W(e.headers);
+              return (Object.defineProperty(this, "headers", { value: t, writable: !0 }), t);
+            },
+            set headers(value) {
+              Object.defineProperty(this, "headers", { value, writable: !0 });
+            },
+          };
+        })(
+          await v(
+            this.adapterInterceptors,
+            { ...t, request: a, path: i, input: r, init: { redirect: "manual" } },
+            ({ request: e, path: t, input: i, init: r, ...s }) => this.fetch(e, r, s, t, i),
+          ),
+          { signal: a.signal },
+        );
+      }
+    }
+    class es extends et {
+      constructor(e) {
+        super(new er(e), e);
+      }
+    }
+    e.s(["RPCLink", () => es], 74487);
+  },
+  80166,
+  (e) => {
+    "use strict";
+    var t = {
+        setTimeout: (e, t) => setTimeout(e, t),
+        clearTimeout: (e) => clearTimeout(e),
+        setInterval: (e, t) => setInterval(e, t),
+        clearInterval: (e) => clearInterval(e),
+      },
+      i = new (class {
+        #a = t;
+        #o = !1;
+        setTimeoutProvider(e) {
+          this.#a = e;
+        }
+        setTimeout(e, t) {
+          return this.#a.setTimeout(e, t);
+        }
+        clearTimeout(e) {
+          this.#a.clearTimeout(e);
+        }
+        setInterval(e, t) {
+          return this.#a.setInterval(e, t);
+        }
+        clearInterval(e) {
+          this.#a.clearInterval(e);
+        }
+      })();
+    function r(e) {
+      setTimeout(e, 0);
+    }
+    e.s(["systemSetTimeoutZero", () => r, "timeoutManager", () => i]);
+  },
+  19273,
+  (e) => {
+    "use strict";
+    var t = e.i(80166),
+      i = "u" < typeof window || "Deno" in globalThis;
+    function r() {}
+    function s(e, t) {
+      return "function" == typeof e ? e(t) : e;
+    }
+    function n(e) {
+      return "number" == typeof e && e >= 0 && e !== 1 / 0;
+    }
+    function a(e, t) {
+      return Math.max(e + (t || 0) - Date.now(), 0);
+    }
+    function o(e, t) {
+      return "function" == typeof e ? e(t) : e;
+    }
+    function u(e, t) {
+      return "function" == typeof e ? e(t) : e;
+    }
+    function l(e, t) {
+      let { type: i = "all", exact: r, fetchStatus: s, predicate: n, queryKey: a, stale: o } = e;
+      if (a) {
+        if (r) {
+          if (t.queryHash !== h(a, t.options)) return !1;
+        } else if (!p(t.queryKey, a)) return !1;
+      }
+      if ("all" !== i) {
+        let e = t.isActive();
+        if (("active" === i && !e) || ("inactive" === i && e)) return !1;
+      }
+      return (
+        ("boolean" != typeof o || t.isStale() === o) &&
+        (!s || s === t.state.fetchStatus) &&
+        (!n || !!n(t))
+      );
+    }
+    function c(e, t) {
+      let { exact: i, status: r, predicate: s, mutationKey: n } = e;
+      if (n) {
+        if (!t.options.mutationKey) return !1;
+        if (i) {
+          if (d(t.options.mutationKey) !== d(n)) return !1;
+        } else if (!p(t.options.mutationKey, n)) return !1;
+      }
+      return (!r || t.state.status === r) && (!s || !!s(t));
+    }
+    function h(e, t) {
+      return (t?.queryKeyHashFn || d)(e);
+    }
+    function d(e) {
+      return JSON.stringify(e, (e, t) =>
+        g(t)
+          ? Object.keys(t)
+              .sort()
+              .reduce((e, i) => ((e[i] = t[i]), e), {})
+          : t,
+      );
+    }
+    function p(e, t) {
+      return (
+        e === t ||
+        (typeof e == typeof t &&
+          !!e &&
+          !!t &&
+          "object" == typeof e &&
+          "object" == typeof t &&
+          Object.keys(t).every((i) => p(e[i], t[i])))
+      );
+    }
+    var f = Object.prototype.hasOwnProperty;
+    function y(e, t) {
+      if (!t || Object.keys(e).length !== Object.keys(t).length) return !1;
+      for (let i in e) if (e[i] !== t[i]) return !1;
+      return !0;
+    }
+    function m(e) {
+      return Array.isArray(e) && e.length === Object.keys(e).length;
+    }
+    function g(e) {
+      if (!v(e)) return !1;
+      let t = e.constructor;
+      if (void 0 === t) return !0;
+      let i = t.prototype;
+      return (
+        !!v(i) &&
+        !!i.hasOwnProperty("isPrototypeOf") &&
+        Object.getPrototypeOf(e) === Object.prototype
+      );
+    }
+    function v(e) {
+      return "[object Object]" === Object.prototype.toString.call(e);
+    }
+    function b(e) {
+      return new Promise((i) => {
+        t.timeoutManager.setTimeout(i, e);
+      });
+    }
+    function w(e, t, i) {
+      return "function" == typeof i.structuralSharing
+        ? i.structuralSharing(e, t)
+        : !1 !== i.structuralSharing
+          ? (function e(t, i, r = 0) {
+              if (t === i) return t;
+              if (r > 500) return i;
+              let s = m(t) && m(i);
+              if (!s && !(g(t) && g(i))) return i;
+              let n = (s ? t : Object.keys(t)).length,
+                a = s ? i : Object.keys(i),
+                o = a.length,
+                u = s ? Array(o) : {},
+                l = 0;
+              for (let c = 0; c < o; c++) {
+                let o = s ? c : a[c],
+                  h = t[o],
+                  d = i[o];
+                if (h === d) {
+                  ((u[o] = h), (s ? c < n : f.call(t, o)) && l++);
+                  continue;
+                }
+                if (null === h || null === d || "object" != typeof h || "object" != typeof d) {
+                  u[o] = d;
+                  continue;
+                }
+                let p = e(h, d, r + 1);
+                ((u[o] = p), p === h && l++);
+              }
+              return n === o && l === n ? t : u;
+            })(e, t)
+          : t;
+    }
+    function O(e, t, i = 0) {
+      let r = [...e, t];
+      return i && r.length > i ? r.slice(1) : r;
+    }
+    function S(e, t, i = 0) {
+      let r = [t, ...e];
+      return i && r.length > i ? r.slice(0, -1) : r;
+    }
+    var E = Symbol();
+    function C(e, t) {
+      return !e.queryFn && t?.initialPromise
+        ? () => t.initialPromise
+        : e.queryFn && e.queryFn !== E
+          ? e.queryFn
+          : () => Promise.reject(Error(`Missing queryFn: '${e.queryHash}'`));
+    }
+    function q(e, t) {
+      return "function" == typeof e ? e(...t) : !!e;
+    }
+    function x(e, t, i) {
+      let r,
+        s = !1;
+      return (
+        Object.defineProperty(e, "signal", {
+          enumerable: !0,
+          get: () => (
+            (r ??= t()),
+            s || ((s = !0), r.aborted ? i() : r.addEventListener("abort", i, { once: !0 })),
+            r
+          ),
+        }),
+        e
+      );
+    }
+    e.s([
+      "addConsumeAwareSignal",
+      () => x,
+      "addToEnd",
+      () => O,
+      "addToStart",
+      () => S,
+      "ensureQueryFn",
+      () => C,
+      "functionalUpdate",
+      () => s,
+      "hashKey",
+      () => d,
+      "hashQueryKeyByOptions",
+      () => h,
+      "isServer",
+      () => i,
+      "isValidTimeout",
+      () => n,
+      "matchMutation",
+      () => c,
+      "matchQuery",
+      () => l,
+      "noop",
+      () => r,
+      "partialMatchKey",
+      () => p,
+      "replaceData",
+      () => w,
+      "resolveEnabled",
+      () => u,
+      "resolveStaleTime",
+      () => o,
+      "shallowEqualObjects",
+      () => y,
+      "shouldThrowError",
+      () => q,
+      "skipToken",
+      () => E,
+      "sleep",
+      () => b,
+      "timeUntilStale",
+      () => a,
+    ]);
+  },
+  61682,
+  (e) => {
+    "use strict";
+    var t = e.i(30592),
+      i = e.i(19273);
+    function r(e, t = {}) {
+      return [
+        e,
+        {
+          ...(void 0 !== t.input ? { input: t.input } : {}),
+          ...(void 0 !== t.type ? { type: t.type } : {}),
+          ...(void 0 !== t.fnOptions ? { fnOptions: t.fnOptions } : {}),
+        },
+      ];
+    }
+    function s(e, t) {
+      return e.length <= t ? e : e.slice(e.length - t);
+    }
+    let n = Symbol("ORPC_OPERATION_CONTEXT");
+    e.s([
+      "createTanstackQueryUtils",
+      () =>
+        function e(a, o = {}) {
+          var u;
+          let l,
+            c = (0, t.toArray)(o.path),
+            h = { key: (e) => r(c, e) },
+            d =
+              ((u = { path: c, experimental_defaults: o.experimental_defaults }),
+              (l = {
+                call: a,
+                queryKey: (...[e = {}]) =>
+                  (e = { ...u.experimental_defaults?.queryKey, ...e }).queryKey ??
+                  r(u.path, { type: "query", input: e.input }),
+                queryOptions(...[e = {}]) {
+                  e = { ...u.experimental_defaults?.queryOptions, ...e };
+                  let t = l.queryKey(e);
+                  return {
+                    queryFn: ({ signal: r }) => {
+                      if (e.input === i.skipToken)
+                        throw Error("queryFn should not be called with skipToken used as input");
+                      return a(e.input, {
+                        signal: r,
+                        context: { [n]: { key: t, type: "query" }, ...e.context },
+                      });
+                    },
+                    ...(e.input === i.skipToken ? { enabled: !1 } : {}),
+                    ...e,
+                    queryKey: t,
+                  };
+                },
+                experimental_streamedKey: (...[e = {}]) =>
+                  (e = { ...u.experimental_defaults?.experimental_streamedKey, ...e }).queryKey ??
+                  r(u.path, { type: "streamed", input: e.input, fnOptions: e.queryFnOptions }),
+                experimental_streamedOptions(...[e = {}]) {
+                  e = { ...u.experimental_defaults?.experimental_streamedOptions, ...e };
+                  let r = l.experimental_streamedKey(e);
+                  return {
+                    queryFn: (function (
+                      e,
+                      { refetchMode: t = "reset", maxChunks: i = 1 / 0 } = {},
+                    ) {
+                      return async (r) => {
+                        let n = r.client.getQueryCache().find({ queryKey: r.queryKey, exact: !0 }),
+                          a = !!n && void 0 !== n.state.data;
+                        a &&
+                          ("reset" === t
+                            ? n.setState({
+                                status: "pending",
+                                data: void 0,
+                                error: null,
+                                fetchStatus: "fetching",
+                              })
+                            : r.client.setQueryData(r.queryKey, (e = []) => s(e, i)));
+                        let o = [],
+                          u = await e(r),
+                          l = !a || "replace" !== t;
+                        for await (let e of (r.client.setQueryData(r.queryKey, (e = []) => s(e, i)),
+                        u)) {
+                          if (r.signal.aborted) throw r.signal.reason;
+                          (o.push(e),
+                            (o = s(o, i)),
+                            l && r.client.setQueryData(r.queryKey, (t = []) => s([...t, e], i)));
+                        }
+                        l || r.client.setQueryData(r.queryKey, o);
+                        let c = r.client.getQueryData(r.queryKey);
+                        return c ? s(c, i) : o;
+                      };
+                    })(async ({ signal: s }) => {
+                      if (e.input === i.skipToken)
+                        throw Error("queryFn should not be called with skipToken used as input");
+                      let o = await a(e.input, {
+                        signal: s,
+                        context: { [n]: { key: r, type: "streamed" }, ...e.context },
+                      });
+                      if (!(0, t.isAsyncIteratorObject)(o))
+                        throw Error("streamedQuery requires an event iterator output");
+                      return o;
+                    }, e.queryFnOptions),
+                    ...(e.input === i.skipToken ? { enabled: !1 } : {}),
+                    ...e,
+                    queryKey: r,
+                  };
+                },
+                experimental_liveKey: (...[e = {}]) =>
+                  (e = { ...u.experimental_defaults?.experimental_liveKey, ...e }).queryKey ??
+                  r(u.path, { type: "live", input: e.input }),
+                experimental_liveOptions(...[e = {}]) {
+                  var r;
+                  e = { ...u.experimental_defaults?.experimental_liveOptions, ...e };
+                  let s = l.experimental_liveKey(e);
+                  return {
+                    queryFn:
+                      ((r = async ({ signal: r }) => {
+                        if (e.input === i.skipToken)
+                          throw Error("queryFn should not be called with skipToken used as input");
+                        let o = await a(e.input, {
+                          signal: r,
+                          context: { [n]: { key: s, type: "live" }, ...e.context },
+                        });
+                        if (!(0, t.isAsyncIteratorObject)(o))
+                          throw Error("liveQuery requires an event iterator output");
+                        return o;
+                      }),
+                      async (e) => {
+                        let i;
+                        for await (let t of await r(e)) {
+                          if (e.signal.aborted) throw e.signal.reason;
+                          ((i = { chunk: t }), e.client.setQueryData(e.queryKey, t));
+                        }
+                        if (!i)
+                          throw Error(
+                            `Live query for ${(0, t.stringifyJSON)(e.queryKey)} did not yield any data. Ensure the query function returns an AsyncIterable with at least one chunk.`,
+                          );
+                        return i.chunk;
+                      }),
+                    ...(e.input === i.skipToken ? { enabled: !1 } : {}),
+                    ...e,
+                    queryKey: s,
+                  };
+                },
+                infiniteKey: (e) =>
+                  (e = { ...u.experimental_defaults?.infiniteKey, ...e }).queryKey ??
+                  r(u.path, {
+                    type: "infinite",
+                    input: e.input === i.skipToken ? i.skipToken : e.input(e.initialPageParam),
+                  }),
+                infiniteOptions(e) {
+                  e = { ...u.experimental_defaults?.infiniteOptions, ...e };
+                  let t = l.infiniteKey(e);
+                  return {
+                    queryFn: ({ pageParam: r, signal: s }) => {
+                      if (e.input === i.skipToken)
+                        throw Error("queryFn should not be called with skipToken used as input");
+                      return a(e.input(r), {
+                        signal: s,
+                        context: { [n]: { key: t, type: "infinite" }, ...e.context },
+                      });
+                    },
+                    ...(e.input === i.skipToken ? { enabled: !1 } : {}),
+                    ...e,
+                    queryKey: t,
+                  };
+                },
+                mutationKey: (...[e = {}]) =>
+                  (e = { ...u.experimental_defaults?.mutationKey, ...e }).mutationKey ??
+                  r(u.path, { type: "mutation" }),
+                mutationOptions(...[e = {}]) {
+                  e = { ...u.experimental_defaults?.mutationOptions, ...e };
+                  let t = l.mutationKey(e);
+                  return {
+                    mutationFn: (i) =>
+                      a(i, { context: { [n]: { key: t, type: "mutation" }, ...e.context } }),
+                    ...e,
+                    mutationKey: t,
+                  };
+                },
+              }));
+          return new Proxy(
+            { ...h, ...d },
+            {
+              get(i, r) {
+                let s = Reflect.get(i, r);
+                if ("string" != typeof r) return s;
+                let n = e(a[r], {
+                  ...o,
+                  path: [...c, r],
+                  experimental_defaults: (0, t.get)(o.experimental_defaults, [r]),
+                });
+                return "function" != typeof s
+                  ? n
+                  : new Proxy(s, { get: (e, t) => Reflect.get(n, t) });
+              },
+            },
+          );
+        },
+    ]);
+  },
+  40143,
+  (e) => {
+    "use strict";
+    let t, i, r, s, n, a;
+    var o = e.i(80166).systemSetTimeoutZero,
+      u =
+        ((t = []),
+        (i = 0),
+        (r = (e) => {
+          e();
+        }),
+        (s = (e) => {
+          e();
+        }),
+        (n = o),
+        {
+          batch: (e) => {
+            let a;
+            i++;
+            try {
+              a = e();
+            } finally {
+              let e;
+              --i ||
+                ((e = t),
+                (t = []),
+                e.length &&
+                  n(() => {
+                    s(() => {
+                      e.forEach((e) => {
+                        r(e);
+                      });
+                    });
+                  }));
+            }
+            return a;
+          },
+          batchCalls:
+            (e) =>
+            (...t) => {
+              a(() => {
+                e(...t);
+              });
+            },
+          schedule: (a = (e) => {
+            i
+              ? t.push(e)
+              : n(() => {
+                  r(e);
+                });
+          }),
+          setNotifyFunction: (e) => {
+            r = e;
+          },
+          setBatchNotifyFunction: (e) => {
+            s = e;
+          },
+          setScheduler: (e) => {
+            n = e;
+          },
+        });
+    e.s(["notifyManager", () => u]);
+  },
+  15823,
+  (e) => {
+    "use strict";
+    var t = class {
+      constructor() {
+        ((this.listeners = new Set()), (this.subscribe = this.subscribe.bind(this)));
+      }
+      subscribe(e) {
+        return (
+          this.listeners.add(e),
+          this.onSubscribe(),
+          () => {
+            (this.listeners.delete(e), this.onUnsubscribe());
+          }
+        );
+      }
+      hasListeners() {
+        return this.listeners.size > 0;
+      }
+      onSubscribe() {}
+      onUnsubscribe() {}
+    };
+    e.s(["Subscribable", () => t]);
+  },
+  75555,
+  (e) => {
+    "use strict";
+    var t = e.i(15823),
+      i = e.i(19273),
+      r = new (class extends t.Subscribable {
+        #u;
+        #i;
+        #l;
+        constructor() {
+          (super(),
+            (this.#l = (e) => {
+              if (!i.isServer && window.addEventListener) {
+                let t = () => e();
+                return (
+                  window.addEventListener("visibilitychange", t, !1),
+                  () => {
+                    window.removeEventListener("visibilitychange", t);
+                  }
+                );
+              }
+            }));
+        }
+        onSubscribe() {
+          this.#i || this.setEventListener(this.#l);
+        }
+        onUnsubscribe() {
+          this.hasListeners() || (this.#i?.(), (this.#i = void 0));
+        }
+        setEventListener(e) {
+          ((this.#l = e),
+            this.#i?.(),
+            (this.#i = e((e) => {
+              "boolean" == typeof e ? this.setFocused(e) : this.onFocus();
+            })));
+        }
+        setFocused(e) {
+          this.#u !== e && ((this.#u = e), this.onFocus());
+        }
+        onFocus() {
+          let e = this.isFocused();
+          this.listeners.forEach((t) => {
+            t(e);
+          });
+        }
+        isFocused() {
+          return "boolean" == typeof this.#u
+            ? this.#u
+            : globalThis.document?.visibilityState !== "hidden";
+        }
+      })();
+    e.s(["focusManager", () => r]);
+  },
+  36553,
+  14448,
+  93803,
+  (e) => {
+    "use strict";
+    var t = e.i(75555),
+      i = e.i(15823),
+      r = e.i(19273),
+      s = new (class extends i.Subscribable {
+        #c = !0;
+        #i;
+        #l;
+        constructor() {
+          (super(),
+            (this.#l = (e) => {
+              if (!r.isServer && window.addEventListener) {
+                let t = () => e(!0),
+                  i = () => e(!1);
+                return (
+                  window.addEventListener("online", t, !1),
+                  window.addEventListener("offline", i, !1),
+                  () => {
+                    (window.removeEventListener("online", t),
+                      window.removeEventListener("offline", i));
+                  }
+                );
+              }
+            }));
+        }
+        onSubscribe() {
+          this.#i || this.setEventListener(this.#l);
+        }
+        onUnsubscribe() {
+          this.hasListeners() || (this.#i?.(), (this.#i = void 0));
+        }
+        setEventListener(e) {
+          ((this.#l = e), this.#i?.(), (this.#i = e(this.setOnline.bind(this))));
+        }
+        setOnline(e) {
+          this.#c !== e &&
+            ((this.#c = e),
+            this.listeners.forEach((t) => {
+              t(e);
+            }));
+        }
+        isOnline() {
+          return this.#c;
+        }
+      })();
+    function n() {
+      let e,
+        t,
+        i = new Promise((i, r) => {
+          ((e = i), (t = r));
+        });
+      function r(e) {
+        (Object.assign(i, e), delete i.resolve, delete i.reject);
+      }
+      return (
+        (i.status = "pending"),
+        i.catch(() => {}),
+        (i.resolve = (t) => {
+          (r({ status: "fulfilled", value: t }), e(t));
+        }),
+        (i.reject = (e) => {
+          (r({ status: "rejected", reason: e }), t(e));
+        }),
+        i
+      );
+    }
+    function a(e) {
+      return Math.min(1e3 * 2 ** e, 3e4);
+    }
+    function o(e) {
+      return (e ?? "online") !== "online" || s.isOnline();
+    }
+    (e.s(["onlineManager", () => s], 14448), e.s(["pendingThenable", () => n], 93803));
+    var u = class extends Error {
+      constructor(e) {
+        (super("CancelledError"), (this.revert = e?.revert), (this.silent = e?.silent));
+      }
+    };
+    function l(e) {
+      let i,
+        l = !1,
+        c = 0,
+        h = n(),
+        d = () =>
+          t.focusManager.isFocused() && ("always" === e.networkMode || s.isOnline()) && e.canRun(),
+        p = () => o(e.networkMode) && e.canRun(),
+        f = (e) => {
+          "pending" === h.status && (i?.(), h.resolve(e));
+        },
+        y = (e) => {
+          "pending" === h.status && (i?.(), h.reject(e));
+        },
+        m = () =>
+          new Promise((t) => {
+            ((i = (e) => {
+              ("pending" !== h.status || d()) && t(e);
+            }),
+              e.onPause?.());
+          }).then(() => {
+            ((i = void 0), "pending" === h.status && e.onContinue?.());
+          }),
+        g = () => {
+          let t;
+          if ("pending" !== h.status) return;
+          let i = 0 === c ? e.initialPromise : void 0;
+          try {
+            t = i ?? e.fn();
+          } catch (e) {
+            t = Promise.reject(e);
+          }
+          Promise.resolve(t)
+            .then(f)
+            .catch((t) => {
+              if ("pending" !== h.status) return;
+              let i = e.retry ?? 3 * !r.isServer,
+                s = e.retryDelay ?? a,
+                n = "function" == typeof s ? s(c, t) : s,
+                o =
+                  !0 === i ||
+                  ("number" == typeof i && c < i) ||
+                  ("function" == typeof i && i(c, t));
+              l || !o
+                ? y(t)
+                : (c++,
+                  e.onFail?.(c, t),
+                  (0, r.sleep)(n)
+                    .then(() => (d() ? void 0 : m()))
+                    .then(() => {
+                      l ? y(t) : g();
+                    }));
+            });
+        };
+      return {
+        promise: h,
+        status: () => h.status,
+        cancel: (t) => {
+          if ("pending" === h.status) {
+            let i = new u(t);
+            (y(i), e.onCancel?.(i));
+          }
+        },
+        continue: () => (i?.(), h),
+        cancelRetry: () => {
+          l = !0;
+        },
+        continueRetry: () => {
+          l = !1;
+        },
+        canStart: p,
+        start: () => (p() ? g() : m().then(g), h),
+      };
+    }
+    e.s(["CancelledError", () => u, "canFetch", () => o, "createRetryer", () => l], 36553);
+  },
+  88587,
+  (e) => {
+    "use strict";
+    var t = e.i(80166),
+      i = e.i(19273),
+      r = class {
+        #h;
+        destroy() {
+          this.clearGcTimeout();
+        }
+        scheduleGc() {
+          (this.clearGcTimeout(),
+            (0, i.isValidTimeout)(this.gcTime) &&
+              (this.#h = t.timeoutManager.setTimeout(() => {
+                this.optionalRemove();
+              }, this.gcTime)));
+        }
+        updateGcTime(e) {
+          this.gcTime = Math.max(this.gcTime || 0, e ?? (i.isServer ? 1 / 0 : 3e5));
+        }
+        clearGcTimeout() {
+          this.#h && (t.timeoutManager.clearTimeout(this.#h), (this.#h = void 0));
+        }
+      };
+    e.s(["Removable", () => r]);
+  },
+  86491,
+  (e) => {
+    "use strict";
+    var t = e.i(19273),
+      i = e.i(40143),
+      r = e.i(36553),
+      s = e.i(88587),
+      n = class extends s.Removable {
+        #d;
+        #p;
+        #f;
+        #y;
+        #m;
+        #g;
+        #v;
+        constructor(e) {
+          (super(),
+            (this.#v = !1),
+            (this.#g = e.defaultOptions),
+            this.setOptions(e.options),
+            (this.observers = []),
+            (this.#y = e.client),
+            (this.#f = this.#y.getQueryCache()),
+            (this.queryKey = e.queryKey),
+            (this.queryHash = e.queryHash),
+            (this.#d = u(this.options)),
+            (this.state = e.state ?? this.#d),
+            this.scheduleGc());
+        }
+        get meta() {
+          return this.options.meta;
+        }
+        get promise() {
+          return this.#m?.promise;
+        }
+        setOptions(e) {
+          if (
+            ((this.options = { ...this.#g, ...e }),
+            this.updateGcTime(this.options.gcTime),
+            this.state && void 0 === this.state.data)
+          ) {
+            let e = u(this.options);
+            void 0 !== e.data && (this.setState(o(e.data, e.dataUpdatedAt)), (this.#d = e));
+          }
+        }
+        optionalRemove() {
+          this.observers.length || "idle" !== this.state.fetchStatus || this.#f.remove(this);
+        }
+        setData(e, i) {
+          let r = (0, t.replaceData)(this.state.data, e, this.options);
+          return (
+            this.#b({ data: r, type: "success", dataUpdatedAt: i?.updatedAt, manual: i?.manual }), r
+          );
+        }
+        setState(e, t) {
+          this.#b({ type: "setState", state: e, setStateOptions: t });
+        }
+        cancel(e) {
+          let i = this.#m?.promise;
+          return (this.#m?.cancel(e), i ? i.then(t.noop).catch(t.noop) : Promise.resolve());
+        }
+        destroy() {
+          (super.destroy(), this.cancel({ silent: !0 }));
+        }
+        reset() {
+          (this.destroy(), this.setState(this.#d));
+        }
+        isActive() {
+          return this.observers.some((e) => !1 !== (0, t.resolveEnabled)(e.options.enabled, this));
+        }
+        isDisabled() {
+          return this.getObserversCount() > 0
+            ? !this.isActive()
+            : this.options.queryFn === t.skipToken ||
+                this.state.dataUpdateCount + this.state.errorUpdateCount === 0;
+        }
+        isStatic() {
+          return (
+            this.getObserversCount() > 0 &&
+            this.observers.some(
+              (e) => "static" === (0, t.resolveStaleTime)(e.options.staleTime, this),
+            )
+          );
+        }
+        isStale() {
+          return this.getObserversCount() > 0
+            ? this.observers.some((e) => e.getCurrentResult().isStale)
+            : void 0 === this.state.data || this.state.isInvalidated;
+        }
+        isStaleByTime(e = 0) {
+          return (
+            void 0 === this.state.data ||
+            ("static" !== e &&
+              (!!this.state.isInvalidated || !(0, t.timeUntilStale)(this.state.dataUpdatedAt, e)))
+          );
+        }
+        onFocus() {
+          let e = this.observers.find((e) => e.shouldFetchOnWindowFocus());
+          (e?.refetch({ cancelRefetch: !1 }), this.#m?.continue());
+        }
+        onOnline() {
+          let e = this.observers.find((e) => e.shouldFetchOnReconnect());
+          (e?.refetch({ cancelRefetch: !1 }), this.#m?.continue());
+        }
+        addObserver(e) {
+          this.observers.includes(e) ||
+            (this.observers.push(e),
+            this.clearGcTimeout(),
+            this.#f.notify({ type: "observerAdded", query: this, observer: e }));
+        }
+        removeObserver(e) {
+          this.observers.includes(e) &&
+            ((this.observers = this.observers.filter((t) => t !== e)),
+            this.observers.length ||
+              (this.#m && (this.#v ? this.#m.cancel({ revert: !0 }) : this.#m.cancelRetry()),
+              this.scheduleGc()),
+            this.#f.notify({ type: "observerRemoved", query: this, observer: e }));
+        }
+        getObserversCount() {
+          return this.observers.length;
+        }
+        invalidate() {
+          this.state.isInvalidated || this.#b({ type: "invalidate" });
+        }
+        async fetch(e, i) {
+          let s;
+          if ("idle" !== this.state.fetchStatus && this.#m?.status() !== "rejected") {
+            if (void 0 !== this.state.data && i?.cancelRefetch) this.cancel({ silent: !0 });
+            else if (this.#m) return (this.#m.continueRetry(), this.#m.promise);
+          }
+          if ((e && this.setOptions(e), !this.options.queryFn)) {
+            let e = this.observers.find((e) => e.options.queryFn);
+            e && this.setOptions(e.options);
+          }
+          let n = new AbortController(),
+            a = (e) => {
+              Object.defineProperty(e, "signal", {
+                enumerable: !0,
+                get: () => ((this.#v = !0), n.signal),
+              });
+            },
+            o = () => {
+              let e,
+                r = (0, t.ensureQueryFn)(this.options, i),
+                s = (a((e = { client: this.#y, queryKey: this.queryKey, meta: this.meta })), e);
+              return ((this.#v = !1), this.options.persister)
+                ? this.options.persister(r, s, this)
+                : r(s);
+            },
+            u =
+              (a(
+                (s = {
+                  fetchOptions: i,
+                  options: this.options,
+                  queryKey: this.queryKey,
+                  client: this.#y,
+                  state: this.state,
+                  fetchFn: o,
+                }),
+              ),
+              s);
+          (this.options.behavior?.onFetch(u, this),
+            (this.#p = this.state),
+            ("idle" === this.state.fetchStatus || this.state.fetchMeta !== u.fetchOptions?.meta) &&
+              this.#b({ type: "fetch", meta: u.fetchOptions?.meta }),
+            (this.#m = (0, r.createRetryer)({
+              initialPromise: i?.initialPromise,
+              fn: u.fetchFn,
+              onCancel: (e) => {
+                (e instanceof r.CancelledError &&
+                  e.revert &&
+                  this.setState({ ...this.#p, fetchStatus: "idle" }),
+                  n.abort());
+              },
+              onFail: (e, t) => {
+                this.#b({ type: "failed", failureCount: e, error: t });
+              },
+              onPause: () => {
+                this.#b({ type: "pause" });
+              },
+              onContinue: () => {
+                this.#b({ type: "continue" });
+              },
+              retry: u.options.retry,
+              retryDelay: u.options.retryDelay,
+              networkMode: u.options.networkMode,
+              canRun: () => !0,
+            })));
+          try {
+            let e = await this.#m.start();
+            if (void 0 === e) throw Error(`${this.queryHash} data is undefined`);
+            return (
+              this.setData(e),
+              this.#f.config.onSuccess?.(e, this),
+              this.#f.config.onSettled?.(e, this.state.error, this),
+              e
+            );
+          } catch (e) {
+            if (e instanceof r.CancelledError) {
+              if (e.silent) return this.#m.promise;
+              else if (e.revert) {
+                if (void 0 === this.state.data) throw e;
+                return this.state.data;
+              }
+            }
+            throw (
+              this.#b({ type: "error", error: e }),
+              this.#f.config.onError?.(e, this),
+              this.#f.config.onSettled?.(this.state.data, e, this),
+              e
+            );
+          } finally {
+            this.scheduleGc();
+          }
+        }
+        #b(e) {
+          let t = (t) => {
+            switch (e.type) {
+              case "failed":
+                return { ...t, fetchFailureCount: e.failureCount, fetchFailureReason: e.error };
+              case "pause":
+                return { ...t, fetchStatus: "paused" };
+              case "continue":
+                return { ...t, fetchStatus: "fetching" };
+              case "fetch":
+                return { ...t, ...a(t.data, this.options), fetchMeta: e.meta ?? null };
+              case "success":
+                let i = {
+                  ...t,
+                  ...o(e.data, e.dataUpdatedAt),
+                  dataUpdateCount: t.dataUpdateCount + 1,
+                  ...(!e.manual && {
+                    fetchStatus: "idle",
+                    fetchFailureCount: 0,
+                    fetchFailureReason: null,
+                  }),
+                };
+                return ((this.#p = e.manual ? i : void 0), i);
+              case "error":
+                let r = e.error;
+                return {
+                  ...t,
+                  error: r,
+                  errorUpdateCount: t.errorUpdateCount + 1,
+                  errorUpdatedAt: Date.now(),
+                  fetchFailureCount: t.fetchFailureCount + 1,
+                  fetchFailureReason: r,
+                  fetchStatus: "idle",
+                  status: "error",
+                  isInvalidated: !0,
+                };
+              case "invalidate":
+                return { ...t, isInvalidated: !0 };
+              case "setState":
+                return { ...t, ...e.state };
+            }
+          };
+          ((this.state = t(this.state)),
+            i.notifyManager.batch(() => {
+              (this.observers.forEach((e) => {
+                e.onQueryUpdate();
+              }),
+                this.#f.notify({ query: this, type: "updated", action: e }));
+            }));
+        }
+      };
+    function a(e, t) {
+      return {
+        fetchFailureCount: 0,
+        fetchFailureReason: null,
+        fetchStatus: (0, r.canFetch)(t.networkMode) ? "fetching" : "paused",
+        ...(void 0 === e && { error: null, status: "pending" }),
+      };
+    }
+    function o(e, t) {
+      return {
+        data: e,
+        dataUpdatedAt: t ?? Date.now(),
+        error: null,
+        isInvalidated: !1,
+        status: "success",
+      };
+    }
+    function u(e) {
+      let t = "function" == typeof e.initialData ? e.initialData() : e.initialData,
+        i = void 0 !== t,
+        r = i
+          ? "function" == typeof e.initialDataUpdatedAt
+            ? e.initialDataUpdatedAt()
+            : e.initialDataUpdatedAt
+          : 0;
+      return {
+        data: t,
+        dataUpdateCount: 0,
+        dataUpdatedAt: i ? (r ?? Date.now()) : 0,
+        error: null,
+        errorUpdateCount: 0,
+        errorUpdatedAt: 0,
+        fetchFailureCount: 0,
+        fetchFailureReason: null,
+        fetchMeta: null,
+        isInvalidated: !1,
+        status: i ? "success" : "pending",
+        fetchStatus: "idle",
+      };
+    }
+    e.s(["Query", () => n, "fetchState", () => a]);
+  },
+  58345,
+  (e) => {
+    "use strict";
+    var t = e.i(19273),
+      i = e.i(86491),
+      r = e.i(40143),
+      s = e.i(15823),
+      n = class extends s.Subscribable {
+        constructor(e = {}) {
+          (super(), (this.config = e), (this.#w = new Map()));
+        }
+        #w;
+        build(e, r, s) {
+          let n = r.queryKey,
+            a = r.queryHash ?? (0, t.hashQueryKeyByOptions)(n, r),
+            o = this.get(a);
+          return (
+            o ||
+              ((o = new i.Query({
+                client: e,
+                queryKey: n,
+                queryHash: a,
+                options: e.defaultQueryOptions(r),
+                state: s,
+                defaultOptions: e.getQueryDefaults(n),
+              })),
+              this.add(o)),
+            o
+          );
+        }
+        add(e) {
+          this.#w.has(e.queryHash) ||
+            (this.#w.set(e.queryHash, e), this.notify({ type: "added", query: e }));
+        }
+        remove(e) {
+          let t = this.#w.get(e.queryHash);
+          t &&
+            (e.destroy(),
+            t === e && this.#w.delete(e.queryHash),
+            this.notify({ type: "removed", query: e }));
+        }
+        clear() {
+          r.notifyManager.batch(() => {
+            this.getAll().forEach((e) => {
+              this.remove(e);
+            });
+          });
+        }
+        get(e) {
+          return this.#w.get(e);
+        }
+        getAll() {
+          return [...this.#w.values()];
+        }
+        find(e) {
+          let i = { exact: !0, ...e };
+          return this.getAll().find((e) => (0, t.matchQuery)(i, e));
+        }
+        findAll(e = {}) {
+          let i = this.getAll();
+          return Object.keys(e).length > 0 ? i.filter((i) => (0, t.matchQuery)(e, i)) : i;
+        }
+        notify(e) {
+          r.notifyManager.batch(() => {
+            this.listeners.forEach((t) => {
+              t(e);
+            });
+          });
+        }
+        onFocus() {
+          r.notifyManager.batch(() => {
+            this.getAll().forEach((e) => {
+              e.onFocus();
+            });
+          });
+        }
+        onOnline() {
+          r.notifyManager.batch(() => {
+            this.getAll().forEach((e) => {
+              e.onOnline();
+            });
+          });
+        }
+      };
+    e.s(["QueryCache", () => n]);
+  },
+  14272,
+  (e) => {
+    "use strict";
+    var t = e.i(40143),
+      i = e.i(88587),
+      r = e.i(36553),
+      s = class extends i.Removable {
+        #y;
+        #O;
+        #S;
+        #m;
+        constructor(e) {
+          (super(),
+            (this.#y = e.client),
+            (this.mutationId = e.mutationId),
+            (this.#S = e.mutationCache),
+            (this.#O = []),
+            (this.state = e.state || n()),
+            this.setOptions(e.options),
+            this.scheduleGc());
+        }
+        setOptions(e) {
+          ((this.options = e), this.updateGcTime(this.options.gcTime));
+        }
+        get meta() {
+          return this.options.meta;
+        }
+        addObserver(e) {
+          this.#O.includes(e) ||
+            (this.#O.push(e),
+            this.clearGcTimeout(),
+            this.#S.notify({ type: "observerAdded", mutation: this, observer: e }));
+        }
+        removeObserver(e) {
+          ((this.#O = this.#O.filter((t) => t !== e)),
+            this.scheduleGc(),
+            this.#S.notify({ type: "observerRemoved", mutation: this, observer: e }));
+        }
+        optionalRemove() {
+          this.#O.length ||
+            ("pending" === this.state.status ? this.scheduleGc() : this.#S.remove(this));
+        }
+        continue() {
+          return this.#m?.continue() ?? this.execute(this.state.variables);
+        }
+        async execute(e) {
+          let t = () => {
+              this.#b({ type: "continue" });
+            },
+            i = { client: this.#y, meta: this.options.meta, mutationKey: this.options.mutationKey };
+          this.#m = (0, r.createRetryer)({
+            fn: () =>
+              this.options.mutationFn
+                ? this.options.mutationFn(e, i)
+                : Promise.reject(Error("No mutationFn found")),
+            onFail: (e, t) => {
+              this.#b({ type: "failed", failureCount: e, error: t });
+            },
+            onPause: () => {
+              this.#b({ type: "pause" });
+            },
+            onContinue: t,
+            retry: this.options.retry ?? 0,
+            retryDelay: this.options.retryDelay,
+            networkMode: this.options.networkMode,
+            canRun: () => this.#S.canRun(this),
+          });
+          let s = "pending" === this.state.status,
+            n = !this.#m.canStart();
+          try {
+            if (s) t();
+            else {
+              (this.#b({ type: "pending", variables: e, isPaused: n }),
+                this.#S.config.onMutate && (await this.#S.config.onMutate(e, this, i)));
+              let t = await this.options.onMutate?.(e, i);
+              t !== this.state.context &&
+                this.#b({ type: "pending", context: t, variables: e, isPaused: n });
+            }
+            let r = await this.#m.start();
+            return (
+              await this.#S.config.onSuccess?.(r, e, this.state.context, this, i),
+              await this.options.onSuccess?.(r, e, this.state.context, i),
+              await this.#S.config.onSettled?.(
+                r,
+                null,
+                this.state.variables,
+                this.state.context,
+                this,
+                i,
+              ),
+              await this.options.onSettled?.(r, null, e, this.state.context, i),
+              this.#b({ type: "success", data: r }),
+              r
+            );
+          } catch (t) {
+            try {
+              await this.#S.config.onError?.(t, e, this.state.context, this, i);
+            } catch (e) {
+              Promise.reject(e);
+            }
+            try {
+              await this.options.onError?.(t, e, this.state.context, i);
+            } catch (e) {
+              Promise.reject(e);
+            }
+            try {
+              await this.#S.config.onSettled?.(
+                void 0,
+                t,
+                this.state.variables,
+                this.state.context,
+                this,
+                i,
+              );
+            } catch (e) {
+              Promise.reject(e);
+            }
+            try {
+              await this.options.onSettled?.(void 0, t, e, this.state.context, i);
+            } catch (e) {
+              Promise.reject(e);
+            }
+            throw (this.#b({ type: "error", error: t }), t);
+          } finally {
+            this.#S.runNext(this);
+          }
+        }
+        #b(e) {
+          ((this.state = ((t) => {
+            switch (e.type) {
+              case "failed":
+                return { ...t, failureCount: e.failureCount, failureReason: e.error };
+              case "pause":
+                return { ...t, isPaused: !0 };
+              case "continue":
+                return { ...t, isPaused: !1 };
+              case "pending":
+                return {
+                  ...t,
+                  context: e.context,
+                  data: void 0,
+                  failureCount: 0,
+                  failureReason: null,
+                  error: null,
+                  isPaused: e.isPaused,
+                  status: "pending",
+                  variables: e.variables,
+                  submittedAt: Date.now(),
+                };
+              case "success":
+                return {
+                  ...t,
+                  data: e.data,
+                  failureCount: 0,
+                  failureReason: null,
+                  error: null,
+                  status: "success",
+                  isPaused: !1,
+                };
+              case "error":
+                return {
+                  ...t,
+                  data: void 0,
+                  error: e.error,
+                  failureCount: t.failureCount + 1,
+                  failureReason: e.error,
+                  isPaused: !1,
+                  status: "error",
+                };
+            }
+          })(this.state)),
+            t.notifyManager.batch(() => {
+              (this.#O.forEach((t) => {
+                t.onMutationUpdate(e);
+              }),
+                this.#S.notify({ mutation: this, type: "updated", action: e }));
+            }));
+        }
+      };
+    function n() {
+      return {
+        context: void 0,
+        data: void 0,
+        error: null,
+        failureCount: 0,
+        failureReason: null,
+        isPaused: !1,
+        status: "idle",
+        variables: void 0,
+        submittedAt: 0,
+      };
+    }
+    e.s(["Mutation", () => s, "getDefaultState", () => n]);
+  },
+  26121,
+  (e) => {
+    "use strict";
+    var t = e.i(97357),
+      i = e.i(74487),
+      r = e.i(61682),
+      s = e.i(58345),
+      n = e.i(19273),
+      a = e.i(40143),
+      o = e.i(14272),
+      u = e.i(15823),
+      l = class extends u.Subscribable {
+        constructor(e = {}) {
+          (super(), (this.config = e), (this.#E = new Set()), (this.#C = new Map()), (this.#q = 0));
+        }
+        #E;
+        #C;
+        #q;
+        build(e, t, i) {
+          let r = new o.Mutation({
+            client: e,
+            mutationCache: this,
+            mutationId: ++this.#q,
+            options: e.defaultMutationOptions(t),
+            state: i,
+          });
+          return (this.add(r), r);
+        }
+        add(e) {
+          this.#E.add(e);
+          let t = c(e);
+          if ("string" == typeof t) {
+            let i = this.#C.get(t);
+            i ? i.push(e) : this.#C.set(t, [e]);
+          }
+          this.notify({ type: "added", mutation: e });
+        }
+        remove(e) {
+          if (this.#E.delete(e)) {
+            let t = c(e);
+            if ("string" == typeof t) {
+              let i = this.#C.get(t);
+              if (i)
+                if (i.length > 1) {
+                  let t = i.indexOf(e);
+                  -1 !== t && i.splice(t, 1);
+                } else i[0] === e && this.#C.delete(t);
+            }
+          }
+          this.notify({ type: "removed", mutation: e });
+        }
+        canRun(e) {
+          let t = c(e);
+          if ("string" != typeof t) return !0;
+          {
+            let i = this.#C.get(t),
+              r = i?.find((e) => "pending" === e.state.status);
+            return !r || r === e;
+          }
+        }
+        runNext(e) {
+          let t = c(e);
+          if ("string" != typeof t) return Promise.resolve();
+          {
+            let i = this.#C.get(t)?.find((t) => t !== e && t.state.isPaused);
+            return i?.continue() ?? Promise.resolve();
+          }
+        }
+        clear() {
+          a.notifyManager.batch(() => {
+            (this.#E.forEach((e) => {
+              this.notify({ type: "removed", mutation: e });
+            }),
+              this.#E.clear(),
+              this.#C.clear());
+          });
+        }
+        getAll() {
+          return Array.from(this.#E);
+        }
+        find(e) {
+          let t = { exact: !0, ...e };
+          return this.getAll().find((e) => (0, n.matchMutation)(t, e));
+        }
+        findAll(e = {}) {
+          return this.getAll().filter((t) => (0, n.matchMutation)(e, t));
+        }
+        notify(e) {
+          a.notifyManager.batch(() => {
+            this.listeners.forEach((t) => {
+              t(e);
+            });
+          });
+        }
+        resumePausedMutations() {
+          let e = this.getAll().filter((e) => e.state.isPaused);
+          return a.notifyManager.batch(() => Promise.all(e.map((e) => e.continue().catch(n.noop))));
+        }
+      };
+    function c(e) {
+      return e.options.scope?.id;
+    }
+    var h = e.i(75555),
+      d = e.i(14448);
+    function p(e) {
+      return {
+        onFetch: (t, i) => {
+          let r = t.options,
+            s = t.fetchOptions?.meta?.fetchMore?.direction,
+            a = t.state.data?.pages || [],
+            o = t.state.data?.pageParams || [],
+            u = { pages: [], pageParams: [] },
+            l = 0,
+            c = async () => {
+              let i = !1,
+                c = (0, n.ensureQueryFn)(t.options, t.fetchOptions),
+                h = async (e, r, s) => {
+                  let a;
+                  if (i) return Promise.reject();
+                  if (null == r && e.pages.length) return Promise.resolve(e);
+                  let o =
+                      ((a = {
+                        client: t.client,
+                        queryKey: t.queryKey,
+                        pageParam: r,
+                        direction: s ? "backward" : "forward",
+                        meta: t.options.meta,
+                      }),
+                      (0, n.addConsumeAwareSignal)(
+                        a,
+                        () => t.signal,
+                        () => (i = !0),
+                      ),
+                      a),
+                    u = await c(o),
+                    { maxPages: l } = t.options,
+                    h = s ? n.addToStart : n.addToEnd;
+                  return { pages: h(e.pages, u, l), pageParams: h(e.pageParams, r, l) };
+                };
+              if (s && a.length) {
+                let e = "backward" === s,
+                  t = { pages: a, pageParams: o },
+                  i = (
+                    e
+                      ? function (e, { pages: t, pageParams: i }) {
+                          return t.length > 0 ? e.getPreviousPageParam?.(t[0], t, i[0], i) : void 0;
+                        }
+                      : f
+                  )(r, t);
+                u = await h(t, i, e);
+              } else {
+                let t = e ?? a.length;
+                do {
+                  let e = 0 === l ? (o[0] ?? r.initialPageParam) : f(r, u);
+                  if (l > 0 && null == e) break;
+                  ((u = await h(u, e)), l++);
+                } while (l < t);
+              }
+              return u;
+            };
+          t.options.persister
+            ? (t.fetchFn = () =>
+                t.options.persister?.(
+                  c,
+                  {
+                    client: t.client,
+                    queryKey: t.queryKey,
+                    meta: t.options.meta,
+                    signal: t.signal,
+                  },
+                  i,
+                ))
+            : (t.fetchFn = c);
+        },
+      };
+    }
+    function f(e, { pages: t, pageParams: i }) {
+      let r = t.length - 1;
+      return t.length > 0 ? e.getNextPageParam(t[r], t, i[r], i) : void 0;
+    }
+    var y = class {
+        #x;
+        #S;
+        #g;
+        #T;
+        #R;
+        #A;
+        #P;
+        #I;
+        constructor(e = {}) {
+          ((this.#x = e.queryCache || new s.QueryCache()),
+            (this.#S = e.mutationCache || new l()),
+            (this.#g = e.defaultOptions || {}),
+            (this.#T = new Map()),
+            (this.#R = new Map()),
+            (this.#A = 0));
+        }
+        mount() {
+          (this.#A++,
+            1 === this.#A &&
+              ((this.#P = h.focusManager.subscribe(async (e) => {
+                e && (await this.resumePausedMutations(), this.#x.onFocus());
+              })),
+              (this.#I = d.onlineManager.subscribe(async (e) => {
+                e && (await this.resumePausedMutations(), this.#x.onOnline());
+              }))));
+        }
+        unmount() {
+          (this.#A--,
+            0 === this.#A && (this.#P?.(), (this.#P = void 0), this.#I?.(), (this.#I = void 0)));
+        }
+        isFetching(e) {
+          return this.#x.findAll({ ...e, fetchStatus: "fetching" }).length;
+        }
+        isMutating(e) {
+          return this.#S.findAll({ ...e, status: "pending" }).length;
+        }
+        getQueryData(e) {
+          let t = this.defaultQueryOptions({ queryKey: e });
+          return this.#x.get(t.queryHash)?.state.data;
+        }
+        ensureQueryData(e) {
+          let t = this.defaultQueryOptions(e),
+            i = this.#x.build(this, t),
+            r = i.state.data;
+          return void 0 === r
+            ? this.fetchQuery(e)
+            : (e.revalidateIfStale &&
+                i.isStaleByTime((0, n.resolveStaleTime)(t.staleTime, i)) &&
+                this.prefetchQuery(t),
+              Promise.resolve(r));
+        }
+        getQueriesData(e) {
+          return this.#x.findAll(e).map(({ queryKey: e, state: t }) => [e, t.data]);
+        }
+        setQueryData(e, t, i) {
+          let r = this.defaultQueryOptions({ queryKey: e }),
+            s = this.#x.get(r.queryHash),
+            a = s?.state.data,
+            o = (0, n.functionalUpdate)(t, a);
+          if (void 0 !== o) return this.#x.build(this, r).setData(o, { ...i, manual: !0 });
+        }
+        setQueriesData(e, t, i) {
+          return a.notifyManager.batch(() =>
+            this.#x.findAll(e).map(({ queryKey: e }) => [e, this.setQueryData(e, t, i)]),
+          );
+        }
+        getQueryState(e) {
+          let t = this.defaultQueryOptions({ queryKey: e });
+          return this.#x.get(t.queryHash)?.state;
+        }
+        removeQueries(e) {
+          let t = this.#x;
+          a.notifyManager.batch(() => {
+            t.findAll(e).forEach((e) => {
+              t.remove(e);
+            });
+          });
+        }
+        resetQueries(e, t) {
+          let i = this.#x;
+          return a.notifyManager.batch(
+            () => (
+              i.findAll(e).forEach((e) => {
+                e.reset();
+              }),
+              this.refetchQueries({ type: "active", ...e }, t)
+            ),
+          );
+        }
+        cancelQueries(e, t = {}) {
+          let i = { revert: !0, ...t };
+          return Promise.all(
+            a.notifyManager.batch(() => this.#x.findAll(e).map((e) => e.cancel(i))),
+          )
+            .then(n.noop)
+            .catch(n.noop);
+        }
+        invalidateQueries(e, t = {}) {
+          return a.notifyManager.batch(() =>
+            (this.#x.findAll(e).forEach((e) => {
+              e.invalidate();
+            }),
+            e?.refetchType === "none")
+              ? Promise.resolve()
+              : this.refetchQueries({ ...e, type: e?.refetchType ?? e?.type ?? "active" }, t),
+          );
+        }
+        refetchQueries(e, t = {}) {
+          let i = { ...t, cancelRefetch: t.cancelRefetch ?? !0 };
+          return Promise.all(
+            a.notifyManager.batch(() =>
+              this.#x
+                .findAll(e)
+                .filter((e) => !e.isDisabled() && !e.isStatic())
+                .map((e) => {
+                  let t = e.fetch(void 0, i);
+                  return (
+                    i.throwOnError || (t = t.catch(n.noop)),
+                    "paused" === e.state.fetchStatus ? Promise.resolve() : t
+                  );
+                }),
+            ),
+          ).then(n.noop);
+        }
+        fetchQuery(e) {
+          let t = this.defaultQueryOptions(e);
+          void 0 === t.retry && (t.retry = !1);
+          let i = this.#x.build(this, t);
+          return i.isStaleByTime((0, n.resolveStaleTime)(t.staleTime, i))
+            ? i.fetch(t)
+            : Promise.resolve(i.state.data);
+        }
+        prefetchQuery(e) {
+          return this.fetchQuery(e).then(n.noop).catch(n.noop);
+        }
+        fetchInfiniteQuery(e) {
+          return ((e.behavior = p(e.pages)), this.fetchQuery(e));
+        }
+        prefetchInfiniteQuery(e) {
+          return this.fetchInfiniteQuery(e).then(n.noop).catch(n.noop);
+        }
+        ensureInfiniteQueryData(e) {
+          return ((e.behavior = p(e.pages)), this.ensureQueryData(e));
+        }
+        resumePausedMutations() {
+          return d.onlineManager.isOnline() ? this.#S.resumePausedMutations() : Promise.resolve();
+        }
+        getQueryCache() {
+          return this.#x;
+        }
+        getMutationCache() {
+          return this.#S;
+        }
+        getDefaultOptions() {
+          return this.#g;
+        }
+        setDefaultOptions(e) {
+          this.#g = e;
+        }
+        setQueryDefaults(e, t) {
+          this.#T.set((0, n.hashKey)(e), { queryKey: e, defaultOptions: t });
+        }
+        getQueryDefaults(e) {
+          let t = [...this.#T.values()],
+            i = {};
+          return (
+            t.forEach((t) => {
+              (0, n.partialMatchKey)(e, t.queryKey) && Object.assign(i, t.defaultOptions);
+            }),
+            i
+          );
+        }
+        setMutationDefaults(e, t) {
+          this.#R.set((0, n.hashKey)(e), { mutationKey: e, defaultOptions: t });
+        }
+        getMutationDefaults(e) {
+          let t = [...this.#R.values()],
+            i = {};
+          return (
+            t.forEach((t) => {
+              (0, n.partialMatchKey)(e, t.mutationKey) && Object.assign(i, t.defaultOptions);
+            }),
+            i
+          );
+        }
+        defaultQueryOptions(e) {
+          if (e._defaulted) return e;
+          let t = {
+            ...this.#g.queries,
+            ...this.getQueryDefaults(e.queryKey),
+            ...e,
+            _defaulted: !0,
+          };
+          return (
+            t.queryHash || (t.queryHash = (0, n.hashQueryKeyByOptions)(t.queryKey, t)),
+            void 0 === t.refetchOnReconnect && (t.refetchOnReconnect = "always" !== t.networkMode),
+            void 0 === t.throwOnError && (t.throwOnError = !!t.suspense),
+            !t.networkMode && t.persister && (t.networkMode = "offlineFirst"),
+            t.queryFn === n.skipToken && (t.enabled = !1),
+            t
+          );
+        }
+        defaultMutationOptions(e) {
+          return e?._defaulted
+            ? e
+            : {
+                ...this.#g.mutations,
+                ...(e?.mutationKey && this.getMutationDefaults(e.mutationKey)),
+                ...e,
+                _defaulted: !0,
+              };
+        }
+        clear() {
+          (this.#x.clear(), this.#S.clear());
+        }
+      },
+      m = e.i(46696);
+    let g = new y({
+        queryCache: new s.QueryCache({
+          onError: (e, t) => {
+            m.toast.error(`Error: ${e.message}`, {
+              action: {
+                label: "retry",
+                onClick: () => {
+                  null != t && "function" == typeof t.invalidate && t.invalidate();
+                },
+              },
+            });
+          },
+        }),
+      }),
+      v = new i.RPCLink({
+        url: `${window.location.origin}/api/rpc`,
+        fetch: (e, t) => fetch(e, { ...t, credentials: "include" }),
+        headers: async () => ({}),
+      }),
+      b = (0, t.createORPCClient)(v);
+    ((0, r.createTanstackQueryUtils)(b), e.s(["client", 0, b, "queryClient", 0, g], 26121));
+  },
+]);

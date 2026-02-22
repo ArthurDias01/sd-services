@@ -50,8 +50,7 @@ function validateField(
   if (name === "slug") {
     const v = value as string;
     if (!v.trim()) return "Slug is required";
-    if (!SLUG_RE.test(v))
-      return "Slug must be lowercase letters, numbers, and hyphens only";
+    if (!SLUG_RE.test(v)) return "Slug must be lowercase letters, numbers, and hyphens only";
     if (existingSlugs.includes(v.trim().toLowerCase()))
       return "This slug is already used by another project.";
   }
@@ -62,10 +61,7 @@ function validateField(
   return undefined;
 }
 
-function validateAll(
-  values: ProjectFormValues,
-  existingSlugs: string[] = [],
-): FormErrors {
+function validateAll(values: ProjectFormValues, existingSlugs: string[] = []): FormErrors {
   const errors: FormErrors = {};
   const fields: (keyof ProjectFormValues)[] = ["slug", "title"];
   for (const f of fields) {
@@ -111,9 +107,7 @@ export function ProjectForm({
   initialData?: ProjectFormValues | null;
 }) {
   const router = useRouter();
-  const [values, setValues] = useState<ProjectFormValues>(
-    initialData ?? defaultValues,
-  );
+  const [values, setValues] = useState<ProjectFormValues>(initialData ?? defaultValues);
   const [errors, setErrors] = useState<FormErrors>({});
   const slugManuallyEdited = useRef(!!initialData?.slug);
   const firstErrorRef = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null);
@@ -264,9 +258,7 @@ export function ProjectForm({
             id="description"
             className="flex min-h-40 w-full border border-[var(--p-tan)] bg-[var(--p-white)] px-3 py-2 text-sm text-[var(--p-dark-walnut)] outline-none placeholder:text-[var(--p-coffee-bean)]/40 focus-visible:ring-1 focus-visible:ring-[var(--p-toffee)]"
             value={values.description}
-            onChange={(e) =>
-              setValues((v) => ({ ...v, description: e.target.value }))
-            }
+            onChange={(e) => setValues((v) => ({ ...v, description: e.target.value }))}
           />
         </div>
       </fieldset>
@@ -318,7 +310,8 @@ export function ProjectForm({
           Gallery images
         </legend>
         <p className="text-xs text-[var(--p-coffee-bean)]/60">
-          Shown in the carousel on the project page. Select multiple files at once or drag &amp; drop.
+          Shown in the carousel on the project page. Select multiple files at once or drag &amp;
+          drop.
         </p>
         <ImageUploader
           multiple
@@ -337,9 +330,7 @@ export function ProjectForm({
           <input
             type="checkbox"
             checked={values.published}
-            onChange={(e) =>
-              setValues((v) => ({ ...v, published: e.target.checked }))
-            }
+            onChange={(e) => setValues((v) => ({ ...v, published: e.target.checked }))}
             className="size-4 accent-[var(--p-deep-walnut)]"
           />
           <span className="text-sm text-[var(--p-dark-walnut)]">
@@ -353,11 +344,7 @@ export function ProjectForm({
         <button type="submit" className={btnPrimary} disabled={isPending}>
           {mode === "create" ? "Create project" : "Save changes"}
         </button>
-        <button
-          type="button"
-          className={btnOutline}
-          onClick={() => router.push("/cms/projects")}
-        >
+        <button type="button" className={btnOutline} onClick={() => router.push("/cms/projects")}>
           Cancel
         </button>
       </div>

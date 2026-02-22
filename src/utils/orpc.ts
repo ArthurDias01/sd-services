@@ -11,9 +11,14 @@ function getRpcUrl(): string {
   if (typeof window !== "undefined") {
     return `${window.location.origin}/api/rpc`;
   }
-  const base =
-    process.env.NEXT_PUBLIC_APP_URL ??
-    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3001");
+  // Server (SSR): Prefer VERCEL_URL so production self-requests always hit the deployment.
+  // Empty NEXT_PUBLIC_APP_URL would otherwise break server-side fetches (projects, settings, hero).
+  const vercelBase = process.env.VERCEL_URL?.trim()
+    ? `https://${process.env.VERCEL_URL.trim()}`
+    : null;
+  const appUrlBase = process.env.NEXT_PUBLIC_APP_URL?.trim() || null;
+  let base = vercelBase ?? appUrlBase ?? "http://localhost:3001";
+  base = base.replace(/\/$/, ""); // avoid double slash when env has trailing slash
   return `${base}/api/rpc`;
 }
 

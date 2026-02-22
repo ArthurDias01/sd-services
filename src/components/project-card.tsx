@@ -20,8 +20,10 @@ export function ProjectCard({ slug, title, featuredImageUrl, description }: Proj
   const reduced = useReducedMotion();
 
   const excerpt = description
-    ? description.replace(/[#*`_[\]]/g, "").slice(0, 120).trimEnd() +
-      (description.length > 120 ? "…" : "")
+    ? description
+        .replace(/[#*`_[\]]/g, "")
+        .slice(0, 120)
+        .trimEnd() + (description.length > 120 ? "…" : "")
     : null;
 
   return (

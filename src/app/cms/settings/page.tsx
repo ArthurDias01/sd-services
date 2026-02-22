@@ -13,7 +13,8 @@ const HERO_IMAGE_KEY = "hero_image_url";
 const CONTACT_EMAIL_KEY = "contact_email";
 const CONTACT_PHONE_KEY = "contact_phone";
 
-const labelClass = "block text-xs font-semibold uppercase tracking-wider text-[var(--p-deep-walnut)]";
+const labelClass =
+  "block text-xs font-semibold uppercase tracking-wider text-[var(--p-deep-walnut)]";
 const inputClass =
   "flex h-9 w-full border border-[var(--p-tan)] bg-[var(--p-white)] px-3 text-sm text-[var(--p-dark-walnut)] outline-none placeholder:text-[var(--p-coffee-bean)]/40 focus-visible:ring-1 focus-visible:ring-[var(--p-toffee)]";
 const btnPrimary =
@@ -52,8 +53,7 @@ export default function SettingsPage() {
   const currentPhone = localPhone ?? phoneQuery.data ?? "";
 
   const saveMutation = useMutation({
-    mutationFn: (value: string) =>
-      client.setting.upsert({ key: HERO_IMAGE_KEY, value }),
+    mutationFn: (value: string) => client.setting.upsert({ key: HERO_IMAGE_KEY, value }),
     onSuccess: () => {
       toast.success("Hero image updated");
       queryClient.invalidateQueries({ queryKey: ["setting", HERO_IMAGE_KEY] });
@@ -115,7 +115,9 @@ export default function SettingsPage() {
         />
 
         <div className="space-y-1.5">
-          <label htmlFor="hero-url" className={labelClass}>Or paste URL</label>
+          <label htmlFor="hero-url" className={labelClass}>
+            Or paste URL
+          </label>
           <input
             id="hero-url"
             className={inputClass}
@@ -177,8 +179,8 @@ export default function SettingsPage() {
           Contact details
         </legend>
         <p className="text-xs text-pretty text-[var(--p-coffee-bean)]/70">
-          Shown in the landing page contact section. These replace the
-          placeholder values visible to visitors.
+          Shown in the landing page contact section. These replace the placeholder values visible to
+          visitors.
         </p>
 
         <div className="space-y-1.5">
@@ -211,8 +213,7 @@ export default function SettingsPage() {
             placeholder="+1 (000) 000-0000"
           />
           <p className="text-xs text-[var(--p-coffee-bean)]/50">
-            Displayed as a clickable tel: link. Use E.164 format for the href,
-            e.g.{" "}
+            Displayed as a clickable tel: link. Use E.164 format for the href, e.g.{" "}
             <code className="font-mono">+17045550199</code>.
           </p>
         </div>

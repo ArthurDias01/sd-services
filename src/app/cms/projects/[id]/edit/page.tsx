@@ -111,11 +111,7 @@ export default function EditProjectPage() {
         </div>
       </div>
 
-      <ProjectForm
-        mode="edit"
-        id={id}
-        initialData={mapProjectToForm(project)}
-      />
+      <ProjectForm mode="edit" id={id} initialData={mapProjectToForm(project)} />
 
       <AlertDialogRoot open={deleteOpen} onOpenChange={setDeleteOpen}>
         <AlertDialogPortal>

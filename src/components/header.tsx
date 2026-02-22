@@ -38,9 +38,7 @@ export default function Header() {
             </Link>
           ))}
         </nav>
-        {!isLanding && session?.user && (
-          <UserMenu />
-        )}
+        {!isLanding && session?.user && <UserMenu />}
       </div>
     </header>
   );

@@ -45,25 +45,17 @@ export function HeroSection({ heroImage }: HeroSectionProps) {
             High-end custom cabinetry
           </motion.h1>
 
-          <motion.div
-            className="mt-6 h-px w-16 bg-[var(--p-tan)]"
-            aria-hidden
-            {...fadeUp(0.14)}
-          />
+          <motion.div className="mt-6 h-px w-16 bg-[var(--p-tan)]" aria-hidden {...fadeUp(0.14)} />
 
           <motion.p
             className="mt-6 max-w-md text-base text-pretty text-[var(--p-coffee-bean)] md:text-lg"
             {...fadeUp(0.18)}
           >
-            Luxury cabinetry and millwork for kitchens, closets, and every
-            detail of your space — designed and built in the US with Brazilian
-            woodworking heritage.
+            Luxury cabinetry and millwork for kitchens, closets, and every detail of your space —
+            designed and built in the US with Brazilian woodworking heritage.
           </motion.p>
 
-          <motion.div
-            className="mt-10 flex flex-wrap gap-4"
-            {...fadeUp(0.24)}
-          >
+          <motion.div className="mt-10 flex flex-wrap gap-4" {...fadeUp(0.24)}>
             <Link
               href="/projects"
               className="inline-flex h-11 items-center justify-center border-2 border-[var(--p-deep-walnut)] bg-[var(--p-deep-walnut)] px-7 text-sm font-semibold text-[var(--p-white)] outline-none transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:ring-[var(--p-deep-walnut)] focus-visible:ring-offset-2"
@@ -80,10 +72,7 @@ export function HeroSection({ heroImage }: HeroSectionProps) {
         </div>
 
         {/* Image column */}
-        <motion.div
-          className="relative hidden min-h-[480px] lg:block"
-          {...fadeIn(0.3)}
-        >
+        <motion.div className="relative hidden min-h-[480px] lg:block" {...fadeIn(0.3)}>
           {heroImage ? (
             <>
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -102,10 +91,7 @@ export function HeroSection({ heroImage }: HeroSectionProps) {
 
       {/* Mobile hero image */}
       {heroImage && (
-        <motion.div
-          className="aspect-video overflow-hidden lg:hidden"
-          {...fadeIn(0.2)}
-        >
+        <motion.div className="aspect-video overflow-hidden lg:hidden" {...fadeIn(0.2)}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={proxyImageUrlIfNeeded(heroImage)} alt="" className="size-full object-cover" />
         </motion.div>

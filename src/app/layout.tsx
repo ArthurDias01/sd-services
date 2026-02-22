@@ -21,8 +21,7 @@ export const metadata: Metadata = {
     default: "High-end custom cabinetry",
     template: "%s | Custom cabinetry",
   },
-  description:
-    "Brazilian cabinetry for kitchens, closets, and every detail of your space.",
+  description: "Brazilian cabinetry for kitchens, closets, and every detail of your space.",
 };
 
 export default function RootLayout({

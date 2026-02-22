@@ -48,17 +48,14 @@ export default function SignInGoogle() {
 
   const handleSignIn = () => {
     const callbackURL =
-      typeof window !== "undefined"
-        ? `${window.location.origin}/cms/projects`
-        : "/cms/projects";
+      typeof window !== "undefined" ? `${window.location.origin}/cms/projects` : "/cms/projects";
 
     authClient.signIn.social(
       { provider: "google", callbackURL },
       {
         onError: (error) => {
           toast.error(
-            (error as { error?: { message?: string; statusText?: string } })
-              .error?.message ??
+            (error as { error?: { message?: string; statusText?: string } }).error?.message ??
               (error as { error?: { statusText?: string } }).error?.statusText ??
               "Sign in failed",
           );
@@ -78,8 +75,7 @@ export default function SignInGoogle() {
         </div>
         <div>
           <p className="text-3xl font-bold leading-snug text-balance text-[var(--p-white)]">
-            &ldquo;Craftsmanship is not a shortcut. It is the long way done
-            right.&rdquo;
+            &ldquo;Craftsmanship is not a shortcut. It is the long way done right.&rdquo;
           </p>
           <div className="mt-6 h-px w-12 bg-[var(--p-tan)]" aria-hidden />
           <p className="mt-4 text-xs font-medium uppercase tracking-widest text-[var(--p-tan)]">
@@ -87,9 +83,7 @@ export default function SignInGoogle() {
           </p>
         </div>
         <div>
-          <p className="text-xs text-[var(--p-white)]/40">
-            Authorised access only
-          </p>
+          <p className="text-xs text-[var(--p-white)]/40">Authorised access only</p>
         </div>
       </div>
 
@@ -101,9 +95,7 @@ export default function SignInGoogle() {
             Content Studio
           </span>
 
-          <h1 className="text-2xl font-bold text-balance text-[var(--p-deep-walnut)]">
-            Sign in
-          </h1>
+          <h1 className="text-2xl font-bold text-balance text-[var(--p-deep-walnut)]">Sign in</h1>
           <div className="mt-3 h-px w-10 bg-[var(--p-tan)]" aria-hidden />
           <p className="mt-4 text-sm text-pretty text-[var(--p-coffee-bean)]">
             Use your Google account to access the content management area.

@@ -40,15 +40,23 @@ export default async function Home() {
       client.setting.get({ key: "contact_phone" }),
     ]);
   } catch {
-    // API unreachable (e.g. NEXT_PUBLIC_SERVER_URL not set in production)
+    // API unreachable (e.g. misconfigured RPC URL or network)
   }
-  const rawHero = heroImageSetting || projects[0]?.featuredImageUrl || null;
+  const projectList = Array.isArray(projects) ? projects : [];
+  const heroStr = typeof heroImageSetting === "string" ? heroImageSetting : null;
+  const rawHero = heroStr ?? projectList[0]?.featuredImageUrl ?? null;
   const heroImage =
-    rawHero && rawHero.startsWith("/") && process.env.R2_PUBLIC_URL
+    rawHero && typeof rawHero === "string" && rawHero.startsWith("/") && process.env.R2_PUBLIC_URL
       ? `${process.env.R2_PUBLIC_URL.replace(/\/$/, "")}${rawHero}`
-      : rawHero;
-  const email = contactEmail || "contact@example.com";
-  const phone = contactPhone || null;
+      : typeof rawHero === "string"
+        ? rawHero
+        : null;
+  const email =
+    typeof contactEmail === "string" && contactEmail.trim() !== ""
+      ? contactEmail.trim()
+      : "contact@example.com";
+  const phone =
+    typeof contactPhone === "string" && contactPhone.trim() !== "" ? contactPhone.trim() : null;
 
   return (
     <div className="bg-[var(--p-white)] text-[var(--p-dark-walnut)]">
@@ -66,9 +74,8 @@ export default async function Home() {
           </h2>
           <div className="mt-4 h-px w-12 bg-[var(--p-tan)]" aria-hidden />
           <p className="mt-6 max-w-2xl text-sm text-pretty text-[var(--p-coffee-bean)]">
-            Every piece we build is designed around your space, your taste, and
-            your life — using premium hardwoods, precision joinery, and finishes
-            you won't find off the shelf.
+            Every piece we build is designed around your space, your taste, and your life — using
+            premium hardwoods, precision joinery, and finishes you won't find off the shelf.
           </p>
 
           <div className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
@@ -78,9 +85,7 @@ export default async function Home() {
                   {s.title}
                 </h3>
                 <div className="mt-2 h-px w-6 bg-[var(--p-tan)]" aria-hidden />
-                <p className="mt-3 text-sm text-pretty text-[var(--p-coffee-bean)]">
-                  {s.desc}
-                </p>
+                <p className="mt-3 text-sm text-pretty text-[var(--p-coffee-bean)]">{s.desc}</p>
               </div>
             ))}
           </div>
@@ -108,14 +113,14 @@ export default async function Home() {
           </h2>
           <div className="mt-4 h-px w-12 bg-[var(--p-tan)]" aria-hidden />
 
-          {projects.length === 0 ? (
+          {projectList.length === 0 ? (
             <p className="mt-10 text-pretty text-[var(--p-coffee-bean)]">
               No projects to show yet.
             </p>
           ) : (
             <>
               <div className="relative mt-12 grid gap-px bg-[var(--p-tan)]/30 sm:grid-cols-2 lg:grid-cols-3">
-                {projects.slice(0, 6).map((p) => (
+                {projectList.slice(0, 6).map((p) => (
                   <ProjectCard
                     key={p.id}
                     id={p.id}
@@ -126,7 +131,7 @@ export default async function Home() {
                   />
                 ))}
               </div>
-              {projects.length > 6 && (
+              {projectList.length > 6 && (
                 <div className="mt-12 flex justify-center">
                   <Link
                     href="/projects"
@@ -155,9 +160,8 @@ export default async function Home() {
           </h2>
           <div className="mx-auto mt-4 h-px w-12 bg-[var(--p-tan)]" aria-hidden />
           <p className="mt-6 text-pretty text-[var(--p-coffee-bean)]">
-            Reach out for a custom quote or to discuss your project. We work
-            with clients across the United States for luxury cabinetry and
-            millwork.
+            Reach out for a custom quote or to discuss your project. We work with clients across the
+            United States for luxury cabinetry and millwork.
           </p>
           <div className="mt-8">
             <a
@@ -169,10 +173,7 @@ export default async function Home() {
           </div>
           <p className="mt-4 text-xs text-[var(--p-toffee)]">
             Or email us at{" "}
-            <a
-              href={`mailto:${email}`}
-              className="underline underline-offset-2 hover:no-underline"
-            >
+            <a href={`mailto:${email}`} className="underline underline-offset-2 hover:no-underline">
               {email}
             </a>
           </p>
@@ -194,8 +195,7 @@ export default async function Home() {
       <footer className="border-t border-[var(--p-tan)]/30 bg-[var(--p-white)] py-8">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6">
           <p className="text-xs text-[var(--p-toffee)]">
-            &copy; {new Date().getFullYear()} Custom Cabinetry. All rights
-            reserved.
+            &copy; {new Date().getFullYear()} Custom Cabinetry. All rights reserved.
           </p>
           <Link
             href="/login"

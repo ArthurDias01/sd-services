@@ -88,10 +88,7 @@ export default function UserMenu({ compact = false }: { compact?: boolean }) {
             {session.user.email}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem
-            className="text-xs"
-            onClick={() => router.push("/cms/projects")}
-          >
+          <DropdownMenuItem className="text-xs" onClick={() => router.push("/cms/projects")}>
             Content Studio
           </DropdownMenuItem>
           <DropdownMenuSeparator />

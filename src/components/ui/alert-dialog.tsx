@@ -6,9 +6,7 @@ import { cn } from "@/lib/utils";
 
 import { buttonVariants } from "./button";
 
-function AlertDialogRoot(
-  props: React.ComponentProps<typeof AlertDialogPrimitive.Root>,
-) {
+function AlertDialogRoot(props: React.ComponentProps<typeof AlertDialogPrimitive.Root>) {
   return <AlertDialogPrimitive.Root {...props} />;
 }
 
@@ -16,10 +14,7 @@ function AlertDialogPortal({ ...props }: AlertDialogPrimitive.Portal.Props) {
   return <AlertDialogPrimitive.Portal {...props} />;
 }
 
-function AlertDialogBackdrop({
-  className,
-  ...props
-}: AlertDialogPrimitive.Backdrop.Props) {
+function AlertDialogBackdrop({ className, ...props }: AlertDialogPrimitive.Backdrop.Props) {
   return (
     <AlertDialogPrimitive.Backdrop
       className={cn(
@@ -31,10 +26,7 @@ function AlertDialogBackdrop({
   );
 }
 
-function AlertDialogViewport({
-  className,
-  ...props
-}: AlertDialogPrimitive.Viewport.Props) {
+function AlertDialogViewport({ className, ...props }: AlertDialogPrimitive.Viewport.Props) {
   return (
     <AlertDialogPrimitive.Viewport
       className={cn(
@@ -46,22 +38,11 @@ function AlertDialogViewport({
   );
 }
 
-function AlertDialogPopup({
-  className,
-  ...props
-}: AlertDialogPrimitive.Popup.Props) {
-  return (
-    <AlertDialogPrimitive.Popup
-      className={cn("grid gap-4", className)}
-      {...props}
-    />
-  );
+function AlertDialogPopup({ className, ...props }: AlertDialogPrimitive.Popup.Props) {
+  return <AlertDialogPrimitive.Popup className={cn("grid gap-4", className)} {...props} />;
 }
 
-function AlertDialogTitle({
-  className,
-  ...props
-}: AlertDialogPrimitive.Title.Props) {
+function AlertDialogTitle({ className, ...props }: AlertDialogPrimitive.Title.Props) {
   return (
     <AlertDialogPrimitive.Title
       className={cn("text-lg font-semibold text-balance", className)}
@@ -70,10 +51,7 @@ function AlertDialogTitle({
   );
 }
 
-function AlertDialogDescription({
-  className,
-  ...props
-}: AlertDialogPrimitive.Description.Props) {
+function AlertDialogDescription({ className, ...props }: AlertDialogPrimitive.Description.Props) {
   return (
     <AlertDialogPrimitive.Description
       className={cn("text-sm text-muted-foreground text-pretty", className)}
@@ -90,10 +68,7 @@ function AlertDialogClose({
   variant?: "default" | "destructive" | "outline";
 }) {
   return (
-    <AlertDialogPrimitive.Close
-      className={cn(buttonVariants({ variant }), className)}
-      {...props}
-    />
+    <AlertDialogPrimitive.Close className={cn(buttonVariants({ variant }), className)} {...props} />
   );
 }
 

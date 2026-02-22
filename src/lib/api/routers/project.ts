@@ -10,7 +10,10 @@ import { adminProcedure, publicProcedure } from "../index";
 const slugSchema = z
   .string()
   .min(1)
-  .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Slug must be URL-safe (lowercase letters, numbers, hyphens)");
+  .regex(
+    /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+    "Slug must be URL-safe (lowercase letters, numbers, hyphens)",
+  );
 
 const projectCreateSchema = z.object({
   slug: slugSchema,
@@ -44,11 +47,7 @@ export const projectRouter = {
   getBySlug: publicProcedure
     .input(z.object({ slug: z.string().min(1) }))
     .handler(async ({ input }) => {
-      const [row] = await db
-        .select()
-        .from(project)
-        .where(eq(project.slug, input.slug))
-        .limit(1);
+      const [row] = await db.select().from(project).where(eq(project.slug, input.slug)).limit(1);
       if (!row || !row.published) return null;
       const images = await db
         .select({ id: projectImage.id, url: projectImage.url, sortOrder: projectImage.sortOrder })
@@ -79,21 +78,19 @@ export const projectRouter = {
     return rows;
   }),
 
-  getById: adminProcedure
-    .input(z.object({ id: z.string().min(1) }))
-    .handler(async ({ input }) => {
-      const [row] = await db.select().from(project).where(eq(project.id, input.id)).limit(1);
-      if (!row) return null;
-      const images = await db
-        .select({ id: projectImage.id, url: projectImage.url, sortOrder: projectImage.sortOrder })
-        .from(projectImage)
-        .where(eq(projectImage.projectId, row.id))
-        .orderBy(projectImage.sortOrder);
-      return {
-        ...row,
-        images,
-      };
-    }),
+  getById: adminProcedure.input(z.object({ id: z.string().min(1) })).handler(async ({ input }) => {
+    const [row] = await db.select().from(project).where(eq(project.id, input.id)).limit(1);
+    if (!row) return null;
+    const images = await db
+      .select({ id: projectImage.id, url: projectImage.url, sortOrder: projectImage.sortOrder })
+      .from(projectImage)
+      .where(eq(projectImage.projectId, row.id))
+      .orderBy(projectImage.sortOrder);
+    return {
+      ...row,
+      images,
+    };
+  }),
 
   create: adminProcedure.input(projectCreateSchema).handler(async ({ input }) => {
     try {
@@ -184,12 +181,10 @@ export const projectRouter = {
     }
   }),
 
-  delete: adminProcedure
-    .input(z.object({ id: z.string().min(1) }))
-    .handler(async ({ input }) => {
-      await db.delete(project).where(eq(project.id, input.id));
-      return { ok: true };
-    }),
+  delete: adminProcedure.input(z.object({ id: z.string().min(1) })).handler(async ({ input }) => {
+    await db.delete(project).where(eq(project.id, input.id));
+    return { ok: true };
+  }),
 };
 
 export type ProjectRouter = typeof projectRouter;

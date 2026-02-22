@@ -7,16 +7,14 @@ import { siteSetting } from "@/lib/db/schema/siteSetting";
 import { adminProcedure, publicProcedure } from "../index";
 
 export const settingRouter = {
-  get: publicProcedure
-    .input(z.object({ key: z.string().min(1) }))
-    .handler(async ({ input }) => {
-      const [row] = await db
-        .select()
-        .from(siteSetting)
-        .where(eq(siteSetting.key, input.key))
-        .limit(1);
-      return row?.value ?? null;
-    }),
+  get: publicProcedure.input(z.object({ key: z.string().min(1) })).handler(async ({ input }) => {
+    const [row] = await db
+      .select()
+      .from(siteSetting)
+      .where(eq(siteSetting.key, input.key))
+      .limit(1);
+    return row?.value ?? null;
+  }),
 
   upsert: adminProcedure
     .input(z.object({ key: z.string().min(1), value: z.string() }))

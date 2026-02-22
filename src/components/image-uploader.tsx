@@ -24,9 +24,7 @@ async function uploadFiles(files: File[]): Promise<string[]> {
     formData.append("files", file);
   }
   const res = await fetch(
-    typeof window !== "undefined"
-      ? `${window.location.origin}/api/upload`
-      : "/api/upload",
+    typeof window !== "undefined" ? `${window.location.origin}/api/upload` : "/api/upload",
     { method: "POST", body: formData, credentials: "include" },
   );
   if (!res.ok) {
@@ -104,11 +102,7 @@ export function ImageUploader({
               className="group relative aspect-square overflow-hidden border border-[var(--p-tan)] bg-[var(--p-warm-white)]"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={proxyImageUrlIfNeeded(url)}
-                alt=""
-                className="size-full object-cover"
-              />
+              <img src={proxyImageUrlIfNeeded(url)} alt="" className="size-full object-cover" />
               <button
                 type="button"
                 onClick={() => handleRemove(url)}
@@ -117,7 +111,12 @@ export function ImageUploader({
                 className="absolute right-1 top-1 flex size-5 items-center justify-center bg-black/70 text-white opacity-0 outline-none transition-opacity group-hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-1 focus-visible:ring-white"
               >
                 <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden>
-                  <path d="M1 1l8 8M9 1L1 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                  <path
+                    d="M1 1l8 8M9 1L1 9"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                  />
                 </svg>
               </button>
             </div>
@@ -144,7 +143,10 @@ export function ImageUploader({
           tabIndex={disabled ? -1 : 0}
           aria-label="Upload images — click or drag and drop"
           aria-disabled={disabled || uploading}
-          onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
+          onDragOver={(e) => {
+            e.preventDefault();
+            setDragging(true);
+          }}
           onDragLeave={() => setDragging(false)}
           onDrop={handleDrop}
           onClick={() => !disabled && !uploading && inputRef.current?.click()}

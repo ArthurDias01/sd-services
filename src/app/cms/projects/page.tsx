@@ -17,9 +17,7 @@ export default function CmsProjectsPage() {
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-balance text-[var(--p-deep-walnut)]">
-            Projects
-          </h1>
+          <h1 className="text-2xl font-bold text-balance text-[var(--p-deep-walnut)]">Projects</h1>
           <div className="mt-2 h-px w-10 bg-[var(--p-tan)]" aria-hidden />
         </div>
         <Link
@@ -41,9 +39,7 @@ export default function CmsProjectsPage() {
         </div>
       ) : projects?.length === 0 ? (
         <div className="border border-[var(--p-tan)] bg-[var(--p-white)] px-6 py-12 text-center">
-          <p className="text-sm text-pretty text-[var(--p-coffee-bean)]">
-            No projects yet.
-          </p>
+          <p className="text-sm text-pretty text-[var(--p-coffee-bean)]">No projects yet.</p>
           <Link
             href="/cms/projects/new"
             className="mt-4 inline-flex h-9 items-center justify-center border-2 border-[var(--p-toffee)] bg-transparent px-5 text-xs font-semibold text-[var(--p-toffee)] outline-none transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-[var(--p-toffee)] focus-visible:ring-offset-2"
@@ -66,17 +62,13 @@ export default function CmsProjectsPage() {
                 <h2 className="text-sm font-semibold text-balance text-[var(--p-deep-walnut)] group-hover:underline">
                   {p.title}
                 </h2>
-                <code className="mt-1 block text-xs text-[var(--p-toffee)]">
-                  /{p.slug}
-                </code>
+                <code className="mt-1 block text-xs text-[var(--p-toffee)]">/{p.slug}</code>
               </div>
               <div className="mt-3 flex items-center justify-between">
                 <span
                   className={cn(
                     "text-[10px] font-semibold uppercase tracking-wider",
-                    p.published
-                      ? "text-[var(--p-toffee)]"
-                      : "text-[var(--p-coffee-bean)]/60",
+                    p.published ? "text-[var(--p-toffee)]" : "text-[var(--p-coffee-bean)]/60",
                   )}
                 >
                   {p.published ? "Published" : "Draft"}

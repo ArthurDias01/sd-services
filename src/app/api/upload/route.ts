@@ -56,9 +56,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const results = await Promise.all(
-      allFiles.map((file) => uploadFile(file, "uploads")),
-    );
+    const results = await Promise.all(allFiles.map((file) => uploadFile(file, "uploads")));
     // Single file → { url } for backwards compat; multiple → { urls }
     if (allFiles.length === 1) {
       return NextResponse.json({ url: results[0]!.url, urls: [results[0]!.url] });

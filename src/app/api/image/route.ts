@@ -8,8 +8,7 @@ function isAllowedImageUrl(url: string): boolean {
     if (RELATIVE_RE.test(url)) return true;
     const u = new URL(url);
     if (u.protocol !== "https:") return false;
-    if (u.hostname === "localhost" || u.hostname.endsWith(".vercel.app"))
-      return true;
+    if (u.hostname === "localhost" || u.hostname.endsWith(".vercel.app")) return true;
     if (R2_HOST_RE.test(url)) return true;
     const r2Public = process.env.R2_PUBLIC_URL;
     if (r2Public) {
@@ -29,9 +28,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Invalid or disallowed URL" }, { status: 400 });
   }
 
-  const resolved = url.startsWith("/")
-    ? new URL(url, request.url).toString()
-    : url;
+  const resolved = url.startsWith("/") ? new URL(url, request.url).toString() : url;
 
   try {
     const res = await fetch(resolved, {
@@ -39,18 +36,12 @@ export async function GET(request: Request) {
       cache: "force-cache",
     });
     if (!res.ok) {
-      return NextResponse.json(
-        { error: "Upstream image failed" },
-        { status: res.status },
-      );
+      return NextResponse.json({ error: "Upstream image failed" }, { status: res.status });
     }
     const contentType = res.headers.get("Content-Type") ?? "image/jpeg";
     const body = res.body;
     if (!body) {
-      return NextResponse.json(
-        { error: "No image body" },
-        { status: 502 },
-      );
+      return NextResponse.json({ error: "No image body" }, { status: 502 });
     }
     return new NextResponse(body, {
       status: 200,
@@ -61,9 +52,6 @@ export async function GET(request: Request) {
     });
   } catch (err) {
     console.error("[api/image]", err);
-    return NextResponse.json(
-      { error: "Failed to fetch image" },
-      { status: 502 },
-    );
+    return NextResponse.json({ error: "Failed to fetch image" }, { status: 502 });
   }
 }

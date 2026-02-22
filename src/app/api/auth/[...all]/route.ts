@@ -23,10 +23,7 @@ async function withRequestFix(
     return await handler(modifiedRequest);
   } catch (error) {
     console.error("[Better Auth]", error);
-    return NextResponse.json(
-      { error: "Authentication failed" },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: "Authentication failed" }, { status: 500 });
   }
 }
 

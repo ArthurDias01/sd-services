@@ -31,13 +31,8 @@ export type UploadResult = { url: string };
  * (*.r2.cloudflarestorage.com) — that requires auth and browsers cannot
  * load images from it directly.
  */
-export async function uploadFile(
-  file: File,
-  folder = "uploads",
-): Promise<UploadResult> {
-  const ext = file.name.includes(".")
-    ? file.name.split(".").pop()!.toLowerCase()
-    : "bin";
+export async function uploadFile(file: File, folder = "uploads"): Promise<UploadResult> {
+  const ext = file.name.includes(".") ? file.name.split(".").pop()!.toLowerCase() : "bin";
   const key = `${folder}/${crypto.randomUUID()}.${ext}`;
   const buffer = Buffer.from(await file.arrayBuffer());
 
@@ -48,9 +43,7 @@ export async function uploadFile(
     const publicUrl = process.env.R2_PUBLIC_URL;
 
     if (!bucket || !publicUrl) {
-      throw new Error(
-        "R2_BUCKET_NAME and R2_PUBLIC_URL must be set when using R2",
-      );
+      throw new Error("R2_BUCKET_NAME and R2_PUBLIC_URL must be set when using R2");
     }
 
     // Guard against accidentally using the private API endpoint as the public URL

@@ -1,666 +1,873 @@
-(globalThis.TURBOPACK || (globalThis.TURBOPACK = [])).push([typeof document === "object" ? document.currentScript : undefined,
-"[project]/src/lib/image-url.ts [app-client] (ecmascript)", ((__turbopack_context__) => {
-"use strict";
+(globalThis.TURBOPACK || (globalThis.TURBOPACK = [])).push([
+  typeof document === "object" ? document.currentScript : undefined,
+  "[project]/src/lib/image-url.ts [app-client] (ecmascript)",
+  (__turbopack_context__) => {
+    "use strict";
 
-__turbopack_context__.s([
-    "proxyImageUrlIfNeeded",
-    ()=>proxyImageUrlIfNeeded
-]);
-/**
- * Use the same-origin image proxy only for R2 URLs to avoid CORS.
- * Same-origin, relative, and other URLs (e.g. Google avatars) are returned unchanged.
- * Invalid URLs are returned as-is so the browser can fail gracefully instead of throwing.
- */ const R2_PUBLIC_RE = /^https:\/\/[a-zA-Z0-9.-]+\.r2\.dev(\/|$)/;
-function isConstructableUrl(url) {
-    if (url.startsWith("/")) return true;
-    try {
+    __turbopack_context__.s(["proxyImageUrlIfNeeded", () => proxyImageUrlIfNeeded]);
+    /**
+     * Use the same-origin image proxy only for R2 URLs to avoid CORS.
+     * Same-origin, relative, and other URLs (e.g. Google avatars) are returned unchanged.
+     * Invalid URLs are returned as-is so the browser can fail gracefully instead of throwing.
+     */ const R2_PUBLIC_RE = /^https:\/\/[a-zA-Z0-9.-]+\.r2\.dev(\/|$)/;
+    function isConstructableUrl(url) {
+      if (url.startsWith("/")) return true;
+      try {
         new URL(url);
         return true;
-    } catch  {
+      } catch {
         return false;
+      }
     }
-}
-function proxyImageUrlIfNeeded(url) {
-    if (!url || url.startsWith("/")) return url;
-    if (!isConstructableUrl(url)) return url;
-    if (R2_PUBLIC_RE.test(url)) {
+    function proxyImageUrlIfNeeded(url) {
+      if (!url || url.startsWith("/")) return url;
+      if (!isConstructableUrl(url)) return url;
+      if (R2_PUBLIC_RE.test(url)) {
         return `/api/image?url=${encodeURIComponent(url)}`;
+      }
+      return url;
     }
-    return url;
-}
-if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
-    __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
-}
-}),
-"[project]/src/components/project-carousel.tsx [app-client] (ecmascript)", ((__turbopack_context__) => {
-"use strict";
+    if (typeof globalThis.$RefreshHelpers$ === "object" && globalThis.$RefreshHelpers !== null) {
+      __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
+    }
+  },
+  "[project]/src/components/project-carousel.tsx [app-client] (ecmascript)",
+  (__turbopack_context__) => {
+    "use strict";
 
-__turbopack_context__.s([
-    "ProjectCarousel",
-    ()=>ProjectCarousel
-]);
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$compiler$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/compiler-runtime.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$embla$2d$carousel$2d$react$2f$esm$2f$embla$2d$carousel$2d$react$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/embla-carousel-react/esm/embla-carousel-react.esm.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$image$2d$url$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/image-url.ts [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/utils.ts [app-client] (ecmascript)");
-;
-var _s = __turbopack_context__.k.signature();
-"use client";
-;
-;
-;
-;
-;
-function ProjectCarousel(t0) {
-    _s();
-    const $ = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$compiler$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["c"])(32);
-    if ($[0] !== "f12a6ecfdf07a855ae8a68154bc6a5ffceacff29cc583889aa075f56dd6ce48f") {
-        for(let $i = 0; $i < 32; $i += 1){
-            $[$i] = Symbol.for("react.memo_cache_sentinel");
+    __turbopack_context__.s(["ProjectCarousel", () => ProjectCarousel]);
+    var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
+      __turbopack_context__.i(
+        "[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)",
+      );
+    var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$compiler$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
+      __turbopack_context__.i(
+        "[project]/node_modules/next/dist/compiled/react/compiler-runtime.js [app-client] (ecmascript)",
+      );
+    var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$embla$2d$carousel$2d$react$2f$esm$2f$embla$2d$carousel$2d$react$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
+      __turbopack_context__.i(
+        "[project]/node_modules/embla-carousel-react/esm/embla-carousel-react.esm.js [app-client] (ecmascript)",
+      );
+    var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
+      __turbopack_context__.i(
+        "[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)",
+      );
+    var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$image$2d$url$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
+      __turbopack_context__.i("[project]/src/lib/image-url.ts [app-client] (ecmascript)");
+    var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
+      __turbopack_context__.i("[project]/src/lib/utils.ts [app-client] (ecmascript)");
+    var _s = __turbopack_context__.k.signature();
+    ("use client");
+    function ProjectCarousel(t0) {
+      _s();
+      const $ = (0,
+      __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$compiler$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+        "c"
+      ])(32);
+      if ($[0] !== "f12a6ecfdf07a855ae8a68154bc6a5ffceacff29cc583889aa075f56dd6ce48f") {
+        for (let $i = 0; $i < 32; $i += 1) {
+          $[$i] = Symbol.for("react.memo_cache_sentinel");
         }
         $[0] = "f12a6ecfdf07a855ae8a68154bc6a5ffceacff29cc583889aa075f56dd6ce48f";
-    }
-    const { urls, className } = t0;
-    let t1;
-    if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
+      }
+      const { urls, className } = t0;
+      let t1;
+      if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
         t1 = {
-            loop: true
+          loop: true,
         };
         $[1] = t1;
-    } else {
+      } else {
         t1 = $[1];
-    }
-    const [emblaRef, emblaApi] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$embla$2d$carousel$2d$react$2f$esm$2f$embla$2d$carousel$2d$react$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"])(t1);
-    const [selectedIndex, setSelectedIndex] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(0);
-    let t2;
-    if ($[2] !== emblaApi) {
-        t2 = ({
-            "ProjectCarousel[scrollPrev]": ()=>{
-                emblaApi?.scrollPrev();
-            }
-        })["ProjectCarousel[scrollPrev]"];
+      }
+      const [emblaRef, emblaApi] = (0,
+      __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$embla$2d$carousel$2d$react$2f$esm$2f$embla$2d$carousel$2d$react$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+        "default"
+      ])(t1);
+      const [selectedIndex, setSelectedIndex] = (0,
+      __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+        "useState"
+      ])(0);
+      let t2;
+      if ($[2] !== emblaApi) {
+        t2 = {
+          "ProjectCarousel[scrollPrev]": () => {
+            emblaApi?.scrollPrev();
+          },
+        }["ProjectCarousel[scrollPrev]"];
         $[2] = emblaApi;
         $[3] = t2;
-    } else {
+      } else {
         t2 = $[3];
-    }
-    const scrollPrev = t2;
-    let t3;
-    if ($[4] !== emblaApi) {
-        t3 = ({
-            "ProjectCarousel[scrollNext]": ()=>{
-                emblaApi?.scrollNext();
-            }
-        })["ProjectCarousel[scrollNext]"];
+      }
+      const scrollPrev = t2;
+      let t3;
+      if ($[4] !== emblaApi) {
+        t3 = {
+          "ProjectCarousel[scrollNext]": () => {
+            emblaApi?.scrollNext();
+          },
+        }["ProjectCarousel[scrollNext]"];
         $[4] = emblaApi;
         $[5] = t3;
-    } else {
+      } else {
         t3 = $[5];
-    }
-    const scrollNext = t3;
-    let t4;
-    if ($[6] !== emblaApi) {
-        t4 = ({
-            "ProjectCarousel[scrollTo]": (index)=>{
-                emblaApi?.scrollTo(index);
-            }
-        })["ProjectCarousel[scrollTo]"];
+      }
+      const scrollNext = t3;
+      let t4;
+      if ($[6] !== emblaApi) {
+        t4 = {
+          "ProjectCarousel[scrollTo]": (index) => {
+            emblaApi?.scrollTo(index);
+          },
+        }["ProjectCarousel[scrollTo]"];
         $[6] = emblaApi;
         $[7] = t4;
-    } else {
+      } else {
         t4 = $[7];
-    }
-    const scrollTo = t4;
-    let t5;
-    let t6;
-    if ($[8] !== emblaApi) {
-        t5 = ({
-            "ProjectCarousel[useEffect()]": ()=>{
-                if (!emblaApi) {
-                    return;
-                }
-                const onSelect = {
-                    "ProjectCarousel[useEffect() > onSelect]": ()=>setSelectedIndex(emblaApi.selectedScrollSnap())
-                }["ProjectCarousel[useEffect() > onSelect]"];
-                emblaApi.on("select", onSelect);
-                onSelect();
-                return ()=>{
-                    emblaApi.off("select", onSelect);
-                };
+      }
+      const scrollTo = t4;
+      let t5;
+      let t6;
+      if ($[8] !== emblaApi) {
+        t5 = {
+          "ProjectCarousel[useEffect()]": () => {
+            if (!emblaApi) {
+              return;
             }
-        })["ProjectCarousel[useEffect()]"];
-        t6 = [
-            emblaApi
-        ];
+            const onSelect = {
+              "ProjectCarousel[useEffect() > onSelect]": () =>
+                setSelectedIndex(emblaApi.selectedScrollSnap()),
+            }["ProjectCarousel[useEffect() > onSelect]"];
+            emblaApi.on("select", onSelect);
+            onSelect();
+            return () => {
+              emblaApi.off("select", onSelect);
+            };
+          },
+        }["ProjectCarousel[useEffect()]"];
+        t6 = [emblaApi];
         $[8] = emblaApi;
         $[9] = t5;
         $[10] = t6;
-    } else {
+      } else {
         t5 = $[9];
         t6 = $[10];
-    }
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])(t5, t6);
-    if (urls.length === 0) {
+      }
+      (0,
+      __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+        "useEffect"
+      ])(t5, t6);
+      if (urls.length === 0) {
         return null;
-    }
-    let t7;
-    if ($[11] !== className) {
-        t7 = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("relative", className);
+      }
+      let t7;
+      if ($[11] !== className) {
+        t7 = (0,
+        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+          "cn"
+        ])("relative", className);
         $[11] = className;
         $[12] = t7;
-    } else {
+      } else {
         t7 = $[12];
-    }
-    let t8;
-    if ($[13] !== urls) {
+      }
+      let t8;
+      if ($[13] !== urls) {
         let t9;
         if ($[15] !== urls.length) {
-            t9 = ({
-                "ProjectCarousel[urls.map()]": (url, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "min-w-0 flex-[0_0_100%]",
-                        role: "group",
-                        "aria-roledescription": "slide",
-                        "aria-label": `Image ${i + 1} of ${urls.length}`,
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
-                            src: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$image$2d$url$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["proxyImageUrlIfNeeded"])(url),
-                            alt: "",
-                            className: "size-full object-cover",
-                            sizes: "100vw"
-                        }, void 0, false, {
-                            fileName: "[project]/src/components/project-carousel.tsx",
-                            lineNumber: 117,
-                            columnNumber: 193
-                        }, this)
-                    }, url, false, {
-                        fileName: "[project]/src/components/project-carousel.tsx",
-                        lineNumber: 117,
-                        columnNumber: 52
-                    }, this)
-            })["ProjectCarousel[urls.map()]"];
-            $[15] = urls.length;
-            $[16] = t9;
+          t9 = {
+            "ProjectCarousel[urls.map()]": (url, i) =>
+              /*#__PURE__*/ (0,
+              __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+                "jsxDEV"
+              ])(
+                "div",
+                {
+                  className: "min-w-0 flex-[0_0_100%]",
+                  role: "group",
+                  "aria-roledescription": "slide",
+                  "aria-label": `Image ${i + 1} of ${urls.length}`,
+                  children: /*#__PURE__*/ (0,
+                  __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+                    "jsxDEV"
+                  ])(
+                    "img",
+                    {
+                      src: (0,
+                      __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$image$2d$url$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+                        "proxyImageUrlIfNeeded"
+                      ])(url),
+                      alt: "",
+                      className: "size-full object-cover",
+                      sizes: "100vw",
+                    },
+                    void 0,
+                    false,
+                    {
+                      fileName: "[project]/src/components/project-carousel.tsx",
+                      lineNumber: 117,
+                      columnNumber: 193,
+                    },
+                    this,
+                  ),
+                },
+                url,
+                false,
+                {
+                  fileName: "[project]/src/components/project-carousel.tsx",
+                  lineNumber: 117,
+                  columnNumber: 52,
+                },
+                this,
+              ),
+          }["ProjectCarousel[urls.map()]"];
+          $[15] = urls.length;
+          $[16] = t9;
         } else {
-            t9 = $[16];
+          t9 = $[16];
         }
         t8 = urls.map(t9);
         $[13] = urls;
         $[14] = t8;
-    } else {
+      } else {
         t8 = $[14];
-    }
-    let t9;
-    if ($[17] !== t8) {
-        t9 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+      }
+      let t9;
+      if ($[17] !== t8) {
+        t9 = /*#__PURE__*/ (0,
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+          "jsxDEV"
+        ])(
+          "div",
+          {
             className: "flex",
-            children: t8
-        }, void 0, false, {
+            children: t8,
+          },
+          void 0,
+          false,
+          {
             fileName: "[project]/src/components/project-carousel.tsx",
             lineNumber: 132,
-            columnNumber: 10
-        }, this);
+            columnNumber: 10,
+          },
+          this,
+        );
         $[17] = t8;
         $[18] = t9;
-    } else {
+      } else {
         t9 = $[18];
-    }
-    let t10;
-    if ($[19] !== emblaRef || $[20] !== t9) {
-        t10 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+      }
+      let t10;
+      if ($[19] !== emblaRef || $[20] !== t9) {
+        t10 = /*#__PURE__*/ (0,
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+          "jsxDEV"
+        ])(
+          "div",
+          {
             className: "overflow-hidden",
             ref: emblaRef,
-            children: t9
-        }, void 0, false, {
+            children: t9,
+          },
+          void 0,
+          false,
+          {
             fileName: "[project]/src/components/project-carousel.tsx",
             lineNumber: 140,
-            columnNumber: 11
-        }, this);
+            columnNumber: 11,
+          },
+          this,
+        );
         $[19] = emblaRef;
         $[20] = t9;
         $[21] = t10;
-    } else {
+      } else {
         t10 = $[21];
-    }
-    let t11;
-    if ($[22] !== scrollNext || $[23] !== scrollPrev || $[24] !== scrollTo || $[25] !== selectedIndex || $[26] !== urls) {
-        t11 = urls.length > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
-            children: [
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+      }
+      let t11;
+      if (
+        $[22] !== scrollNext ||
+        $[23] !== scrollPrev ||
+        $[24] !== scrollTo ||
+        $[25] !== selectedIndex ||
+        $[26] !== urls
+      ) {
+        t11 =
+          urls.length > 1 &&
+          /*#__PURE__*/ (0,
+          __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+            "jsxDEV"
+          ])(
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+              "Fragment"
+            ],
+            {
+              children: [
+                /*#__PURE__*/ (0,
+                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+                  "jsxDEV"
+                ])(
+                  "button",
+                  {
                     type: "button",
-                    className: "border-border bg-background/80 hover:bg-background absolute left-2 top-1/2 z-10 size-10 -translate-y-1/2 rounded-none border shadow-sm transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                    className:
+                      "border-border bg-background/80 hover:bg-background absolute left-2 top-1/2 z-10 size-10 -translate-y-1/2 rounded-none border shadow-sm transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                     onClick: scrollPrev,
                     "aria-label": "Previous image",
                     children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                            className: "sr-only",
-                            children: "Previous"
-                        }, void 0, false, {
-                            fileName: "[project]/src/components/project-carousel.tsx",
-                            lineNumber: 149,
-                            columnNumber: 341
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
-                            className: "size-5 mx-auto",
-                            fill: "none",
-                            stroke: "currentColor",
-                            viewBox: "0 0 24 24",
-                            "aria-hidden": true,
-                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
-                                strokeLinecap: "round",
-                                strokeLinejoin: "round",
-                                strokeWidth: 2,
-                                d: "M15 19l-7-7 7-7"
-                            }, void 0, false, {
-                                fileName: "[project]/src/components/project-carousel.tsx",
-                                lineNumber: 149,
-                                columnNumber: 487
-                            }, this)
-                        }, void 0, false, {
-                            fileName: "[project]/src/components/project-carousel.tsx",
-                            lineNumber: 149,
-                            columnNumber: 382
-                        }, this)
-                    ]
-                }, void 0, true, {
+                      /*#__PURE__*/ (0,
+                      __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+                        "jsxDEV"
+                      ])(
+                        "span",
+                        {
+                          className: "sr-only",
+                          children: "Previous",
+                        },
+                        void 0,
+                        false,
+                        {
+                          fileName: "[project]/src/components/project-carousel.tsx",
+                          lineNumber: 149,
+                          columnNumber: 341,
+                        },
+                        this,
+                      ),
+                      /*#__PURE__*/ (0,
+                      __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+                        "jsxDEV"
+                      ])(
+                        "svg",
+                        {
+                          className: "size-5 mx-auto",
+                          fill: "none",
+                          stroke: "currentColor",
+                          viewBox: "0 0 24 24",
+                          "aria-hidden": true,
+                          children: /*#__PURE__*/ (0,
+                          __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+                            "jsxDEV"
+                          ])(
+                            "path",
+                            {
+                              strokeLinecap: "round",
+                              strokeLinejoin: "round",
+                              strokeWidth: 2,
+                              d: "M15 19l-7-7 7-7",
+                            },
+                            void 0,
+                            false,
+                            {
+                              fileName: "[project]/src/components/project-carousel.tsx",
+                              lineNumber: 149,
+                              columnNumber: 487,
+                            },
+                            this,
+                          ),
+                        },
+                        void 0,
+                        false,
+                        {
+                          fileName: "[project]/src/components/project-carousel.tsx",
+                          lineNumber: 149,
+                          columnNumber: 382,
+                        },
+                        this,
+                      ),
+                    ],
+                  },
+                  void 0,
+                  true,
+                  {
                     fileName: "[project]/src/components/project-carousel.tsx",
                     lineNumber: 149,
-                    columnNumber: 32
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                    columnNumber: 32,
+                  },
+                  this,
+                ),
+                /*#__PURE__*/ (0,
+                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+                  "jsxDEV"
+                ])(
+                  "button",
+                  {
                     type: "button",
-                    className: "border-border bg-background/80 hover:bg-background absolute right-2 top-1/2 z-10 size-10 -translate-y-1/2 rounded-none border shadow-sm transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                    className:
+                      "border-border bg-background/80 hover:bg-background absolute right-2 top-1/2 z-10 size-10 -translate-y-1/2 rounded-none border shadow-sm transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                     onClick: scrollNext,
                     "aria-label": "Next image",
                     children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                            className: "sr-only",
-                            children: "Next"
-                        }, void 0, false, {
-                            fileName: "[project]/src/components/project-carousel.tsx",
-                            lineNumber: 149,
-                            columnNumber: 897
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
-                            className: "size-5 mx-auto",
-                            fill: "none",
-                            stroke: "currentColor",
-                            viewBox: "0 0 24 24",
-                            "aria-hidden": true,
-                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
-                                strokeLinecap: "round",
-                                strokeLinejoin: "round",
-                                strokeWidth: 2,
-                                d: "M9 5l7 7-7 7"
-                            }, void 0, false, {
-                                fileName: "[project]/src/components/project-carousel.tsx",
-                                lineNumber: 149,
-                                columnNumber: 1039
-                            }, this)
-                        }, void 0, false, {
-                            fileName: "[project]/src/components/project-carousel.tsx",
-                            lineNumber: 149,
-                            columnNumber: 934
-                        }, this)
-                    ]
-                }, void 0, true, {
+                      /*#__PURE__*/ (0,
+                      __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+                        "jsxDEV"
+                      ])(
+                        "span",
+                        {
+                          className: "sr-only",
+                          children: "Next",
+                        },
+                        void 0,
+                        false,
+                        {
+                          fileName: "[project]/src/components/project-carousel.tsx",
+                          lineNumber: 149,
+                          columnNumber: 897,
+                        },
+                        this,
+                      ),
+                      /*#__PURE__*/ (0,
+                      __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+                        "jsxDEV"
+                      ])(
+                        "svg",
+                        {
+                          className: "size-5 mx-auto",
+                          fill: "none",
+                          stroke: "currentColor",
+                          viewBox: "0 0 24 24",
+                          "aria-hidden": true,
+                          children: /*#__PURE__*/ (0,
+                          __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+                            "jsxDEV"
+                          ])(
+                            "path",
+                            {
+                              strokeLinecap: "round",
+                              strokeLinejoin: "round",
+                              strokeWidth: 2,
+                              d: "M9 5l7 7-7 7",
+                            },
+                            void 0,
+                            false,
+                            {
+                              fileName: "[project]/src/components/project-carousel.tsx",
+                              lineNumber: 149,
+                              columnNumber: 1039,
+                            },
+                            this,
+                          ),
+                        },
+                        void 0,
+                        false,
+                        {
+                          fileName: "[project]/src/components/project-carousel.tsx",
+                          lineNumber: 149,
+                          columnNumber: 934,
+                        },
+                        this,
+                      ),
+                    ],
+                  },
+                  void 0,
+                  true,
+                  {
                     fileName: "[project]/src/components/project-carousel.tsx",
                     lineNumber: 149,
-                    columnNumber: 591
-                }, this),
-                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    columnNumber: 591,
+                  },
+                  this,
+                ),
+                /*#__PURE__*/ (0,
+                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+                  "jsxDEV"
+                ])(
+                  "div",
+                  {
                     className: "flex justify-center gap-1.5 pt-2",
-                    children: urls.map({
-                        "ProjectCarousel[urls.map()]": (_, i_0)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                type: "button",
-                                className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("size-2 rounded-none transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring", i_0 === selectedIndex ? "bg-primary opacity-100" : "bg-muted-foreground/40 hover:bg-muted-foreground/60"),
-                                onClick: {
-                                    "ProjectCarousel[urls.map() > <button>.onClick]": ()=>scrollTo(i_0)
-                                }["ProjectCarousel[urls.map() > <button>.onClick]"],
-                                "aria-label": `Go to image ${i_0 + 1}`,
-                                "aria-current": i_0 === selectedIndex ? "true" : undefined
-                            }, i_0, false, {
-                                fileName: "[project]/src/components/project-carousel.tsx",
-                                lineNumber: 150,
-                                columnNumber: 54
-                            }, this)
-                    }["ProjectCarousel[urls.map()]"])
-                }, void 0, false, {
+                    children: urls.map(
+                      {
+                        "ProjectCarousel[urls.map()]": (_, i_0) =>
+                          /*#__PURE__*/ (0,
+                          __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+                            "jsxDEV"
+                          ])(
+                            "button",
+                            {
+                              type: "button",
+                              className: (0,
+                              __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+                                "cn"
+                              ])(
+                                "size-2 rounded-none transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                                i_0 === selectedIndex
+                                  ? "bg-primary opacity-100"
+                                  : "bg-muted-foreground/40 hover:bg-muted-foreground/60",
+                              ),
+                              onClick: {
+                                "ProjectCarousel[urls.map() > <button>.onClick]": () =>
+                                  scrollTo(i_0),
+                              }["ProjectCarousel[urls.map() > <button>.onClick]"],
+                              "aria-label": `Go to image ${i_0 + 1}`,
+                              "aria-current": i_0 === selectedIndex ? "true" : undefined,
+                            },
+                            i_0,
+                            false,
+                            {
+                              fileName: "[project]/src/components/project-carousel.tsx",
+                              lineNumber: 150,
+                              columnNumber: 54,
+                            },
+                            this,
+                          ),
+                      }["ProjectCarousel[urls.map()]"],
+                    ),
+                  },
+                  void 0,
+                  false,
+                  {
                     fileName: "[project]/src/components/project-carousel.tsx",
                     lineNumber: 149,
-                    columnNumber: 1140
-                }, this)
-            ]
-        }, void 0, true);
+                    columnNumber: 1140,
+                  },
+                  this,
+                ),
+              ],
+            },
+            void 0,
+            true,
+          );
         $[22] = scrollNext;
         $[23] = scrollPrev;
         $[24] = scrollTo;
         $[25] = selectedIndex;
         $[26] = urls;
         $[27] = t11;
-    } else {
+      } else {
         t11 = $[27];
-    }
-    let t12;
-    if ($[28] !== t10 || $[29] !== t11 || $[30] !== t7) {
-        t12 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+      }
+      let t12;
+      if ($[28] !== t10 || $[29] !== t11 || $[30] !== t7) {
+        t12 = /*#__PURE__*/ (0,
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+          "jsxDEV"
+        ])(
+          "div",
+          {
             className: t7,
-            children: [
-                t10,
-                t11
-            ]
-        }, void 0, true, {
+            children: [t10, t11],
+          },
+          void 0,
+          true,
+          {
             fileName: "[project]/src/components/project-carousel.tsx",
             lineNumber: 165,
-            columnNumber: 11
-        }, this);
+            columnNumber: 11,
+          },
+          this,
+        );
         $[28] = t10;
         $[29] = t11;
         $[30] = t7;
         $[31] = t12;
-    } else {
+      } else {
         t12 = $[31];
+      }
+      return t12;
     }
-    return t12;
-}
-_s(ProjectCarousel, "JUjzhJCEb4hFeZA6UZFLuLPEDjI=", false, function() {
-    return [
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$embla$2d$carousel$2d$react$2f$esm$2f$embla$2d$carousel$2d$react$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"]
-    ];
-});
-_c = ProjectCarousel;
-var _c;
-__turbopack_context__.k.register(_c, "ProjectCarousel");
-if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
-    __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
-}
-}),
-"[project]/node_modules/embla-carousel-reactive-utils/esm/embla-carousel-reactive-utils.esm.js [app-client] (ecmascript)", ((__turbopack_context__) => {
-"use strict";
+    _s(ProjectCarousel, "JUjzhJCEb4hFeZA6UZFLuLPEDjI=", false, function () {
+      return [
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$embla$2d$carousel$2d$react$2f$esm$2f$embla$2d$carousel$2d$react$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+          "default"
+        ],
+      ];
+    });
+    _c = ProjectCarousel;
+    var _c;
+    __turbopack_context__.k.register(_c, "ProjectCarousel");
+    if (typeof globalThis.$RefreshHelpers$ === "object" && globalThis.$RefreshHelpers !== null) {
+      __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
+    }
+  },
+  "[project]/node_modules/embla-carousel-reactive-utils/esm/embla-carousel-reactive-utils.esm.js [app-client] (ecmascript)",
+  (__turbopack_context__) => {
+    "use strict";
 
-__turbopack_context__.s([
-    "areOptionsEqual",
-    ()=>areOptionsEqual,
-    "arePluginsEqual",
-    ()=>arePluginsEqual,
-    "canUseDOM",
-    ()=>canUseDOM,
-    "sortAndMapPluginToOptions",
-    ()=>sortAndMapPluginToOptions
-]);
-function isObject(subject) {
-    return Object.prototype.toString.call(subject) === '[object Object]';
-}
-function isRecord(subject) {
-    return isObject(subject) || Array.isArray(subject);
-}
-function canUseDOM() {
-    return !!(typeof window !== 'undefined' && window.document && window.document.createElement);
-}
-function areOptionsEqual(optionsA, optionsB) {
-    const optionsAKeys = Object.keys(optionsA);
-    const optionsBKeys = Object.keys(optionsB);
-    if (optionsAKeys.length !== optionsBKeys.length) return false;
-    const breakpointsA = JSON.stringify(Object.keys(optionsA.breakpoints || {}));
-    const breakpointsB = JSON.stringify(Object.keys(optionsB.breakpoints || {}));
-    if (breakpointsA !== breakpointsB) return false;
-    return optionsAKeys.every((key)=>{
+    __turbopack_context__.s([
+      "areOptionsEqual",
+      () => areOptionsEqual,
+      "arePluginsEqual",
+      () => arePluginsEqual,
+      "canUseDOM",
+      () => canUseDOM,
+      "sortAndMapPluginToOptions",
+      () => sortAndMapPluginToOptions,
+    ]);
+    function isObject(subject) {
+      return Object.prototype.toString.call(subject) === "[object Object]";
+    }
+    function isRecord(subject) {
+      return isObject(subject) || Array.isArray(subject);
+    }
+    function canUseDOM() {
+      return !!(typeof window !== "undefined" && window.document && window.document.createElement);
+    }
+    function areOptionsEqual(optionsA, optionsB) {
+      const optionsAKeys = Object.keys(optionsA);
+      const optionsBKeys = Object.keys(optionsB);
+      if (optionsAKeys.length !== optionsBKeys.length) return false;
+      const breakpointsA = JSON.stringify(Object.keys(optionsA.breakpoints || {}));
+      const breakpointsB = JSON.stringify(Object.keys(optionsB.breakpoints || {}));
+      if (breakpointsA !== breakpointsB) return false;
+      return optionsAKeys.every((key) => {
         const valueA = optionsA[key];
         const valueB = optionsB[key];
-        if (typeof valueA === 'function') return `${valueA}` === `${valueB}`;
+        if (typeof valueA === "function") return `${valueA}` === `${valueB}`;
         if (!isRecord(valueA) || !isRecord(valueB)) return valueA === valueB;
         return areOptionsEqual(valueA, valueB);
-    });
-}
-function sortAndMapPluginToOptions(plugins) {
-    return plugins.concat().sort((a, b)=>a.name > b.name ? 1 : -1).map((plugin)=>plugin.options);
-}
-function arePluginsEqual(pluginsA, pluginsB) {
-    if (pluginsA.length !== pluginsB.length) return false;
-    const optionsA = sortAndMapPluginToOptions(pluginsA);
-    const optionsB = sortAndMapPluginToOptions(pluginsB);
-    return optionsA.every((optionA, index)=>{
+      });
+    }
+    function sortAndMapPluginToOptions(plugins) {
+      return plugins
+        .concat()
+        .sort((a, b) => (a.name > b.name ? 1 : -1))
+        .map((plugin) => plugin.options);
+    }
+    function arePluginsEqual(pluginsA, pluginsB) {
+      if (pluginsA.length !== pluginsB.length) return false;
+      const optionsA = sortAndMapPluginToOptions(pluginsA);
+      const optionsB = sortAndMapPluginToOptions(pluginsB);
+      return optionsA.every((optionA, index) => {
         const optionB = optionsB[index];
         return areOptionsEqual(optionA, optionB);
-    });
-}
-;
- //# sourceMappingURL=embla-carousel-reactive-utils.esm.js.map
-}),
-"[project]/node_modules/embla-carousel/esm/embla-carousel.esm.js [app-client] (ecmascript)", ((__turbopack_context__) => {
-"use strict";
+      });
+    }
+  },
+  //# sourceMappingURL=embla-carousel-reactive-utils.esm.js.map
+  "[project]/node_modules/embla-carousel/esm/embla-carousel.esm.js [app-client] (ecmascript)",
+  (__turbopack_context__) => {
+    "use strict";
 
-__turbopack_context__.s([
-    "default",
-    ()=>EmblaCarousel
-]);
-function isNumber(subject) {
-    return typeof subject === 'number';
-}
-function isString(subject) {
-    return typeof subject === 'string';
-}
-function isBoolean(subject) {
-    return typeof subject === 'boolean';
-}
-function isObject(subject) {
-    return Object.prototype.toString.call(subject) === '[object Object]';
-}
-function mathAbs(n) {
-    return Math.abs(n);
-}
-function mathSign(n) {
-    return Math.sign(n);
-}
-function deltaAbs(valueB, valueA) {
-    return mathAbs(valueB - valueA);
-}
-function factorAbs(valueB, valueA) {
-    if (valueB === 0 || valueA === 0) return 0;
-    if (mathAbs(valueB) <= mathAbs(valueA)) return 0;
-    const diff = deltaAbs(mathAbs(valueB), mathAbs(valueA));
-    return mathAbs(diff / valueB);
-}
-function roundToTwoDecimals(num) {
-    return Math.round(num * 100) / 100;
-}
-function arrayKeys(array) {
-    return objectKeys(array).map(Number);
-}
-function arrayLast(array) {
-    return array[arrayLastIndex(array)];
-}
-function arrayLastIndex(array) {
-    return Math.max(0, array.length - 1);
-}
-function arrayIsLastIndex(array, index) {
-    return index === arrayLastIndex(array);
-}
-function arrayFromNumber(n, startAt = 0) {
-    return Array.from(Array(n), (_, i)=>startAt + i);
-}
-function objectKeys(object) {
-    return Object.keys(object);
-}
-function objectsMergeDeep(objectA, objectB) {
-    return [
-        objectA,
-        objectB
-    ].reduce((mergedObjects, currentObject)=>{
-        objectKeys(currentObject).forEach((key)=>{
-            const valueA = mergedObjects[key];
-            const valueB = currentObject[key];
-            const areObjects = isObject(valueA) && isObject(valueB);
-            mergedObjects[key] = areObjects ? objectsMergeDeep(valueA, valueB) : valueB;
+    __turbopack_context__.s(["default", () => EmblaCarousel]);
+    function isNumber(subject) {
+      return typeof subject === "number";
+    }
+    function isString(subject) {
+      return typeof subject === "string";
+    }
+    function isBoolean(subject) {
+      return typeof subject === "boolean";
+    }
+    function isObject(subject) {
+      return Object.prototype.toString.call(subject) === "[object Object]";
+    }
+    function mathAbs(n) {
+      return Math.abs(n);
+    }
+    function mathSign(n) {
+      return Math.sign(n);
+    }
+    function deltaAbs(valueB, valueA) {
+      return mathAbs(valueB - valueA);
+    }
+    function factorAbs(valueB, valueA) {
+      if (valueB === 0 || valueA === 0) return 0;
+      if (mathAbs(valueB) <= mathAbs(valueA)) return 0;
+      const diff = deltaAbs(mathAbs(valueB), mathAbs(valueA));
+      return mathAbs(diff / valueB);
+    }
+    function roundToTwoDecimals(num) {
+      return Math.round(num * 100) / 100;
+    }
+    function arrayKeys(array) {
+      return objectKeys(array).map(Number);
+    }
+    function arrayLast(array) {
+      return array[arrayLastIndex(array)];
+    }
+    function arrayLastIndex(array) {
+      return Math.max(0, array.length - 1);
+    }
+    function arrayIsLastIndex(array, index) {
+      return index === arrayLastIndex(array);
+    }
+    function arrayFromNumber(n, startAt = 0) {
+      return Array.from(Array(n), (_, i) => startAt + i);
+    }
+    function objectKeys(object) {
+      return Object.keys(object);
+    }
+    function objectsMergeDeep(objectA, objectB) {
+      return [objectA, objectB].reduce((mergedObjects, currentObject) => {
+        objectKeys(currentObject).forEach((key) => {
+          const valueA = mergedObjects[key];
+          const valueB = currentObject[key];
+          const areObjects = isObject(valueA) && isObject(valueB);
+          mergedObjects[key] = areObjects ? objectsMergeDeep(valueA, valueB) : valueB;
         });
         return mergedObjects;
-    }, {});
-}
-function isMouseEvent(evt, ownerWindow) {
-    return typeof ownerWindow.MouseEvent !== 'undefined' && evt instanceof ownerWindow.MouseEvent;
-}
-function Alignment(align, viewSize) {
-    const predefined = {
+      }, {});
+    }
+    function isMouseEvent(evt, ownerWindow) {
+      return typeof ownerWindow.MouseEvent !== "undefined" && evt instanceof ownerWindow.MouseEvent;
+    }
+    function Alignment(align, viewSize) {
+      const predefined = {
         start,
         center,
-        end
-    };
-    function start() {
+        end,
+      };
+      function start() {
         return 0;
-    }
-    function center(n) {
+      }
+      function center(n) {
         return end(n) / 2;
-    }
-    function end(n) {
+      }
+      function end(n) {
         return viewSize - n;
-    }
-    function measure(n, index) {
+      }
+      function measure(n, index) {
         if (isString(align)) return predefined[align](n);
         return align(viewSize, n, index);
+      }
+      const self = {
+        measure,
+      };
+      return self;
     }
-    const self = {
-        measure
-    };
-    return self;
-}
-function EventStore() {
-    let listeners = [];
-    function add(node, type, handler, options = {
-        passive: true
-    }) {
+    function EventStore() {
+      let listeners = [];
+      function add(
+        node,
+        type,
+        handler,
+        options = {
+          passive: true,
+        },
+      ) {
         let removeListener;
-        if ('addEventListener' in node) {
-            node.addEventListener(type, handler, options);
-            removeListener = ()=>node.removeEventListener(type, handler, options);
+        if ("addEventListener" in node) {
+          node.addEventListener(type, handler, options);
+          removeListener = () => node.removeEventListener(type, handler, options);
         } else {
-            const legacyMediaQueryList = node;
-            legacyMediaQueryList.addListener(handler);
-            removeListener = ()=>legacyMediaQueryList.removeListener(handler);
+          const legacyMediaQueryList = node;
+          legacyMediaQueryList.addListener(handler);
+          removeListener = () => legacyMediaQueryList.removeListener(handler);
         }
         listeners.push(removeListener);
         return self;
-    }
-    function clear() {
-        listeners = listeners.filter((remove)=>remove());
-    }
-    const self = {
+      }
+      function clear() {
+        listeners = listeners.filter((remove) => remove());
+      }
+      const self = {
         add,
-        clear
-    };
-    return self;
-}
-function Animations(ownerDocument, ownerWindow, update, render) {
-    const documentVisibleHandler = EventStore();
-    const fixedTimeStep = 1000 / 60;
-    let lastTimeStamp = null;
-    let accumulatedTime = 0;
-    let animationId = 0;
-    function init() {
-        documentVisibleHandler.add(ownerDocument, 'visibilitychange', ()=>{
-            if (ownerDocument.hidden) reset();
-        });
+        clear,
+      };
+      return self;
     }
-    function destroy() {
+    function Animations(ownerDocument, ownerWindow, update, render) {
+      const documentVisibleHandler = EventStore();
+      const fixedTimeStep = 1000 / 60;
+      let lastTimeStamp = null;
+      let accumulatedTime = 0;
+      let animationId = 0;
+      function init() {
+        documentVisibleHandler.add(ownerDocument, "visibilitychange", () => {
+          if (ownerDocument.hidden) reset();
+        });
+      }
+      function destroy() {
         stop();
         documentVisibleHandler.clear();
-    }
-    function animate(timeStamp) {
+      }
+      function animate(timeStamp) {
         if (!animationId) return;
         if (!lastTimeStamp) {
-            lastTimeStamp = timeStamp;
-            update();
-            update();
+          lastTimeStamp = timeStamp;
+          update();
+          update();
         }
         const timeElapsed = timeStamp - lastTimeStamp;
         lastTimeStamp = timeStamp;
         accumulatedTime += timeElapsed;
-        while(accumulatedTime >= fixedTimeStep){
-            update();
-            accumulatedTime -= fixedTimeStep;
+        while (accumulatedTime >= fixedTimeStep) {
+          update();
+          accumulatedTime -= fixedTimeStep;
         }
         const alpha = accumulatedTime / fixedTimeStep;
         render(alpha);
         if (animationId) {
-            animationId = ownerWindow.requestAnimationFrame(animate);
+          animationId = ownerWindow.requestAnimationFrame(animate);
         }
-    }
-    function start() {
+      }
+      function start() {
         if (animationId) return;
         animationId = ownerWindow.requestAnimationFrame(animate);
-    }
-    function stop() {
+      }
+      function stop() {
         ownerWindow.cancelAnimationFrame(animationId);
         lastTimeStamp = null;
         accumulatedTime = 0;
         animationId = 0;
-    }
-    function reset() {
+      }
+      function reset() {
         lastTimeStamp = null;
         accumulatedTime = 0;
-    }
-    const self = {
+      }
+      const self = {
         init,
         destroy,
         start,
         stop,
         update,
-        render
-    };
-    return self;
-}
-function Axis(axis, contentDirection) {
-    const isRightToLeft = contentDirection === 'rtl';
-    const isVertical = axis === 'y';
-    const scroll = isVertical ? 'y' : 'x';
-    const cross = isVertical ? 'x' : 'y';
-    const sign = !isVertical && isRightToLeft ? -1 : 1;
-    const startEdge = getStartEdge();
-    const endEdge = getEndEdge();
-    function measureSize(nodeRect) {
+        render,
+      };
+      return self;
+    }
+    function Axis(axis, contentDirection) {
+      const isRightToLeft = contentDirection === "rtl";
+      const isVertical = axis === "y";
+      const scroll = isVertical ? "y" : "x";
+      const cross = isVertical ? "x" : "y";
+      const sign = !isVertical && isRightToLeft ? -1 : 1;
+      const startEdge = getStartEdge();
+      const endEdge = getEndEdge();
+      function measureSize(nodeRect) {
         const { height, width } = nodeRect;
         return isVertical ? height : width;
-    }
-    function getStartEdge() {
-        if (isVertical) return 'top';
-        return isRightToLeft ? 'right' : 'left';
-    }
-    function getEndEdge() {
-        if (isVertical) return 'bottom';
-        return isRightToLeft ? 'left' : 'right';
-    }
-    function direction(n) {
+      }
+      function getStartEdge() {
+        if (isVertical) return "top";
+        return isRightToLeft ? "right" : "left";
+      }
+      function getEndEdge() {
+        if (isVertical) return "bottom";
+        return isRightToLeft ? "left" : "right";
+      }
+      function direction(n) {
         return n * sign;
-    }
-    const self = {
+      }
+      const self = {
         scroll,
         cross,
         startEdge,
         endEdge,
         measureSize,
-        direction
-    };
-    return self;
-}
-function Limit(min = 0, max = 0) {
-    const length = mathAbs(min - max);
-    function reachedMin(n) {
+        direction,
+      };
+      return self;
+    }
+    function Limit(min = 0, max = 0) {
+      const length = mathAbs(min - max);
+      function reachedMin(n) {
         return n < min;
-    }
-    function reachedMax(n) {
+      }
+      function reachedMax(n) {
         return n > max;
-    }
-    function reachedAny(n) {
+      }
+      function reachedAny(n) {
         return reachedMin(n) || reachedMax(n);
-    }
-    function constrain(n) {
+      }
+      function constrain(n) {
         if (!reachedAny(n)) return n;
         return reachedMin(n) ? min : max;
-    }
-    function removeOffset(n) {
+      }
+      function removeOffset(n) {
         if (!length) return n;
         return n - length * Math.ceil((n - max) / length);
-    }
-    const self = {
+      }
+      const self = {
         length,
         max,
         min,
@@ -668,100 +875,128 @@ function Limit(min = 0, max = 0) {
         reachedAny,
         reachedMax,
         reachedMin,
-        removeOffset
-    };
-    return self;
-}
-function Counter(max, start, loop) {
-    const { constrain } = Limit(0, max);
-    const loopEnd = max + 1;
-    let counter = withinLimit(start);
-    function withinLimit(n) {
+        removeOffset,
+      };
+      return self;
+    }
+    function Counter(max, start, loop) {
+      const { constrain } = Limit(0, max);
+      const loopEnd = max + 1;
+      let counter = withinLimit(start);
+      function withinLimit(n) {
         return !loop ? constrain(n) : mathAbs((loopEnd + n) % loopEnd);
-    }
-    function get() {
+      }
+      function get() {
         return counter;
-    }
-    function set(n) {
+      }
+      function set(n) {
         counter = withinLimit(n);
         return self;
-    }
-    function add(n) {
+      }
+      function add(n) {
         return clone().set(get() + n);
-    }
-    function clone() {
+      }
+      function clone() {
         return Counter(max, get(), loop);
-    }
-    const self = {
+      }
+      const self = {
         get,
         set,
         add,
-        clone
-    };
-    return self;
-}
-function DragHandler(axis, rootNode, ownerDocument, ownerWindow, target, dragTracker, location, animation, scrollTo, scrollBody, scrollTarget, index, eventHandler, percentOfView, dragFree, dragThreshold, skipSnaps, baseFriction, watchDrag) {
-    const { cross: crossAxis, direction } = axis;
-    const focusNodes = [
-        'INPUT',
-        'SELECT',
-        'TEXTAREA'
-    ];
-    const nonPassiveEvent = {
-        passive: false
-    };
-    const initEvents = EventStore();
-    const dragEvents = EventStore();
-    const goToNextThreshold = Limit(50, 225).constrain(percentOfView.measure(20));
-    const snapForceBoost = {
+        clone,
+      };
+      return self;
+    }
+    function DragHandler(
+      axis,
+      rootNode,
+      ownerDocument,
+      ownerWindow,
+      target,
+      dragTracker,
+      location,
+      animation,
+      scrollTo,
+      scrollBody,
+      scrollTarget,
+      index,
+      eventHandler,
+      percentOfView,
+      dragFree,
+      dragThreshold,
+      skipSnaps,
+      baseFriction,
+      watchDrag,
+    ) {
+      const { cross: crossAxis, direction } = axis;
+      const focusNodes = ["INPUT", "SELECT", "TEXTAREA"];
+      const nonPassiveEvent = {
+        passive: false,
+      };
+      const initEvents = EventStore();
+      const dragEvents = EventStore();
+      const goToNextThreshold = Limit(50, 225).constrain(percentOfView.measure(20));
+      const snapForceBoost = {
         mouse: 300,
-        touch: 400
-    };
-    const freeForceBoost = {
+        touch: 400,
+      };
+      const freeForceBoost = {
         mouse: 500,
-        touch: 600
-    };
-    const baseSpeed = dragFree ? 43 : 25;
-    let isMoving = false;
-    let startScroll = 0;
-    let startCross = 0;
-    let pointerIsDown = false;
-    let preventScroll = false;
-    let preventClick = false;
-    let isMouse = false;
-    function init(emblaApi) {
+        touch: 600,
+      };
+      const baseSpeed = dragFree ? 43 : 25;
+      let isMoving = false;
+      let startScroll = 0;
+      let startCross = 0;
+      let pointerIsDown = false;
+      let preventScroll = false;
+      let preventClick = false;
+      let isMouse = false;
+      function init(emblaApi) {
         if (!watchDrag) return;
         function downIfAllowed(evt) {
-            if (isBoolean(watchDrag) || watchDrag(emblaApi, evt)) down(evt);
+          if (isBoolean(watchDrag) || watchDrag(emblaApi, evt)) down(evt);
         }
         const node = rootNode;
-        initEvents.add(node, 'dragstart', (evt)=>evt.preventDefault(), nonPassiveEvent).add(node, 'touchmove', ()=>undefined, nonPassiveEvent).add(node, 'touchend', ()=>undefined).add(node, 'touchstart', downIfAllowed).add(node, 'mousedown', downIfAllowed).add(node, 'touchcancel', up).add(node, 'contextmenu', up).add(node, 'click', click, true);
-    }
-    function destroy() {
+        initEvents
+          .add(node, "dragstart", (evt) => evt.preventDefault(), nonPassiveEvent)
+          .add(node, "touchmove", () => undefined, nonPassiveEvent)
+          .add(node, "touchend", () => undefined)
+          .add(node, "touchstart", downIfAllowed)
+          .add(node, "mousedown", downIfAllowed)
+          .add(node, "touchcancel", up)
+          .add(node, "contextmenu", up)
+          .add(node, "click", click, true);
+      }
+      function destroy() {
         initEvents.clear();
         dragEvents.clear();
-    }
-    function addDragEvents() {
+      }
+      function addDragEvents() {
         const node = isMouse ? ownerDocument : rootNode;
-        dragEvents.add(node, 'touchmove', move, nonPassiveEvent).add(node, 'touchend', up).add(node, 'mousemove', move, nonPassiveEvent).add(node, 'mouseup', up);
-    }
-    function isFocusNode(node) {
-        const nodeName = node.nodeName || '';
+        dragEvents
+          .add(node, "touchmove", move, nonPassiveEvent)
+          .add(node, "touchend", up)
+          .add(node, "mousemove", move, nonPassiveEvent)
+          .add(node, "mouseup", up);
+      }
+      function isFocusNode(node) {
+        const nodeName = node.nodeName || "";
         return focusNodes.includes(nodeName);
-    }
-    function forceBoost() {
+      }
+      function forceBoost() {
         const boost = dragFree ? freeForceBoost : snapForceBoost;
-        const type = isMouse ? 'mouse' : 'touch';
+        const type = isMouse ? "mouse" : "touch";
         return boost[type];
-    }
-    function allowedForce(force, targetChanged) {
+      }
+      function allowedForce(force, targetChanged) {
         const next = index.add(mathSign(force) * -1);
         const baseForce = scrollTarget.byDistance(force, !dragFree).distance;
         if (dragFree || mathAbs(force) < goToNextThreshold) return baseForce;
         if (skipSnaps && targetChanged) return baseForce * 0.5;
         return scrollTarget.byIndex(next.get(), 0).distance;
-    }
-    function down(evt) {
+      }
+      function down(evt) {
         const isMouseEvt = isMouseEvent(evt, ownerWindow);
         isMouse = isMouseEvt;
         preventClick = dragFree && isMouseEvt && !evt.buttons && isMoving;
@@ -775,9 +1010,9 @@ function DragHandler(axis, rootNode, ownerDocument, ownerWindow, target, dragTra
         addDragEvents();
         startScroll = dragTracker.readPoint(evt);
         startCross = dragTracker.readPoint(evt, crossAxis);
-        eventHandler.emit('pointerDown');
-    }
-    function move(evt) {
+        eventHandler.emit("pointerDown");
+      }
+      function move(evt) {
         const isTouchEvt = !isMouseEvent(evt, ownerWindow);
         if (isTouchEvt && evt.touches.length >= 2) return up(evt);
         const lastScroll = dragTracker.readPoint(evt);
@@ -785,9 +1020,9 @@ function DragHandler(axis, rootNode, ownerDocument, ownerWindow, target, dragTra
         const diffScroll = deltaAbs(lastScroll, startScroll);
         const diffCross = deltaAbs(lastCross, startCross);
         if (!preventScroll && !isMouse) {
-            if (!evt.cancelable) return up(evt);
-            preventScroll = diffScroll > diffCross;
-            if (!preventScroll) return up(evt);
+          if (!evt.cancelable) return up(evt);
+          preventScroll = diffScroll > diffCross;
+          if (!preventScroll) return up(evt);
         }
         const diff = dragTracker.pointerMove(evt);
         if (diffScroll > dragThreshold) preventClick = true;
@@ -795,8 +1030,8 @@ function DragHandler(axis, rootNode, ownerDocument, ownerWindow, target, dragTra
         animation.start();
         target.add(direction(diff));
         evt.preventDefault();
-    }
-    function up(evt) {
+      }
+      function up(evt) {
         const currentLocation = scrollTarget.byDistance(0, false);
         const targetChanged = currentLocation.index !== index.get();
         const rawForce = dragTracker.pointerUp(evt) * forceBoost();
@@ -810,50 +1045,50 @@ function DragHandler(axis, rootNode, ownerDocument, ownerWindow, target, dragTra
         scrollBody.useDuration(speed).useFriction(friction);
         scrollTo.distance(force, !dragFree);
         isMouse = false;
-        eventHandler.emit('pointerUp');
-    }
-    function click(evt) {
+        eventHandler.emit("pointerUp");
+      }
+      function click(evt) {
         if (preventClick) {
-            evt.stopPropagation();
-            evt.preventDefault();
-            preventClick = false;
+          evt.stopPropagation();
+          evt.preventDefault();
+          preventClick = false;
         }
-    }
-    function pointerDown() {
+      }
+      function pointerDown() {
         return pointerIsDown;
-    }
-    const self = {
+      }
+      const self = {
         init,
         destroy,
-        pointerDown
-    };
-    return self;
-}
-function DragTracker(axis, ownerWindow) {
-    const logInterval = 170;
-    let startEvent;
-    let lastEvent;
-    function readTime(evt) {
+        pointerDown,
+      };
+      return self;
+    }
+    function DragTracker(axis, ownerWindow) {
+      const logInterval = 170;
+      let startEvent;
+      let lastEvent;
+      function readTime(evt) {
         return evt.timeStamp;
-    }
-    function readPoint(evt, evtAxis) {
+      }
+      function readPoint(evt, evtAxis) {
         const property = evtAxis || axis.scroll;
-        const coord = `client${property === 'x' ? 'X' : 'Y'}`;
+        const coord = `client${property === "x" ? "X" : "Y"}`;
         return (isMouseEvent(evt, ownerWindow) ? evt : evt.touches[0])[coord];
-    }
-    function pointerDown(evt) {
+      }
+      function pointerDown(evt) {
         startEvent = evt;
         lastEvent = evt;
         return readPoint(evt);
-    }
-    function pointerMove(evt) {
+      }
+      function pointerMove(evt) {
         const diff = readPoint(evt) - readPoint(lastEvent);
         const expired = readTime(evt) - readTime(startEvent) > logInterval;
         lastEvent = evt;
         if (expired) startEvent = evt;
         return diff;
-    }
-    function pointerUp(evt) {
+      }
+      function pointerUp(evt) {
         if (!startEvent || !lastEvent) return 0;
         const diffDrag = readPoint(lastEvent) - readPoint(startEvent);
         const diffTime = readTime(evt) - readTime(startEvent);
@@ -861,147 +1096,160 @@ function DragTracker(axis, ownerWindow) {
         const force = diffDrag / diffTime;
         const isFlick = diffTime && !expired && mathAbs(force) > 0.1;
         return isFlick ? force : 0;
-    }
-    const self = {
+      }
+      const self = {
         pointerDown,
         pointerMove,
         pointerUp,
-        readPoint
-    };
-    return self;
-}
-function NodeRects() {
-    function measure(node) {
+        readPoint,
+      };
+      return self;
+    }
+    function NodeRects() {
+      function measure(node) {
         const { offsetTop, offsetLeft, offsetWidth, offsetHeight } = node;
         const offset = {
-            top: offsetTop,
-            right: offsetLeft + offsetWidth,
-            bottom: offsetTop + offsetHeight,
-            left: offsetLeft,
-            width: offsetWidth,
-            height: offsetHeight
+          top: offsetTop,
+          right: offsetLeft + offsetWidth,
+          bottom: offsetTop + offsetHeight,
+          left: offsetLeft,
+          width: offsetWidth,
+          height: offsetHeight,
         };
         return offset;
+      }
+      const self = {
+        measure,
+      };
+      return self;
     }
-    const self = {
-        measure
-    };
-    return self;
-}
-function PercentOfView(viewSize) {
-    function measure(n) {
+    function PercentOfView(viewSize) {
+      function measure(n) {
         return viewSize * (n / 100);
+      }
+      const self = {
+        measure,
+      };
+      return self;
     }
-    const self = {
-        measure
-    };
-    return self;
-}
-function ResizeHandler(container, eventHandler, ownerWindow, slides, axis, watchResize, nodeRects) {
-    const observeNodes = [
-        container
-    ].concat(slides);
-    let resizeObserver;
-    let containerSize;
-    let slideSizes = [];
-    let destroyed = false;
-    function readSize(node) {
+    function ResizeHandler(
+      container,
+      eventHandler,
+      ownerWindow,
+      slides,
+      axis,
+      watchResize,
+      nodeRects,
+    ) {
+      const observeNodes = [container].concat(slides);
+      let resizeObserver;
+      let containerSize;
+      let slideSizes = [];
+      let destroyed = false;
+      function readSize(node) {
         return axis.measureSize(nodeRects.measure(node));
-    }
-    function init(emblaApi) {
+      }
+      function init(emblaApi) {
         if (!watchResize) return;
         containerSize = readSize(container);
         slideSizes = slides.map(readSize);
         function defaultCallback(entries) {
-            for (const entry of entries){
-                if (destroyed) return;
-                const isContainer = entry.target === container;
-                const slideIndex = slides.indexOf(entry.target);
-                const lastSize = isContainer ? containerSize : slideSizes[slideIndex];
-                const newSize = readSize(isContainer ? container : slides[slideIndex]);
-                const diffSize = mathAbs(newSize - lastSize);
-                if (diffSize >= 0.5) {
-                    emblaApi.reInit();
-                    eventHandler.emit('resize');
-                    break;
-                }
+          for (const entry of entries) {
+            if (destroyed) return;
+            const isContainer = entry.target === container;
+            const slideIndex = slides.indexOf(entry.target);
+            const lastSize = isContainer ? containerSize : slideSizes[slideIndex];
+            const newSize = readSize(isContainer ? container : slides[slideIndex]);
+            const diffSize = mathAbs(newSize - lastSize);
+            if (diffSize >= 0.5) {
+              emblaApi.reInit();
+              eventHandler.emit("resize");
+              break;
             }
+          }
         }
-        resizeObserver = new ResizeObserver((entries)=>{
-            if (isBoolean(watchResize) || watchResize(emblaApi, entries)) {
-                defaultCallback(entries);
-            }
+        resizeObserver = new ResizeObserver((entries) => {
+          if (isBoolean(watchResize) || watchResize(emblaApi, entries)) {
+            defaultCallback(entries);
+          }
         });
-        ownerWindow.requestAnimationFrame(()=>{
-            observeNodes.forEach((node)=>resizeObserver.observe(node));
+        ownerWindow.requestAnimationFrame(() => {
+          observeNodes.forEach((node) => resizeObserver.observe(node));
         });
-    }
-    function destroy() {
+      }
+      function destroy() {
         destroyed = true;
         if (resizeObserver) resizeObserver.disconnect();
-    }
-    const self = {
+      }
+      const self = {
         init,
-        destroy
-    };
-    return self;
-}
-function ScrollBody(location, offsetLocation, previousLocation, target, baseDuration, baseFriction) {
-    let scrollVelocity = 0;
-    let scrollDirection = 0;
-    let scrollDuration = baseDuration;
-    let scrollFriction = baseFriction;
-    let rawLocation = location.get();
-    let rawLocationPrevious = 0;
-    function seek() {
+        destroy,
+      };
+      return self;
+    }
+    function ScrollBody(
+      location,
+      offsetLocation,
+      previousLocation,
+      target,
+      baseDuration,
+      baseFriction,
+    ) {
+      let scrollVelocity = 0;
+      let scrollDirection = 0;
+      let scrollDuration = baseDuration;
+      let scrollFriction = baseFriction;
+      let rawLocation = location.get();
+      let rawLocationPrevious = 0;
+      function seek() {
         const displacement = target.get() - location.get();
         const isInstant = !scrollDuration;
         let scrollDistance = 0;
         if (isInstant) {
-            scrollVelocity = 0;
-            previousLocation.set(target);
-            location.set(target);
-            scrollDistance = displacement;
+          scrollVelocity = 0;
+          previousLocation.set(target);
+          location.set(target);
+          scrollDistance = displacement;
         } else {
-            previousLocation.set(location);
-            scrollVelocity += displacement / scrollDuration;
-            scrollVelocity *= scrollFriction;
-            rawLocation += scrollVelocity;
-            location.add(scrollVelocity);
-            scrollDistance = rawLocation - rawLocationPrevious;
+          previousLocation.set(location);
+          scrollVelocity += displacement / scrollDuration;
+          scrollVelocity *= scrollFriction;
+          rawLocation += scrollVelocity;
+          location.add(scrollVelocity);
+          scrollDistance = rawLocation - rawLocationPrevious;
         }
         scrollDirection = mathSign(scrollDistance);
         rawLocationPrevious = rawLocation;
         return self;
-    }
-    function settled() {
+      }
+      function settled() {
         const diff = target.get() - offsetLocation.get();
         return mathAbs(diff) < 0.001;
-    }
-    function duration() {
+      }
+      function duration() {
         return scrollDuration;
-    }
-    function direction() {
+      }
+      function direction() {
         return scrollDirection;
-    }
-    function velocity() {
+      }
+      function velocity() {
         return scrollVelocity;
-    }
-    function useBaseDuration() {
+      }
+      function useBaseDuration() {
         return useDuration(baseDuration);
-    }
-    function useBaseFriction() {
+      }
+      function useBaseFriction() {
         return useFriction(baseFriction);
-    }
-    function useDuration(n) {
+      }
+      function useDuration(n) {
         scrollDuration = n;
         return self;
-    }
-    function useFriction(n) {
+      }
+      function useFriction(n) {
         scrollFriction = n;
         return self;
-    }
-    const self = {
+      }
+      const self = {
         direction,
         duration,
         velocity,
@@ -1010,60 +1258,61 @@ function ScrollBody(location, offsetLocation, previousLocation, target, baseDura
         useBaseFriction,
         useBaseDuration,
         useFriction,
-        useDuration
-    };
-    return self;
-}
-function ScrollBounds(limit, location, target, scrollBody, percentOfView) {
-    const pullBackThreshold = percentOfView.measure(10);
-    const edgeOffsetTolerance = percentOfView.measure(50);
-    const frictionLimit = Limit(0.1, 0.99);
-    let disabled = false;
-    function shouldConstrain() {
+        useDuration,
+      };
+      return self;
+    }
+    function ScrollBounds(limit, location, target, scrollBody, percentOfView) {
+      const pullBackThreshold = percentOfView.measure(10);
+      const edgeOffsetTolerance = percentOfView.measure(50);
+      const frictionLimit = Limit(0.1, 0.99);
+      let disabled = false;
+      function shouldConstrain() {
         if (disabled) return false;
         if (!limit.reachedAny(target.get())) return false;
         if (!limit.reachedAny(location.get())) return false;
         return true;
-    }
-    function constrain(pointerDown) {
+      }
+      function constrain(pointerDown) {
         if (!shouldConstrain()) return;
-        const edge = limit.reachedMin(location.get()) ? 'min' : 'max';
+        const edge = limit.reachedMin(location.get()) ? "min" : "max";
         const diffToEdge = mathAbs(limit[edge] - location.get());
         const diffToTarget = target.get() - location.get();
         const friction = frictionLimit.constrain(diffToEdge / edgeOffsetTolerance);
         target.subtract(diffToTarget * friction);
         if (!pointerDown && mathAbs(diffToTarget) < pullBackThreshold) {
-            target.set(limit.constrain(target.get()));
-            scrollBody.useDuration(25).useBaseFriction();
+          target.set(limit.constrain(target.get()));
+          scrollBody.useDuration(25).useBaseFriction();
         }
-    }
-    function toggleActive(active) {
+      }
+      function toggleActive(active) {
         disabled = !active;
-    }
-    const self = {
+      }
+      const self = {
         shouldConstrain,
         constrain,
-        toggleActive
-    };
-    return self;
-}
-function ScrollContain(viewSize, contentSize, snapsAligned, containScroll, pixelTolerance) {
-    const scrollBounds = Limit(-contentSize + viewSize, 0);
-    const snapsBounded = measureBounded();
-    const scrollContainLimit = findScrollContainLimit();
-    const snapsContained = measureContained();
-    function usePixelTolerance(bound, snap) {
-        return deltaAbs(bound, snap) <= 1;
+        toggleActive,
+      };
+      return self;
     }
-    function findScrollContainLimit() {
+    function ScrollContain(viewSize, contentSize, snapsAligned, containScroll, pixelTolerance) {
+      const scrollBounds = Limit(-contentSize + viewSize, 0);
+      const snapsBounded = measureBounded();
+      const scrollContainLimit = findScrollContainLimit();
+      const snapsContained = measureContained();
+      function usePixelTolerance(bound, snap) {
+        return deltaAbs(bound, snap) <= 1;
+      }
+      function findScrollContainLimit() {
         const startSnap = snapsBounded[0];
         const endSnap = arrayLast(snapsBounded);
         const min = snapsBounded.lastIndexOf(startSnap);
         const max = snapsBounded.indexOf(endSnap) + 1;
         return Limit(min, max);
-    }
-    function measureBounded() {
-        return snapsAligned.map((snapAligned, index)=>{
+      }
+      function measureBounded() {
+        return snapsAligned
+          .map((snapAligned, index) => {
             const { min, max } = scrollBounds;
             const snap = scrollBounds.constrain(snapAligned);
             const isFirst = !index;
@@ -1073,506 +1322,563 @@ function ScrollContain(viewSize, contentSize, snapsAligned, containScroll, pixel
             if (usePixelTolerance(min, snap)) return min;
             if (usePixelTolerance(max, snap)) return max;
             return snap;
-        }).map((scrollBound)=>parseFloat(scrollBound.toFixed(3)));
-    }
-    function measureContained() {
-        if (contentSize <= viewSize + pixelTolerance) return [
-            scrollBounds.max
-        ];
-        if (containScroll === 'keepSnaps') return snapsBounded;
+          })
+          .map((scrollBound) => parseFloat(scrollBound.toFixed(3)));
+      }
+      function measureContained() {
+        if (contentSize <= viewSize + pixelTolerance) return [scrollBounds.max];
+        if (containScroll === "keepSnaps") return snapsBounded;
         const { min, max } = scrollContainLimit;
         return snapsBounded.slice(min, max);
-    }
-    const self = {
+      }
+      const self = {
         snapsContained,
-        scrollContainLimit
-    };
-    return self;
-}
-function ScrollLimit(contentSize, scrollSnaps, loop) {
-    const max = scrollSnaps[0];
-    const min = loop ? max - contentSize : arrayLast(scrollSnaps);
-    const limit = Limit(min, max);
-    const self = {
-        limit
-    };
-    return self;
-}
-function ScrollLooper(contentSize, limit, location, vectors) {
-    const jointSafety = 0.1;
-    const min = limit.min + jointSafety;
-    const max = limit.max + jointSafety;
-    const { reachedMin, reachedMax } = Limit(min, max);
-    function shouldLoop(direction) {
+        scrollContainLimit,
+      };
+      return self;
+    }
+    function ScrollLimit(contentSize, scrollSnaps, loop) {
+      const max = scrollSnaps[0];
+      const min = loop ? max - contentSize : arrayLast(scrollSnaps);
+      const limit = Limit(min, max);
+      const self = {
+        limit,
+      };
+      return self;
+    }
+    function ScrollLooper(contentSize, limit, location, vectors) {
+      const jointSafety = 0.1;
+      const min = limit.min + jointSafety;
+      const max = limit.max + jointSafety;
+      const { reachedMin, reachedMax } = Limit(min, max);
+      function shouldLoop(direction) {
         if (direction === 1) return reachedMax(location.get());
         if (direction === -1) return reachedMin(location.get());
         return false;
-    }
-    function loop(direction) {
+      }
+      function loop(direction) {
         if (!shouldLoop(direction)) return;
         const loopDistance = contentSize * (direction * -1);
-        vectors.forEach((v)=>v.add(loopDistance));
+        vectors.forEach((v) => v.add(loopDistance));
+      }
+      const self = {
+        loop,
+      };
+      return self;
     }
-    const self = {
-        loop
-    };
-    return self;
-}
-function ScrollProgress(limit) {
-    const { max, length } = limit;
-    function get(n) {
+    function ScrollProgress(limit) {
+      const { max, length } = limit;
+      function get(n) {
         const currentLocation = n - max;
         return length ? currentLocation / -length : 0;
+      }
+      const self = {
+        get,
+      };
+      return self;
     }
-    const self = {
-        get
-    };
-    return self;
-}
-function ScrollSnaps(axis, alignment, containerRect, slideRects, slidesToScroll) {
-    const { startEdge, endEdge } = axis;
-    const { groupSlides } = slidesToScroll;
-    const alignments = measureSizes().map(alignment.measure);
-    const snaps = measureUnaligned();
-    const snapsAligned = measureAligned();
-    function measureSizes() {
-        return groupSlides(slideRects).map((rects)=>arrayLast(rects)[endEdge] - rects[0][startEdge]).map(mathAbs);
-    }
-    function measureUnaligned() {
-        return slideRects.map((rect)=>containerRect[startEdge] - rect[startEdge]).map((snap)=>-mathAbs(snap));
-    }
-    function measureAligned() {
-        return groupSlides(snaps).map((g)=>g[0]).map((snap, index)=>snap + alignments[index]);
-    }
-    const self = {
+    function ScrollSnaps(axis, alignment, containerRect, slideRects, slidesToScroll) {
+      const { startEdge, endEdge } = axis;
+      const { groupSlides } = slidesToScroll;
+      const alignments = measureSizes().map(alignment.measure);
+      const snaps = measureUnaligned();
+      const snapsAligned = measureAligned();
+      function measureSizes() {
+        return groupSlides(slideRects)
+          .map((rects) => arrayLast(rects)[endEdge] - rects[0][startEdge])
+          .map(mathAbs);
+      }
+      function measureUnaligned() {
+        return slideRects
+          .map((rect) => containerRect[startEdge] - rect[startEdge])
+          .map((snap) => -mathAbs(snap));
+      }
+      function measureAligned() {
+        return groupSlides(snaps)
+          .map((g) => g[0])
+          .map((snap, index) => snap + alignments[index]);
+      }
+      const self = {
         snaps,
-        snapsAligned
-    };
-    return self;
-}
-function SlideRegistry(containSnaps, containScroll, scrollSnaps, scrollContainLimit, slidesToScroll, slideIndexes) {
-    const { groupSlides } = slidesToScroll;
-    const { min, max } = scrollContainLimit;
-    const slideRegistry = createSlideRegistry();
-    function createSlideRegistry() {
+        snapsAligned,
+      };
+      return self;
+    }
+    function SlideRegistry(
+      containSnaps,
+      containScroll,
+      scrollSnaps,
+      scrollContainLimit,
+      slidesToScroll,
+      slideIndexes,
+    ) {
+      const { groupSlides } = slidesToScroll;
+      const { min, max } = scrollContainLimit;
+      const slideRegistry = createSlideRegistry();
+      function createSlideRegistry() {
         const groupedSlideIndexes = groupSlides(slideIndexes);
-        const doNotContain = !containSnaps || containScroll === 'keepSnaps';
-        if (scrollSnaps.length === 1) return [
-            slideIndexes
-        ];
+        const doNotContain = !containSnaps || containScroll === "keepSnaps";
+        if (scrollSnaps.length === 1) return [slideIndexes];
         if (doNotContain) return groupedSlideIndexes;
-        return groupedSlideIndexes.slice(min, max).map((group, index, groups)=>{
-            const isFirst = !index;
-            const isLast = arrayIsLastIndex(groups, index);
-            if (isFirst) {
-                const range = arrayLast(groups[0]) + 1;
-                return arrayFromNumber(range);
-            }
-            if (isLast) {
-                const range = arrayLastIndex(slideIndexes) - arrayLast(groups)[0] + 1;
-                return arrayFromNumber(range, arrayLast(groups)[0]);
-            }
-            return group;
+        return groupedSlideIndexes.slice(min, max).map((group, index, groups) => {
+          const isFirst = !index;
+          const isLast = arrayIsLastIndex(groups, index);
+          if (isFirst) {
+            const range = arrayLast(groups[0]) + 1;
+            return arrayFromNumber(range);
+          }
+          if (isLast) {
+            const range = arrayLastIndex(slideIndexes) - arrayLast(groups)[0] + 1;
+            return arrayFromNumber(range, arrayLast(groups)[0]);
+          }
+          return group;
         });
+      }
+      const self = {
+        slideRegistry,
+      };
+      return self;
     }
-    const self = {
-        slideRegistry
-    };
-    return self;
-}
-function ScrollTarget(loop, scrollSnaps, contentSize, limit, targetVector) {
-    const { reachedAny, removeOffset, constrain } = limit;
-    function minDistance(distances) {
-        return distances.concat().sort((a, b)=>mathAbs(a) - mathAbs(b))[0];
-    }
-    function findTargetSnap(target) {
+    function ScrollTarget(loop, scrollSnaps, contentSize, limit, targetVector) {
+      const { reachedAny, removeOffset, constrain } = limit;
+      function minDistance(distances) {
+        return distances.concat().sort((a, b) => mathAbs(a) - mathAbs(b))[0];
+      }
+      function findTargetSnap(target) {
         const distance = loop ? removeOffset(target) : constrain(target);
-        const ascDiffsToSnaps = scrollSnaps.map((snap, index)=>({
-                diff: shortcut(snap - distance, 0),
-                index
-            })).sort((d1, d2)=>mathAbs(d1.diff) - mathAbs(d2.diff));
+        const ascDiffsToSnaps = scrollSnaps
+          .map((snap, index) => ({
+            diff: shortcut(snap - distance, 0),
+            index,
+          }))
+          .sort((d1, d2) => mathAbs(d1.diff) - mathAbs(d2.diff));
         const { index } = ascDiffsToSnaps[0];
         return {
-            index,
-            distance
+          index,
+          distance,
         };
-    }
-    function shortcut(target, direction) {
-        const targets = [
-            target,
-            target + contentSize,
-            target - contentSize
-        ];
+      }
+      function shortcut(target, direction) {
+        const targets = [target, target + contentSize, target - contentSize];
         if (!loop) return target;
         if (!direction) return minDistance(targets);
-        const matchingTargets = targets.filter((t)=>mathSign(t) === direction);
+        const matchingTargets = targets.filter((t) => mathSign(t) === direction);
         if (matchingTargets.length) return minDistance(matchingTargets);
         return arrayLast(targets) - contentSize;
-    }
-    function byIndex(index, direction) {
+      }
+      function byIndex(index, direction) {
         const diffToSnap = scrollSnaps[index] - targetVector.get();
         const distance = shortcut(diffToSnap, direction);
         return {
-            index,
-            distance
+          index,
+          distance,
         };
-    }
-    function byDistance(distance, snap) {
+      }
+      function byDistance(distance, snap) {
         const target = targetVector.get() + distance;
         const { index, distance: targetSnapDistance } = findTargetSnap(target);
         const reachedBound = !loop && reachedAny(target);
-        if (!snap || reachedBound) return {
+        if (!snap || reachedBound)
+          return {
             index,
-            distance
-        };
+            distance,
+          };
         const diffToSnap = scrollSnaps[index] - targetSnapDistance;
         const snapDistance = distance + shortcut(diffToSnap, 0);
         return {
-            index,
-            distance: snapDistance
+          index,
+          distance: snapDistance,
         };
-    }
-    const self = {
+      }
+      const self = {
         byDistance,
         byIndex,
-        shortcut
-    };
-    return self;
-}
-function ScrollTo(animation, indexCurrent, indexPrevious, scrollBody, scrollTarget, targetVector, eventHandler) {
-    function scrollTo(target) {
+        shortcut,
+      };
+      return self;
+    }
+    function ScrollTo(
+      animation,
+      indexCurrent,
+      indexPrevious,
+      scrollBody,
+      scrollTarget,
+      targetVector,
+      eventHandler,
+    ) {
+      function scrollTo(target) {
         const distanceDiff = target.distance;
         const indexDiff = target.index !== indexCurrent.get();
         targetVector.add(distanceDiff);
         if (distanceDiff) {
-            if (scrollBody.duration()) {
-                animation.start();
-            } else {
-                animation.update();
-                animation.render(1);
-                animation.update();
-            }
+          if (scrollBody.duration()) {
+            animation.start();
+          } else {
+            animation.update();
+            animation.render(1);
+            animation.update();
+          }
         }
         if (indexDiff) {
-            indexPrevious.set(indexCurrent.get());
-            indexCurrent.set(target.index);
-            eventHandler.emit('select');
+          indexPrevious.set(indexCurrent.get());
+          indexCurrent.set(target.index);
+          eventHandler.emit("select");
         }
-    }
-    function distance(n, snap) {
+      }
+      function distance(n, snap) {
         const target = scrollTarget.byDistance(n, snap);
         scrollTo(target);
-    }
-    function index(n, direction) {
+      }
+      function index(n, direction) {
         const targetIndex = indexCurrent.clone().set(n);
         const target = scrollTarget.byIndex(targetIndex.get(), direction);
         scrollTo(target);
-    }
-    const self = {
+      }
+      const self = {
         distance,
-        index
-    };
-    return self;
-}
-function SlideFocus(root, slides, slideRegistry, scrollTo, scrollBody, eventStore, eventHandler, watchFocus) {
-    const focusListenerOptions = {
+        index,
+      };
+      return self;
+    }
+    function SlideFocus(
+      root,
+      slides,
+      slideRegistry,
+      scrollTo,
+      scrollBody,
+      eventStore,
+      eventHandler,
+      watchFocus,
+    ) {
+      const focusListenerOptions = {
         passive: true,
-        capture: true
-    };
-    let lastTabPressTime = 0;
-    function init(emblaApi) {
+        capture: true,
+      };
+      let lastTabPressTime = 0;
+      function init(emblaApi) {
         if (!watchFocus) return;
         function defaultCallback(index) {
-            const nowTime = new Date().getTime();
-            const diffTime = nowTime - lastTabPressTime;
-            if (diffTime > 10) return;
-            eventHandler.emit('slideFocusStart');
-            root.scrollLeft = 0;
-            const group = slideRegistry.findIndex((group)=>group.includes(index));
-            if (!isNumber(group)) return;
-            scrollBody.useDuration(0);
-            scrollTo.index(group, 0);
-            eventHandler.emit('slideFocus');
+          const nowTime = new Date().getTime();
+          const diffTime = nowTime - lastTabPressTime;
+          if (diffTime > 10) return;
+          eventHandler.emit("slideFocusStart");
+          root.scrollLeft = 0;
+          const group = slideRegistry.findIndex((group) => group.includes(index));
+          if (!isNumber(group)) return;
+          scrollBody.useDuration(0);
+          scrollTo.index(group, 0);
+          eventHandler.emit("slideFocus");
         }
-        eventStore.add(document, 'keydown', registerTabPress, false);
-        slides.forEach((slide, slideIndex)=>{
-            eventStore.add(slide, 'focus', (evt)=>{
-                if (isBoolean(watchFocus) || watchFocus(emblaApi, evt)) {
-                    defaultCallback(slideIndex);
-                }
-            }, focusListenerOptions);
+        eventStore.add(document, "keydown", registerTabPress, false);
+        slides.forEach((slide, slideIndex) => {
+          eventStore.add(
+            slide,
+            "focus",
+            (evt) => {
+              if (isBoolean(watchFocus) || watchFocus(emblaApi, evt)) {
+                defaultCallback(slideIndex);
+              }
+            },
+            focusListenerOptions,
+          );
         });
+      }
+      function registerTabPress(event) {
+        if (event.code === "Tab") lastTabPressTime = new Date().getTime();
+      }
+      const self = {
+        init,
+      };
+      return self;
     }
-    function registerTabPress(event) {
-        if (event.code === 'Tab') lastTabPressTime = new Date().getTime();
-    }
-    const self = {
-        init
-    };
-    return self;
-}
-function Vector1D(initialValue) {
-    let value = initialValue;
-    function get() {
+    function Vector1D(initialValue) {
+      let value = initialValue;
+      function get() {
         return value;
-    }
-    function set(n) {
+      }
+      function set(n) {
         value = normalizeInput(n);
-    }
-    function add(n) {
+      }
+      function add(n) {
         value += normalizeInput(n);
-    }
-    function subtract(n) {
+      }
+      function subtract(n) {
         value -= normalizeInput(n);
-    }
-    function normalizeInput(n) {
+      }
+      function normalizeInput(n) {
         return isNumber(n) ? n : n.get();
-    }
-    const self = {
+      }
+      const self = {
         get,
         set,
         add,
-        subtract
-    };
-    return self;
-}
-function Translate(axis, container) {
-    const translate = axis.scroll === 'x' ? x : y;
-    const containerStyle = container.style;
-    let previousTarget = null;
-    let disabled = false;
-    function x(n) {
+        subtract,
+      };
+      return self;
+    }
+    function Translate(axis, container) {
+      const translate = axis.scroll === "x" ? x : y;
+      const containerStyle = container.style;
+      let previousTarget = null;
+      let disabled = false;
+      function x(n) {
         return `translate3d(${n}px,0px,0px)`;
-    }
-    function y(n) {
+      }
+      function y(n) {
         return `translate3d(0px,${n}px,0px)`;
-    }
-    function to(target) {
+      }
+      function to(target) {
         if (disabled) return;
         const newTarget = roundToTwoDecimals(axis.direction(target));
         if (newTarget === previousTarget) return;
         containerStyle.transform = translate(newTarget);
         previousTarget = newTarget;
-    }
-    function toggleActive(active) {
+      }
+      function toggleActive(active) {
         disabled = !active;
-    }
-    function clear() {
+      }
+      function clear() {
         if (disabled) return;
-        containerStyle.transform = '';
-        if (!container.getAttribute('style')) container.removeAttribute('style');
-    }
-    const self = {
+        containerStyle.transform = "";
+        if (!container.getAttribute("style")) container.removeAttribute("style");
+      }
+      const self = {
         clear,
         to,
-        toggleActive
-    };
-    return self;
-}
-function SlideLooper(axis, viewSize, contentSize, slideSizes, slideSizesWithGaps, snaps, scrollSnaps, location, slides) {
-    const roundingSafety = 0.5;
-    const ascItems = arrayKeys(slideSizesWithGaps);
-    const descItems = arrayKeys(slideSizesWithGaps).reverse();
-    const loopPoints = startPoints().concat(endPoints());
-    function removeSlideSizes(indexes, from) {
-        return indexes.reduce((a, i)=>{
-            return a - slideSizesWithGaps[i];
+        toggleActive,
+      };
+      return self;
+    }
+    function SlideLooper(
+      axis,
+      viewSize,
+      contentSize,
+      slideSizes,
+      slideSizesWithGaps,
+      snaps,
+      scrollSnaps,
+      location,
+      slides,
+    ) {
+      const roundingSafety = 0.5;
+      const ascItems = arrayKeys(slideSizesWithGaps);
+      const descItems = arrayKeys(slideSizesWithGaps).reverse();
+      const loopPoints = startPoints().concat(endPoints());
+      function removeSlideSizes(indexes, from) {
+        return indexes.reduce((a, i) => {
+          return a - slideSizesWithGaps[i];
         }, from);
-    }
-    function slidesInGap(indexes, gap) {
-        return indexes.reduce((a, i)=>{
-            const remainingGap = removeSlideSizes(a, gap);
-            return remainingGap > 0 ? a.concat([
-                i
-            ]) : a;
+      }
+      function slidesInGap(indexes, gap) {
+        return indexes.reduce((a, i) => {
+          const remainingGap = removeSlideSizes(a, gap);
+          return remainingGap > 0 ? a.concat([i]) : a;
         }, []);
-    }
-    function findSlideBounds(offset) {
-        return snaps.map((snap, index)=>({
-                start: snap - slideSizes[index] + roundingSafety + offset,
-                end: snap + viewSize - roundingSafety + offset
-            }));
-    }
-    function findLoopPoints(indexes, offset, isEndEdge) {
+      }
+      function findSlideBounds(offset) {
+        return snaps.map((snap, index) => ({
+          start: snap - slideSizes[index] + roundingSafety + offset,
+          end: snap + viewSize - roundingSafety + offset,
+        }));
+      }
+      function findLoopPoints(indexes, offset, isEndEdge) {
         const slideBounds = findSlideBounds(offset);
-        return indexes.map((index)=>{
-            const initial = isEndEdge ? 0 : -contentSize;
-            const altered = isEndEdge ? contentSize : 0;
-            const boundEdge = isEndEdge ? 'end' : 'start';
-            const loopPoint = slideBounds[index][boundEdge];
-            return {
-                index,
-                loopPoint,
-                slideLocation: Vector1D(-1),
-                translate: Translate(axis, slides[index]),
-                target: ()=>location.get() > loopPoint ? initial : altered
-            };
+        return indexes.map((index) => {
+          const initial = isEndEdge ? 0 : -contentSize;
+          const altered = isEndEdge ? contentSize : 0;
+          const boundEdge = isEndEdge ? "end" : "start";
+          const loopPoint = slideBounds[index][boundEdge];
+          return {
+            index,
+            loopPoint,
+            slideLocation: Vector1D(-1),
+            translate: Translate(axis, slides[index]),
+            target: () => (location.get() > loopPoint ? initial : altered),
+          };
         });
-    }
-    function startPoints() {
+      }
+      function startPoints() {
         const gap = scrollSnaps[0];
         const indexes = slidesInGap(descItems, gap);
         return findLoopPoints(indexes, contentSize, false);
-    }
-    function endPoints() {
+      }
+      function endPoints() {
         const gap = viewSize - scrollSnaps[0] - 1;
         const indexes = slidesInGap(ascItems, gap);
         return findLoopPoints(indexes, -contentSize, true);
-    }
-    function canLoop() {
-        return loopPoints.every(({ index })=>{
-            const otherIndexes = ascItems.filter((i)=>i !== index);
-            return removeSlideSizes(otherIndexes, viewSize) <= 0.1;
+      }
+      function canLoop() {
+        return loopPoints.every(({ index }) => {
+          const otherIndexes = ascItems.filter((i) => i !== index);
+          return removeSlideSizes(otherIndexes, viewSize) <= 0.1;
         });
-    }
-    function loop() {
-        loopPoints.forEach((loopPoint)=>{
-            const { target, translate, slideLocation } = loopPoint;
-            const shiftLocation = target();
-            if (shiftLocation === slideLocation.get()) return;
-            translate.to(shiftLocation);
-            slideLocation.set(shiftLocation);
+      }
+      function loop() {
+        loopPoints.forEach((loopPoint) => {
+          const { target, translate, slideLocation } = loopPoint;
+          const shiftLocation = target();
+          if (shiftLocation === slideLocation.get()) return;
+          translate.to(shiftLocation);
+          slideLocation.set(shiftLocation);
         });
-    }
-    function clear() {
-        loopPoints.forEach((loopPoint)=>loopPoint.translate.clear());
-    }
-    const self = {
+      }
+      function clear() {
+        loopPoints.forEach((loopPoint) => loopPoint.translate.clear());
+      }
+      const self = {
         canLoop,
         clear,
         loop,
-        loopPoints
-    };
-    return self;
-}
-function SlidesHandler(container, eventHandler, watchSlides) {
-    let mutationObserver;
-    let destroyed = false;
-    function init(emblaApi) {
+        loopPoints,
+      };
+      return self;
+    }
+    function SlidesHandler(container, eventHandler, watchSlides) {
+      let mutationObserver;
+      let destroyed = false;
+      function init(emblaApi) {
         if (!watchSlides) return;
         function defaultCallback(mutations) {
-            for (const mutation of mutations){
-                if (mutation.type === 'childList') {
-                    emblaApi.reInit();
-                    eventHandler.emit('slidesChanged');
-                    break;
-                }
+          for (const mutation of mutations) {
+            if (mutation.type === "childList") {
+              emblaApi.reInit();
+              eventHandler.emit("slidesChanged");
+              break;
             }
+          }
         }
-        mutationObserver = new MutationObserver((mutations)=>{
-            if (destroyed) return;
-            if (isBoolean(watchSlides) || watchSlides(emblaApi, mutations)) {
-                defaultCallback(mutations);
-            }
+        mutationObserver = new MutationObserver((mutations) => {
+          if (destroyed) return;
+          if (isBoolean(watchSlides) || watchSlides(emblaApi, mutations)) {
+            defaultCallback(mutations);
+          }
         });
         mutationObserver.observe(container, {
-            childList: true
+          childList: true,
         });
-    }
-    function destroy() {
+      }
+      function destroy() {
         if (mutationObserver) mutationObserver.disconnect();
         destroyed = true;
-    }
-    const self = {
+      }
+      const self = {
         init,
-        destroy
-    };
-    return self;
-}
-function SlidesInView(container, slides, eventHandler, threshold) {
-    const intersectionEntryMap = {};
-    let inViewCache = null;
-    let notInViewCache = null;
-    let intersectionObserver;
-    let destroyed = false;
-    function init() {
-        intersectionObserver = new IntersectionObserver((entries)=>{
+        destroy,
+      };
+      return self;
+    }
+    function SlidesInView(container, slides, eventHandler, threshold) {
+      const intersectionEntryMap = {};
+      let inViewCache = null;
+      let notInViewCache = null;
+      let intersectionObserver;
+      let destroyed = false;
+      function init() {
+        intersectionObserver = new IntersectionObserver(
+          (entries) => {
             if (destroyed) return;
-            entries.forEach((entry)=>{
-                const index = slides.indexOf(entry.target);
-                intersectionEntryMap[index] = entry;
+            entries.forEach((entry) => {
+              const index = slides.indexOf(entry.target);
+              intersectionEntryMap[index] = entry;
             });
             inViewCache = null;
             notInViewCache = null;
-            eventHandler.emit('slidesInView');
-        }, {
+            eventHandler.emit("slidesInView");
+          },
+          {
             root: container.parentElement,
-            threshold
-        });
-        slides.forEach((slide)=>intersectionObserver.observe(slide));
-    }
-    function destroy() {
+            threshold,
+          },
+        );
+        slides.forEach((slide) => intersectionObserver.observe(slide));
+      }
+      function destroy() {
         if (intersectionObserver) intersectionObserver.disconnect();
         destroyed = true;
-    }
-    function createInViewList(inView) {
-        return objectKeys(intersectionEntryMap).reduce((list, slideIndex)=>{
-            const index = parseInt(slideIndex);
-            const { isIntersecting } = intersectionEntryMap[index];
-            const inViewMatch = inView && isIntersecting;
-            const notInViewMatch = !inView && !isIntersecting;
-            if (inViewMatch || notInViewMatch) list.push(index);
-            return list;
+      }
+      function createInViewList(inView) {
+        return objectKeys(intersectionEntryMap).reduce((list, slideIndex) => {
+          const index = parseInt(slideIndex);
+          const { isIntersecting } = intersectionEntryMap[index];
+          const inViewMatch = inView && isIntersecting;
+          const notInViewMatch = !inView && !isIntersecting;
+          if (inViewMatch || notInViewMatch) list.push(index);
+          return list;
         }, []);
-    }
-    function get(inView = true) {
+      }
+      function get(inView = true) {
         if (inView && inViewCache) return inViewCache;
         if (!inView && notInViewCache) return notInViewCache;
         const slideIndexes = createInViewList(inView);
         if (inView) inViewCache = slideIndexes;
         if (!inView) notInViewCache = slideIndexes;
         return slideIndexes;
-    }
-    const self = {
+      }
+      const self = {
         init,
         destroy,
-        get
-    };
-    return self;
-}
-function SlideSizes(axis, containerRect, slideRects, slides, readEdgeGap, ownerWindow) {
-    const { measureSize, startEdge, endEdge } = axis;
-    const withEdgeGap = slideRects[0] && readEdgeGap;
-    const startGap = measureStartGap();
-    const endGap = measureEndGap();
-    const slideSizes = slideRects.map(measureSize);
-    const slideSizesWithGaps = measureWithGaps();
-    function measureStartGap() {
+        get,
+      };
+      return self;
+    }
+    function SlideSizes(axis, containerRect, slideRects, slides, readEdgeGap, ownerWindow) {
+      const { measureSize, startEdge, endEdge } = axis;
+      const withEdgeGap = slideRects[0] && readEdgeGap;
+      const startGap = measureStartGap();
+      const endGap = measureEndGap();
+      const slideSizes = slideRects.map(measureSize);
+      const slideSizesWithGaps = measureWithGaps();
+      function measureStartGap() {
         if (!withEdgeGap) return 0;
         const slideRect = slideRects[0];
         return mathAbs(containerRect[startEdge] - slideRect[startEdge]);
-    }
-    function measureEndGap() {
+      }
+      function measureEndGap() {
         if (!withEdgeGap) return 0;
         const style = ownerWindow.getComputedStyle(arrayLast(slides));
         return parseFloat(style.getPropertyValue(`margin-${endEdge}`));
-    }
-    function measureWithGaps() {
-        return slideRects.map((rect, index, rects)=>{
+      }
+      function measureWithGaps() {
+        return slideRects
+          .map((rect, index, rects) => {
             const isFirst = !index;
             const isLast = arrayIsLastIndex(rects, index);
             if (isFirst) return slideSizes[index] + startGap;
             if (isLast) return slideSizes[index] + endGap;
             return rects[index + 1][startEdge] - rect[startEdge];
-        }).map(mathAbs);
-    }
-    const self = {
+          })
+          .map(mathAbs);
+      }
+      const self = {
         slideSizes,
         slideSizesWithGaps,
         startGap,
-        endGap
-    };
-    return self;
-}
-function SlidesToScroll(axis, viewSize, slidesToScroll, loop, containerRect, slideRects, startGap, endGap, pixelTolerance) {
-    const { startEdge, endEdge, direction } = axis;
-    const groupByNumber = isNumber(slidesToScroll);
-    function byNumber(array, groupSize) {
-        return arrayKeys(array).filter((i)=>i % groupSize === 0).map((i)=>array.slice(i, i + groupSize));
+        endGap,
+      };
+      return self;
     }
-    function bySize(array) {
+    function SlidesToScroll(
+      axis,
+      viewSize,
+      slidesToScroll,
+      loop,
+      containerRect,
+      slideRects,
+      startGap,
+      endGap,
+      pixelTolerance,
+    ) {
+      const { startEdge, endEdge, direction } = axis;
+      const groupByNumber = isNumber(slidesToScroll);
+      function byNumber(array, groupSize) {
+        return arrayKeys(array)
+          .filter((i) => i % groupSize === 0)
+          .map((i) => array.slice(i, i + groupSize));
+      }
+      function bySize(array) {
         if (!array.length) return [];
-        return arrayKeys(array).reduce((groups, rectB, index)=>{
+        return arrayKeys(array)
+          .reduce((groups, rectB, index) => {
             const rectA = arrayLast(groups) || 0;
             const isFirst = rectA === 0;
             const isLast = rectB === arrayLastIndex(array);
@@ -1584,50 +1890,113 @@ function SlidesToScroll(axis, viewSize, slidesToScroll, loop, containerRect, sli
             if (index && chunkSize > viewSize + pixelTolerance) groups.push(rectB);
             if (isLast) groups.push(array.length);
             return groups;
-        }, []).map((currentSize, index, groups)=>{
+          }, [])
+          .map((currentSize, index, groups) => {
             const previousSize = Math.max(groups[index - 1] || 0);
             return array.slice(previousSize, currentSize);
-        });
-    }
-    function groupSlides(array) {
+          });
+      }
+      function groupSlides(array) {
         return groupByNumber ? byNumber(array, slidesToScroll) : bySize(array);
+      }
+      const self = {
+        groupSlides,
+      };
+      return self;
     }
-    const self = {
-        groupSlides
-    };
-    return self;
-}
-function Engine(root, container, slides, ownerDocument, ownerWindow, options, eventHandler) {
-    // Options
-    const { align, axis: scrollAxis, direction, startIndex, loop, duration, dragFree, dragThreshold, inViewThreshold, slidesToScroll: groupSlides, skipSnaps, containScroll, watchResize, watchSlides, watchDrag, watchFocus } = options;
-    // Measurements
-    const pixelTolerance = 2;
-    const nodeRects = NodeRects();
-    const containerRect = nodeRects.measure(container);
-    const slideRects = slides.map(nodeRects.measure);
-    const axis = Axis(scrollAxis, direction);
-    const viewSize = axis.measureSize(containerRect);
-    const percentOfView = PercentOfView(viewSize);
-    const alignment = Alignment(align, viewSize);
-    const containSnaps = !loop && !!containScroll;
-    const readEdgeGap = loop || !!containScroll;
-    const { slideSizes, slideSizesWithGaps, startGap, endGap } = SlideSizes(axis, containerRect, slideRects, slides, readEdgeGap, ownerWindow);
-    const slidesToScroll = SlidesToScroll(axis, viewSize, groupSlides, loop, containerRect, slideRects, startGap, endGap, pixelTolerance);
-    const { snaps, snapsAligned } = ScrollSnaps(axis, alignment, containerRect, slideRects, slidesToScroll);
-    const contentSize = -arrayLast(snaps) + arrayLast(slideSizesWithGaps);
-    const { snapsContained, scrollContainLimit } = ScrollContain(viewSize, contentSize, snapsAligned, containScroll, pixelTolerance);
-    const scrollSnaps = containSnaps ? snapsContained : snapsAligned;
-    const { limit } = ScrollLimit(contentSize, scrollSnaps, loop);
-    // Indexes
-    const index = Counter(arrayLastIndex(scrollSnaps), startIndex, loop);
-    const indexPrevious = index.clone();
-    const slideIndexes = arrayKeys(slides);
-    // Animation
-    const update = ({ dragHandler, scrollBody, scrollBounds, options: { loop } })=>{
+    function Engine(root, container, slides, ownerDocument, ownerWindow, options, eventHandler) {
+      // Options
+      const {
+        align,
+        axis: scrollAxis,
+        direction,
+        startIndex,
+        loop,
+        duration,
+        dragFree,
+        dragThreshold,
+        inViewThreshold,
+        slidesToScroll: groupSlides,
+        skipSnaps,
+        containScroll,
+        watchResize,
+        watchSlides,
+        watchDrag,
+        watchFocus,
+      } = options;
+      // Measurements
+      const pixelTolerance = 2;
+      const nodeRects = NodeRects();
+      const containerRect = nodeRects.measure(container);
+      const slideRects = slides.map(nodeRects.measure);
+      const axis = Axis(scrollAxis, direction);
+      const viewSize = axis.measureSize(containerRect);
+      const percentOfView = PercentOfView(viewSize);
+      const alignment = Alignment(align, viewSize);
+      const containSnaps = !loop && !!containScroll;
+      const readEdgeGap = loop || !!containScroll;
+      const { slideSizes, slideSizesWithGaps, startGap, endGap } = SlideSizes(
+        axis,
+        containerRect,
+        slideRects,
+        slides,
+        readEdgeGap,
+        ownerWindow,
+      );
+      const slidesToScroll = SlidesToScroll(
+        axis,
+        viewSize,
+        groupSlides,
+        loop,
+        containerRect,
+        slideRects,
+        startGap,
+        endGap,
+        pixelTolerance,
+      );
+      const { snaps, snapsAligned } = ScrollSnaps(
+        axis,
+        alignment,
+        containerRect,
+        slideRects,
+        slidesToScroll,
+      );
+      const contentSize = -arrayLast(snaps) + arrayLast(slideSizesWithGaps);
+      const { snapsContained, scrollContainLimit } = ScrollContain(
+        viewSize,
+        contentSize,
+        snapsAligned,
+        containScroll,
+        pixelTolerance,
+      );
+      const scrollSnaps = containSnaps ? snapsContained : snapsAligned;
+      const { limit } = ScrollLimit(contentSize, scrollSnaps, loop);
+      // Indexes
+      const index = Counter(arrayLastIndex(scrollSnaps), startIndex, loop);
+      const indexPrevious = index.clone();
+      const slideIndexes = arrayKeys(slides);
+      // Animation
+      const update = ({ dragHandler, scrollBody, scrollBounds, options: { loop } }) => {
         if (!loop) scrollBounds.constrain(dragHandler.pointerDown());
         scrollBody.seek();
-    };
-    const render = ({ scrollBody, translate, location, offsetLocation, previousLocation, scrollLooper, slideLooper, dragHandler, animation, eventHandler, scrollBounds, options: { loop } }, alpha)=>{
+      };
+      const render = (
+        {
+          scrollBody,
+          translate,
+          location,
+          offsetLocation,
+          previousLocation,
+          scrollLooper,
+          slideLooper,
+          dragHandler,
+          animation,
+          eventHandler,
+          scrollBounds,
+          options: { loop },
+        },
+        alpha,
+      ) => {
         const shouldSettle = scrollBody.settled();
         const withinBounds = !scrollBounds.shouldConstrain();
         const hasSettled = loop ? shouldSettle : shouldSettle && withinBounds;
@@ -1636,31 +2005,67 @@ function Engine(root, container, slides, ownerDocument, ownerWindow, options, ev
         const interpolatedLocation = location.get() * alpha + previousLocation.get() * (1 - alpha);
         offsetLocation.set(interpolatedLocation);
         if (loop) {
-            scrollLooper.loop(scrollBody.direction());
-            slideLooper.loop();
+          scrollLooper.loop(scrollBody.direction());
+          slideLooper.loop();
         }
         translate.to(offsetLocation.get());
-        if (hasSettledAndIdle) eventHandler.emit('settle');
-        if (!hasSettled) eventHandler.emit('scroll');
-    };
-    const animation = Animations(ownerDocument, ownerWindow, ()=>update(engine), (alpha)=>render(engine, alpha));
-    // Shared
-    const friction = 0.68;
-    const startLocation = scrollSnaps[index.get()];
-    const location = Vector1D(startLocation);
-    const previousLocation = Vector1D(startLocation);
-    const offsetLocation = Vector1D(startLocation);
-    const target = Vector1D(startLocation);
-    const scrollBody = ScrollBody(location, offsetLocation, previousLocation, target, duration, friction);
-    const scrollTarget = ScrollTarget(loop, scrollSnaps, contentSize, limit, target);
-    const scrollTo = ScrollTo(animation, index, indexPrevious, scrollBody, scrollTarget, target, eventHandler);
-    const scrollProgress = ScrollProgress(limit);
-    const eventStore = EventStore();
-    const slidesInView = SlidesInView(container, slides, eventHandler, inViewThreshold);
-    const { slideRegistry } = SlideRegistry(containSnaps, containScroll, scrollSnaps, scrollContainLimit, slidesToScroll, slideIndexes);
-    const slideFocus = SlideFocus(root, slides, slideRegistry, scrollTo, scrollBody, eventStore, eventHandler, watchFocus);
-    // Engine
-    const engine = {
+        if (hasSettledAndIdle) eventHandler.emit("settle");
+        if (!hasSettled) eventHandler.emit("scroll");
+      };
+      const animation = Animations(
+        ownerDocument,
+        ownerWindow,
+        () => update(engine),
+        (alpha) => render(engine, alpha),
+      );
+      // Shared
+      const friction = 0.68;
+      const startLocation = scrollSnaps[index.get()];
+      const location = Vector1D(startLocation);
+      const previousLocation = Vector1D(startLocation);
+      const offsetLocation = Vector1D(startLocation);
+      const target = Vector1D(startLocation);
+      const scrollBody = ScrollBody(
+        location,
+        offsetLocation,
+        previousLocation,
+        target,
+        duration,
+        friction,
+      );
+      const scrollTarget = ScrollTarget(loop, scrollSnaps, contentSize, limit, target);
+      const scrollTo = ScrollTo(
+        animation,
+        index,
+        indexPrevious,
+        scrollBody,
+        scrollTarget,
+        target,
+        eventHandler,
+      );
+      const scrollProgress = ScrollProgress(limit);
+      const eventStore = EventStore();
+      const slidesInView = SlidesInView(container, slides, eventHandler, inViewThreshold);
+      const { slideRegistry } = SlideRegistry(
+        containSnaps,
+        containScroll,
+        scrollSnaps,
+        scrollContainLimit,
+        slidesToScroll,
+        slideIndexes,
+      );
+      const slideFocus = SlideFocus(
+        root,
+        slides,
+        slideRegistry,
+        scrollTo,
+        scrollBody,
+        eventStore,
+        eventHandler,
+        watchFocus,
+      );
+      // Engine
+      const engine = {
         ownerDocument,
         ownerWindow,
         eventHandler,
@@ -1668,7 +2073,27 @@ function Engine(root, container, slides, ownerDocument, ownerWindow, options, ev
         slideRects,
         animation,
         axis,
-        dragHandler: DragHandler(axis, root, ownerDocument, ownerWindow, target, DragTracker(axis, ownerWindow), location, animation, scrollTo, scrollBody, scrollTarget, index, eventHandler, percentOfView, dragFree, dragThreshold, skipSnaps, friction, watchDrag),
+        dragHandler: DragHandler(
+          axis,
+          root,
+          ownerDocument,
+          ownerWindow,
+          target,
+          DragTracker(axis, ownerWindow),
+          location,
+          animation,
+          scrollTo,
+          scrollBody,
+          scrollTarget,
+          index,
+          eventHandler,
+          percentOfView,
+          dragFree,
+          dragThreshold,
+          skipSnaps,
+          friction,
+          watchDrag,
+        ),
         eventStore,
         percentOfView,
         index,
@@ -1678,21 +2103,39 @@ function Engine(root, container, slides, ownerDocument, ownerWindow, options, ev
         offsetLocation,
         previousLocation,
         options,
-        resizeHandler: ResizeHandler(container, eventHandler, ownerWindow, slides, axis, watchResize, nodeRects),
+        resizeHandler: ResizeHandler(
+          container,
+          eventHandler,
+          ownerWindow,
+          slides,
+          axis,
+          watchResize,
+          nodeRects,
+        ),
         scrollBody,
         scrollBounds: ScrollBounds(limit, offsetLocation, target, scrollBody, percentOfView),
         scrollLooper: ScrollLooper(contentSize, limit, offsetLocation, [
-            location,
-            offsetLocation,
-            previousLocation,
-            target
+          location,
+          offsetLocation,
+          previousLocation,
+          target,
         ]),
         scrollProgress,
         scrollSnapList: scrollSnaps.map(scrollProgress.get),
         scrollSnaps,
         scrollTarget,
         scrollTo,
-        slideLooper: SlideLooper(axis, viewSize, contentSize, slideSizes, slideSizesWithGaps, snaps, scrollSnaps, offsetLocation, slides),
+        slideLooper: SlideLooper(
+          axis,
+          viewSize,
+          contentSize,
+          slideSizes,
+          slideSizesWithGaps,
+          snaps,
+          scrollSnaps,
+          offsetLocation,
+          slides,
+        ),
         slideFocus,
         slidesHandler: SlidesHandler(container, eventHandler, watchSlides),
         slidesInView,
@@ -1700,150 +2143,171 @@ function Engine(root, container, slides, ownerDocument, ownerWindow, options, ev
         slideRegistry,
         slidesToScroll,
         target,
-        translate: Translate(axis, container)
-    };
-    return engine;
-}
-function EventHandler() {
-    let listeners = {};
-    let api;
-    function init(emblaApi) {
+        translate: Translate(axis, container),
+      };
+      return engine;
+    }
+    function EventHandler() {
+      let listeners = {};
+      let api;
+      function init(emblaApi) {
         api = emblaApi;
-    }
-    function getListeners(evt) {
+      }
+      function getListeners(evt) {
         return listeners[evt] || [];
-    }
-    function emit(evt) {
-        getListeners(evt).forEach((e)=>e(api, evt));
+      }
+      function emit(evt) {
+        getListeners(evt).forEach((e) => e(api, evt));
         return self;
-    }
-    function on(evt, cb) {
-        listeners[evt] = getListeners(evt).concat([
-            cb
-        ]);
+      }
+      function on(evt, cb) {
+        listeners[evt] = getListeners(evt).concat([cb]);
         return self;
-    }
-    function off(evt, cb) {
-        listeners[evt] = getListeners(evt).filter((e)=>e !== cb);
+      }
+      function off(evt, cb) {
+        listeners[evt] = getListeners(evt).filter((e) => e !== cb);
         return self;
-    }
-    function clear() {
+      }
+      function clear() {
         listeners = {};
-    }
-    const self = {
+      }
+      const self = {
         init,
         emit,
         off,
         on,
-        clear
+        clear,
+      };
+      return self;
+    }
+    const defaultOptions = {
+      align: "center",
+      axis: "x",
+      container: null,
+      slides: null,
+      containScroll: "trimSnaps",
+      direction: "ltr",
+      slidesToScroll: 1,
+      inViewThreshold: 0,
+      breakpoints: {},
+      dragFree: false,
+      dragThreshold: 10,
+      loop: false,
+      skipSnaps: false,
+      duration: 25,
+      startIndex: 0,
+      active: true,
+      watchDrag: true,
+      watchResize: true,
+      watchSlides: true,
+      watchFocus: true,
     };
-    return self;
-}
-const defaultOptions = {
-    align: 'center',
-    axis: 'x',
-    container: null,
-    slides: null,
-    containScroll: 'trimSnaps',
-    direction: 'ltr',
-    slidesToScroll: 1,
-    inViewThreshold: 0,
-    breakpoints: {},
-    dragFree: false,
-    dragThreshold: 10,
-    loop: false,
-    skipSnaps: false,
-    duration: 25,
-    startIndex: 0,
-    active: true,
-    watchDrag: true,
-    watchResize: true,
-    watchSlides: true,
-    watchFocus: true
-};
-function OptionsHandler(ownerWindow) {
-    function mergeOptions(optionsA, optionsB) {
+    function OptionsHandler(ownerWindow) {
+      function mergeOptions(optionsA, optionsB) {
         return objectsMergeDeep(optionsA, optionsB || {});
-    }
-    function optionsAtMedia(options) {
+      }
+      function optionsAtMedia(options) {
         const optionsAtMedia = options.breakpoints || {};
-        const matchedMediaOptions = objectKeys(optionsAtMedia).filter((media)=>ownerWindow.matchMedia(media).matches).map((media)=>optionsAtMedia[media]).reduce((a, mediaOption)=>mergeOptions(a, mediaOption), {});
+        const matchedMediaOptions = objectKeys(optionsAtMedia)
+          .filter((media) => ownerWindow.matchMedia(media).matches)
+          .map((media) => optionsAtMedia[media])
+          .reduce((a, mediaOption) => mergeOptions(a, mediaOption), {});
         return mergeOptions(options, matchedMediaOptions);
-    }
-    function optionsMediaQueries(optionsList) {
-        return optionsList.map((options)=>objectKeys(options.breakpoints || {})).reduce((acc, mediaQueries)=>acc.concat(mediaQueries), []).map(ownerWindow.matchMedia);
-    }
-    const self = {
+      }
+      function optionsMediaQueries(optionsList) {
+        return optionsList
+          .map((options) => objectKeys(options.breakpoints || {}))
+          .reduce((acc, mediaQueries) => acc.concat(mediaQueries), [])
+          .map(ownerWindow.matchMedia);
+      }
+      const self = {
         mergeOptions,
         optionsAtMedia,
-        optionsMediaQueries
-    };
-    return self;
-}
-function PluginsHandler(optionsHandler) {
-    let activePlugins = [];
-    function init(emblaApi, plugins) {
-        activePlugins = plugins.filter(({ options })=>optionsHandler.optionsAtMedia(options).active !== false);
-        activePlugins.forEach((plugin)=>plugin.init(emblaApi, optionsHandler));
-        return plugins.reduce((map, plugin)=>Object.assign(map, {
-                [plugin.name]: plugin
-            }), {});
+        optionsMediaQueries,
+      };
+      return self;
     }
-    function destroy() {
-        activePlugins = activePlugins.filter((plugin)=>plugin.destroy());
-    }
-    const self = {
+    function PluginsHandler(optionsHandler) {
+      let activePlugins = [];
+      function init(emblaApi, plugins) {
+        activePlugins = plugins.filter(
+          ({ options }) => optionsHandler.optionsAtMedia(options).active !== false,
+        );
+        activePlugins.forEach((plugin) => plugin.init(emblaApi, optionsHandler));
+        return plugins.reduce(
+          (map, plugin) =>
+            Object.assign(map, {
+              [plugin.name]: plugin,
+            }),
+          {},
+        );
+      }
+      function destroy() {
+        activePlugins = activePlugins.filter((plugin) => plugin.destroy());
+      }
+      const self = {
         init,
-        destroy
-    };
-    return self;
-}
-function EmblaCarousel(root, userOptions, userPlugins) {
-    const ownerDocument = root.ownerDocument;
-    const ownerWindow = ownerDocument.defaultView;
-    const optionsHandler = OptionsHandler(ownerWindow);
-    const pluginsHandler = PluginsHandler(optionsHandler);
-    const mediaHandlers = EventStore();
-    const eventHandler = EventHandler();
-    const { mergeOptions, optionsAtMedia, optionsMediaQueries } = optionsHandler;
-    const { on, off, emit } = eventHandler;
-    const reInit = reActivate;
-    let destroyed = false;
-    let engine;
-    let optionsBase = mergeOptions(defaultOptions, EmblaCarousel.globalOptions);
-    let options = mergeOptions(optionsBase);
-    let pluginList = [];
-    let pluginApis;
-    let container;
-    let slides;
-    function storeElements() {
-        const { container: userContainer, slides: userSlides } = options;
-        const customContainer = isString(userContainer) ? root.querySelector(userContainer) : userContainer;
-        container = customContainer || root.children[0];
-        const customSlides = isString(userSlides) ? container.querySelectorAll(userSlides) : userSlides;
-        slides = [].slice.call(customSlides || container.children);
+        destroy,
+      };
+      return self;
     }
-    function createEngine(options) {
-        const engine = Engine(root, container, slides, ownerDocument, ownerWindow, options, eventHandler);
+    function EmblaCarousel(root, userOptions, userPlugins) {
+      const ownerDocument = root.ownerDocument;
+      const ownerWindow = ownerDocument.defaultView;
+      const optionsHandler = OptionsHandler(ownerWindow);
+      const pluginsHandler = PluginsHandler(optionsHandler);
+      const mediaHandlers = EventStore();
+      const eventHandler = EventHandler();
+      const { mergeOptions, optionsAtMedia, optionsMediaQueries } = optionsHandler;
+      const { on, off, emit } = eventHandler;
+      const reInit = reActivate;
+      let destroyed = false;
+      let engine;
+      let optionsBase = mergeOptions(defaultOptions, EmblaCarousel.globalOptions);
+      let options = mergeOptions(optionsBase);
+      let pluginList = [];
+      let pluginApis;
+      let container;
+      let slides;
+      function storeElements() {
+        const { container: userContainer, slides: userSlides } = options;
+        const customContainer = isString(userContainer)
+          ? root.querySelector(userContainer)
+          : userContainer;
+        container = customContainer || root.children[0];
+        const customSlides = isString(userSlides)
+          ? container.querySelectorAll(userSlides)
+          : userSlides;
+        slides = [].slice.call(customSlides || container.children);
+      }
+      function createEngine(options) {
+        const engine = Engine(
+          root,
+          container,
+          slides,
+          ownerDocument,
+          ownerWindow,
+          options,
+          eventHandler,
+        );
         if (options.loop && !engine.slideLooper.canLoop()) {
-            const optionsWithoutLoop = Object.assign({}, options, {
-                loop: false
-            });
-            return createEngine(optionsWithoutLoop);
+          const optionsWithoutLoop = Object.assign({}, options, {
+            loop: false,
+          });
+          return createEngine(optionsWithoutLoop);
         }
         return engine;
-    }
-    function activate(withOptions, withPlugins) {
+      }
+      function activate(withOptions, withPlugins) {
         if (destroyed) return;
         optionsBase = mergeOptions(optionsBase, withOptions);
         options = optionsAtMedia(optionsBase);
         pluginList = withPlugins || pluginList;
         storeElements();
         engine = createEngine(options);
-        optionsMediaQueries([
-            optionsBase,
-            ...pluginList.map(({ options })=>options)
-        ]).forEach((query)=>mediaHandlers.add(query, 'change', reActivate));
+        optionsMediaQueries([optionsBase, ...pluginList.map(({ options }) => options)]).forEach(
+          (query) => mediaHandlers.add(query, "change", reActivate),
+        );
         if (!options.active) return;
         engine.translate.to(engine.location.get());
         engine.animation.init();
@@ -1855,16 +2319,22 @@ function EmblaCarousel(root, userOptions, userPlugins) {
         if (engine.options.loop) engine.slideLooper.loop();
         if (container.offsetParent && slides.length) engine.dragHandler.init(self);
         pluginApis = pluginsHandler.init(self, pluginList);
-    }
-    function reActivate(withOptions, withPlugins) {
+      }
+      function reActivate(withOptions, withPlugins) {
         const startIndex = selectedScrollSnap();
         deActivate();
-        activate(mergeOptions({
-            startIndex
-        }, withOptions), withPlugins);
-        eventHandler.emit('reInit');
-    }
-    function deActivate() {
+        activate(
+          mergeOptions(
+            {
+              startIndex,
+            },
+            withOptions,
+          ),
+          withPlugins,
+        );
+        eventHandler.emit("reInit");
+      }
+      function deActivate() {
         engine.dragHandler.destroy();
         engine.eventStore.clear();
         engine.translate.clear();
@@ -1875,70 +2345,70 @@ function EmblaCarousel(root, userOptions, userPlugins) {
         engine.animation.destroy();
         pluginsHandler.destroy();
         mediaHandlers.clear();
-    }
-    function destroy() {
+      }
+      function destroy() {
         if (destroyed) return;
         destroyed = true;
         mediaHandlers.clear();
         deActivate();
-        eventHandler.emit('destroy');
+        eventHandler.emit("destroy");
         eventHandler.clear();
-    }
-    function scrollTo(index, jump, direction) {
+      }
+      function scrollTo(index, jump, direction) {
         if (!options.active || destroyed) return;
         engine.scrollBody.useBaseFriction().useDuration(jump === true ? 0 : options.duration);
         engine.scrollTo.index(index, direction || 0);
-    }
-    function scrollNext(jump) {
+      }
+      function scrollNext(jump) {
         const next = engine.index.add(1).get();
         scrollTo(next, jump, -1);
-    }
-    function scrollPrev(jump) {
+      }
+      function scrollPrev(jump) {
         const prev = engine.index.add(-1).get();
         scrollTo(prev, jump, 1);
-    }
-    function canScrollNext() {
+      }
+      function canScrollNext() {
         const next = engine.index.add(1).get();
         return next !== selectedScrollSnap();
-    }
-    function canScrollPrev() {
+      }
+      function canScrollPrev() {
         const prev = engine.index.add(-1).get();
         return prev !== selectedScrollSnap();
-    }
-    function scrollSnapList() {
+      }
+      function scrollSnapList() {
         return engine.scrollSnapList;
-    }
-    function scrollProgress() {
+      }
+      function scrollProgress() {
         return engine.scrollProgress.get(engine.offsetLocation.get());
-    }
-    function selectedScrollSnap() {
+      }
+      function selectedScrollSnap() {
         return engine.index.get();
-    }
-    function previousScrollSnap() {
+      }
+      function previousScrollSnap() {
         return engine.indexPrevious.get();
-    }
-    function slidesInView() {
+      }
+      function slidesInView() {
         return engine.slidesInView.get();
-    }
-    function slidesNotInView() {
+      }
+      function slidesNotInView() {
         return engine.slidesInView.get(false);
-    }
-    function plugins() {
+      }
+      function plugins() {
         return pluginApis;
-    }
-    function internalEngine() {
+      }
+      function internalEngine() {
         return engine;
-    }
-    function rootNode() {
+      }
+      function rootNode() {
         return root;
-    }
-    function containerNode() {
+      }
+      function containerNode() {
         return container;
-    }
-    function slideNodes() {
+      }
+      function slideNodes() {
         return slides;
-    }
-    const self = {
+      }
+      const self = {
         canScrollNext,
         canScrollPrev,
         containerNode,
@@ -1959,87 +2429,134 @@ function EmblaCarousel(root, userOptions, userPlugins) {
         selectedScrollSnap,
         slideNodes,
         slidesInView,
-        slidesNotInView
-    };
-    activate(userOptions, userPlugins);
-    setTimeout(()=>eventHandler.emit('init'), 0);
-    return self;
-}
-EmblaCarousel.globalOptions = undefined;
-;
- //# sourceMappingURL=embla-carousel.esm.js.map
-}),
-"[project]/node_modules/embla-carousel-react/esm/embla-carousel-react.esm.js [app-client] (ecmascript)", ((__turbopack_context__) => {
-"use strict";
+        slidesNotInView,
+      };
+      activate(userOptions, userPlugins);
+      setTimeout(() => eventHandler.emit("init"), 0);
+      return self;
+    }
+    EmblaCarousel.globalOptions = undefined;
+  },
+  //# sourceMappingURL=embla-carousel.esm.js.map
+  "[project]/node_modules/embla-carousel-react/esm/embla-carousel-react.esm.js [app-client] (ecmascript)",
+  (__turbopack_context__) => {
+    "use strict";
 
-__turbopack_context__.s([
-    "default",
-    ()=>useEmblaCarousel
-]);
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$embla$2d$carousel$2d$reactive$2d$utils$2f$esm$2f$embla$2d$carousel$2d$reactive$2d$utils$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/embla-carousel-reactive-utils/esm/embla-carousel-reactive-utils.esm.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$embla$2d$carousel$2f$esm$2f$embla$2d$carousel$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/embla-carousel/esm/embla-carousel.esm.js [app-client] (ecmascript)");
-;
-;
-;
-function useEmblaCarousel(options = {}, plugins = []) {
-    const storedOptions = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(options);
-    const storedPlugins = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(plugins);
-    const [emblaApi, setEmblaApi] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])();
-    const [viewport, setViewport] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])();
-    const reInit = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
-        "useEmblaCarousel.useCallback[reInit]": ()=>{
+    __turbopack_context__.s(["default", () => useEmblaCarousel]);
+    var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
+      __turbopack_context__.i(
+        "[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)",
+      );
+    var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$embla$2d$carousel$2d$reactive$2d$utils$2f$esm$2f$embla$2d$carousel$2d$reactive$2d$utils$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
+      __turbopack_context__.i(
+        "[project]/node_modules/embla-carousel-reactive-utils/esm/embla-carousel-reactive-utils.esm.js [app-client] (ecmascript)",
+      );
+    var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$embla$2d$carousel$2f$esm$2f$embla$2d$carousel$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ =
+      __turbopack_context__.i(
+        "[project]/node_modules/embla-carousel/esm/embla-carousel.esm.js [app-client] (ecmascript)",
+      );
+    function useEmblaCarousel(options = {}, plugins = []) {
+      const storedOptions = (0,
+      __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+        "useRef"
+      ])(options);
+      const storedPlugins = (0,
+      __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+        "useRef"
+      ])(plugins);
+      const [emblaApi, setEmblaApi] = (0,
+      __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+        "useState"
+      ])();
+      const [viewport, setViewport] = (0,
+      __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+        "useState"
+      ])();
+      const reInit = (0,
+      __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+        "useCallback"
+      ])(
+        {
+          "useEmblaCarousel.useCallback[reInit]": () => {
             if (emblaApi) emblaApi.reInit(storedOptions.current, storedPlugins.current);
-        }
-    }["useEmblaCarousel.useCallback[reInit]"], [
-        emblaApi
-    ]);
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "useEmblaCarousel.useEffect": ()=>{
-            if ((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$embla$2d$carousel$2d$reactive$2d$utils$2f$esm$2f$embla$2d$carousel$2d$reactive$2d$utils$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["areOptionsEqual"])(storedOptions.current, options)) return;
+          },
+        }["useEmblaCarousel.useCallback[reInit]"],
+        [emblaApi],
+      );
+      (0,
+      __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+        "useEffect"
+      ])(
+        {
+          "useEmblaCarousel.useEffect": () => {
+            if (
+              (0,
+              __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$embla$2d$carousel$2d$reactive$2d$utils$2f$esm$2f$embla$2d$carousel$2d$reactive$2d$utils$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+                "areOptionsEqual"
+              ])(storedOptions.current, options)
+            )
+              return;
             storedOptions.current = options;
             reInit();
-        }
-    }["useEmblaCarousel.useEffect"], [
-        options,
-        reInit
-    ]);
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "useEmblaCarousel.useEffect": ()=>{
-            if ((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$embla$2d$carousel$2d$reactive$2d$utils$2f$esm$2f$embla$2d$carousel$2d$reactive$2d$utils$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["arePluginsEqual"])(storedPlugins.current, plugins)) return;
+          },
+        }["useEmblaCarousel.useEffect"],
+        [options, reInit],
+      );
+      (0,
+      __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+        "useEffect"
+      ])(
+        {
+          "useEmblaCarousel.useEffect": () => {
+            if (
+              (0,
+              __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$embla$2d$carousel$2d$reactive$2d$utils$2f$esm$2f$embla$2d$carousel$2d$reactive$2d$utils$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+                "arePluginsEqual"
+              ])(storedPlugins.current, plugins)
+            )
+              return;
             storedPlugins.current = plugins;
             reInit();
-        }
-    }["useEmblaCarousel.useEffect"], [
-        plugins,
-        reInit
-    ]);
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "useEmblaCarousel.useEffect": ()=>{
-            if ((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$embla$2d$carousel$2d$reactive$2d$utils$2f$esm$2f$embla$2d$carousel$2d$reactive$2d$utils$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["canUseDOM"])() && viewport) {
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$embla$2d$carousel$2f$esm$2f$embla$2d$carousel$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].globalOptions = useEmblaCarousel.globalOptions;
-                const newEmblaApi = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$embla$2d$carousel$2f$esm$2f$embla$2d$carousel$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"])(viewport, storedOptions.current, storedPlugins.current);
-                setEmblaApi(newEmblaApi);
-                return ({
-                    "useEmblaCarousel.useEffect": ()=>newEmblaApi.destroy()
-                })["useEmblaCarousel.useEffect"];
+          },
+        }["useEmblaCarousel.useEffect"],
+        [plugins, reInit],
+      );
+      (0,
+      __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+        "useEffect"
+      ])(
+        {
+          "useEmblaCarousel.useEffect": () => {
+            if (
+              (0,
+              __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$embla$2d$carousel$2d$reactive$2d$utils$2f$esm$2f$embla$2d$carousel$2d$reactive$2d$utils$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+                "canUseDOM"
+              ])() &&
+              viewport
+            ) {
+              __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$embla$2d$carousel$2f$esm$2f$embla$2d$carousel$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+                "default"
+              ].globalOptions = useEmblaCarousel.globalOptions;
+              const newEmblaApi = (0,
+              __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$embla$2d$carousel$2f$esm$2f$embla$2d$carousel$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__[
+                "default"
+              ])(viewport, storedOptions.current, storedPlugins.current);
+              setEmblaApi(newEmblaApi);
+              return {
+                "useEmblaCarousel.useEffect": () => newEmblaApi.destroy(),
+              }["useEmblaCarousel.useEffect"];
             } else {
-                setEmblaApi(undefined);
+              setEmblaApi(undefined);
             }
-        }
-    }["useEmblaCarousel.useEffect"], [
-        viewport,
-        setEmblaApi
-    ]);
-    return [
-        setViewport,
-        emblaApi
-    ];
-}
-useEmblaCarousel.globalOptions = undefined;
-;
- //# sourceMappingURL=embla-carousel-react.esm.js.map
-}),
+          },
+        }["useEmblaCarousel.useEffect"],
+        [viewport, setEmblaApi],
+      );
+      return [setViewport, emblaApi];
+    }
+    useEmblaCarousel.globalOptions = undefined;
+  },
+  //# sourceMappingURL=embla-carousel-react.esm.js.map
 ]);
 
 //# sourceMappingURL=_b655d185._.js.map

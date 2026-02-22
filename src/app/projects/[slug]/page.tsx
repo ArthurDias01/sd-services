@@ -44,7 +44,8 @@ export default async function ProjectPage({ params }: Props) {
 
   const currentIndex = list.findIndex((p) => p.slug === slug);
   const prevProject = currentIndex > 0 ? list[currentIndex - 1]! : null;
-  const nextProject = currentIndex >= 0 && currentIndex < list.length - 1 ? list[currentIndex + 1]! : null;
+  const nextProject =
+    currentIndex >= 0 && currentIndex < list.length - 1 ? list[currentIndex + 1]! : null;
 
   const imageUrls: string[] = [];
   if (project.featuredImageUrl) imageUrls.push(project.featuredImageUrl);
