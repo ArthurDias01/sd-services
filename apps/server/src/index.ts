@@ -61,12 +61,13 @@ const app = new Elysia()
     }
     if (["POST", "GET"].includes(request.method)) {
       const res = await auth.handler(request);
-      // Ensure CORS headers on auth response (Better Auth may not set them in all cases)
       const origin = request.headers.get("origin");
+      // Always add CORS headers when origin is allowed (including on error responses)
       if (res && origin && allowedOrigins.includes(origin)) {
         const next = new Response(res.body, { status: res.status, statusText: res.statusText, headers: res.headers });
         next.headers.set("Access-Control-Allow-Origin", origin);
         next.headers.set("Access-Control-Allow-Credentials", "true");
+        next.headers.set("Vary", next.headers.get("Vary") ? `Origin, ${next.headers.get("Vary")}` : "Origin");
         return next;
       }
       return res;

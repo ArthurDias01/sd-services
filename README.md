@@ -126,3 +126,17 @@ From the repo root, deploy server then web and print env blocks:
 
 To deploy only the server (and print env blocks): `./scripts/deploy-and-print-env.sh`  
 To deploy only the web app: `vercel deploy --prod` (from repo root; ensure Root Directory is `apps/web` in the web project).
+
+### Troubleshooting: CORS / 404 DEPLOYMENT_NOT_FOUND
+
+If the browser shows **CORS** errors or the Network tab shows **404** with **X-Vercel-Error: DEPLOYMENT_NOT_FOUND** for `server-...vercel.app/api/auth/...`, the **server has no successful production deployment**. Vercel is returning 404 before your app runs, so no CORS headers are sent.
+
+1. **Server project (Vercel → server → Settings → Build and Deployment):**
+   - **Root Directory:** `apps/server`
+   - **Install Command:** `bun install` (override any existing value)
+2. **Redeploy the server** from the repo root so the full monorepo is used:
+   ```bash
+   ./scripts/deploy-and-print-env.sh
+   ```
+3. In the deploy log, confirm the **server** build completes (no "Bun could not find a package.json" or similar). Then open `https://server-arthurcoally-7500s-projects.vercel.app/` — it should return `OK`.
+4. **CORS:** In the server project, set **CORS_ORIGIN** (Production) to your web URL, e.g. `https://web-theta-seven-99.vercel.app` (no trailing slash). Multiple origins: comma-separated.

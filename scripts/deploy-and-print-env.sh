@@ -26,6 +26,13 @@ if [[ "$NO_DEPLOY" != "true" ]]; then
   DEPLOY_OUTPUT=$(vercel deploy --prod --scope "$SCOPE" --yes 2>&1) || true
   cp .vercel/project.json.web .vercel/project.json
   rm -f .vercel/project.json.web
+  if echo "$DEPLOY_OUTPUT" | grep -q "Error:\|exited with 1"; then
+    echo ""
+    echo "⚠️  Server build may have failed. In Vercel → server → Settings → Build and Deployment, set:"
+    echo "    Root Directory: apps/server   Install Command: bun install"
+    echo "    Then run this script again."
+    echo ""
+  fi
 fi
 
 if [[ "$DEPLOY_ALL" == "true" ]]; then

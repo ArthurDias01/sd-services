@@ -4,13 +4,15 @@ import { env } from "@sd-services/env/server";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 
+const trustedOrigins = env.CORS_ORIGIN.split(",").map((s) => s.trim());
+
 export const auth = betterAuth({
+  baseURL: env.BETTER_AUTH_URL,
+  trustedOrigins,
   database: drizzleAdapter(db, {
     provider: "pg",
-
     schema: schema,
   }),
-  trustedOrigins: env.CORS_ORIGIN.split(",").map((s) => s.trim()),
   emailAndPassword: {
     enabled: false,
   },
