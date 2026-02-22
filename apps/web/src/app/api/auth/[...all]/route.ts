@@ -21,7 +21,7 @@ async function withRequestFix(
             headers: new Headers(headersList),
             body: request.body,
             duplex: "half",
-          });
+          } as RequestInit);
     return await handler(modifiedRequest);
   } catch (error) {
     console.error("[Better Auth]", error);
