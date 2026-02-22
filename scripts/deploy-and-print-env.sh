@@ -1,13 +1,17 @@
 #!/usr/bin/env bash
-# Deploy server to Vercel, then print env var blocks you can copy into each project.
-# Usage: ./scripts/deploy-and-print-env.sh [--no-deploy]
-#   --no-deploy: only print env blocks (use current production URLs).
+# Deploy server (and optionally web) to Vercel, then print env var blocks.
+# Usage:
+#   ./scripts/deploy-and-print-env.sh           # Deploy server only, print env blocks
+#   ./scripts/deploy-and-print-env.sh --deploy-all   # Deploy server then web
+#   ./scripts/deploy-and-print-env.sh --no-deploy    # Only print env blocks
 set -e
 
 SCOPE="${VERCEL_SCOPE:-arthurcoally-7500s-projects}"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 NO_DEPLOY=false
+DEPLOY_ALL=false
 [[ "${1:-}" == "--no-deploy" ]] && NO_DEPLOY=true
+[[ "${1:-}" == "--deploy-all" ]] && DEPLOY_ALL=true
 
 cd "$ROOT"
 
@@ -22,7 +26,16 @@ if [[ "$NO_DEPLOY" != "true" ]]; then
   DEPLOY_OUTPUT=$(vercel deploy --prod --scope "$SCOPE" --yes 2>&1) || true
   cp .vercel/project.json.web .vercel/project.json
   rm -f .vercel/project.json.web
+fi
 
+if [[ "$DEPLOY_ALL" == "true" ]]; then
+  echo ""
+  echo "Deploying web (project: web)…"
+  vercel deploy --prod --scope "$SCOPE" --yes
+  echo ""
+fi
+
+if [[ "$NO_DEPLOY" != "true" && "$DEPLOY_ALL" != "true" ]]; then
   # Parse "Production: https://server-xxx.vercel.app" (deployment URL)
   if echo "$DEPLOY_OUTPUT" | grep -q "Production: https://server-"; then
     _deploy_url=$(echo "$DEPLOY_OUTPUT" | grep -o "https://server-[^[:space:]]*" | head -1)

@@ -30,19 +30,46 @@ const apiHandler = new OpenAPIHandler(appRouter, {
   ],
 });
 
+const allowedOrigins = env.CORS_ORIGIN.split(",").map((s) => s.trim());
+
 const app = new Elysia()
   .use(
     cors({
-      origin: env.CORS_ORIGIN.split(",").map((s) => s.trim()),
-      methods: ["GET", "POST", "OPTIONS"],
-      allowedHeaders: ["Content-Type", "Authorization"],
+      // Return true when request origin is in allowlist so plugin sets Access-Control-Allow-Origin correctly
+      origin: (req) => {
+        const origin = req.headers.get("origin");
+        return origin != null && allowedOrigins.includes(origin);
+      },
+      methods: ["GET", "POST", "OPTIONS", "HEAD"],
+      allowedHeaders: ["Content-Type", "Authorization", "Accept"],
       credentials: true,
     }),
   )
   .all("/api/auth/*", async (context) => {
     const { request, status } = context;
+    // Handle preflight so browser gets CORS headers
+    if (request.method === "OPTIONS") {
+      const origin = request.headers.get("origin");
+      const headers = new Headers();
+      if (origin && allowedOrigins.includes(origin)) {
+        headers.set("Access-Control-Allow-Origin", origin);
+        headers.set("Access-Control-Allow-Credentials", "true");
+        headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+        headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization, Accept");
+      }
+      return new Response(null, { status: 204, headers });
+    }
     if (["POST", "GET"].includes(request.method)) {
-      return auth.handler(request);
+      const res = await auth.handler(request);
+      // Ensure CORS headers on auth response (Better Auth may not set them in all cases)
+      const origin = request.headers.get("origin");
+      if (res && origin && allowedOrigins.includes(origin)) {
+        const next = new Response(res.body, { status: res.status, statusText: res.statusText, headers: res.headers });
+        next.headers.set("Access-Control-Allow-Origin", origin);
+        next.headers.set("Access-Control-Allow-Credentials", "true");
+        return next;
+      }
+      return res;
     }
     return status(405);
   })

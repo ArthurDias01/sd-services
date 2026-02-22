@@ -115,3 +115,14 @@ In the **web** Vercel project (Settings → Environment Variables):
 - **`NEXT_PUBLIC_SERVER_URL`** = the **server** project’s URL (e.g. `https://sd-services-server.vercel.app`).
 
 Redeploy the web app after setting this so the frontend uses the correct API URL.
+
+### Deploy both (server + web)
+
+From the repo root, deploy server then web and print env blocks:
+
+```bash
+./scripts/deploy-and-print-env.sh --deploy-all
+```
+
+To deploy only the server (and print env blocks): `./scripts/deploy-and-print-env.sh`  
+To deploy only the web app: `vercel deploy --prod` (from repo root; ensure Root Directory is `apps/web` in the web project).
