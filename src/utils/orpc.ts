@@ -6,19 +6,28 @@ import { createTanstackQueryUtils } from "@orpc/tanstack-query";
 import { QueryCache, QueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
+declare global {
+  // Set by src/utils/orpc.server.ts when running on the server (SSR).
+  // eslint-disable-next-line no-var
+  var $orpcClient: AppRouterClient | undefined;
+}
+
+/**
+ * RPC base URL for the HTTP client. Only used in the browser or when the
+ * server-side direct client (orpc.server) is not loaded.
+ * Prefer VERCEL_URL on Vercel so self-requests hit the deployment; strip
+ * trailing slashes to avoid double slashes (e.g. ...//api/rpc).
+ */
 function getRpcUrl(): string {
-  // ORPC client uses new URL(baseUrl) when encoding requests; relative URLs throw.
   if (typeof window !== "undefined") {
     return `${window.location.origin}/api/rpc`;
   }
-  // Server (SSR): Prefer VERCEL_URL so production self-requests always hit the deployment.
-  // Empty NEXT_PUBLIC_APP_URL would otherwise break server-side fetches (projects, settings, hero).
   const vercelBase = process.env.VERCEL_URL?.trim()
     ? `https://${process.env.VERCEL_URL.trim()}`
     : null;
   const appUrlBase = process.env.NEXT_PUBLIC_APP_URL?.trim() || null;
   let base = vercelBase ?? appUrlBase ?? "http://localhost:3001";
-  base = base.replace(/\/$/, ""); // avoid double slash when env has trailing slash
+  base = base.replace(/\/$/, "");
   return `${base}/api/rpc`;
 }
 
@@ -57,6 +66,10 @@ export const link = new RPCLink({
   },
 });
 
-export const client: AppRouterClient = createORPCClient(link);
+/**
+ * Use server-side direct client when available (no HTTP, no env URL needed);
+ * otherwise use HTTP client (browser or fallback).
+ */
+export const client: AppRouterClient = globalThis.$orpcClient ?? createORPCClient(link);
 
 export const orpc = createTanstackQueryUtils(client);

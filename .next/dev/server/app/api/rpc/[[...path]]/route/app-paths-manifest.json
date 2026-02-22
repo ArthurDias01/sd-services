@@ -1,3 +1,0 @@
-{
-  "/api/rpc/[[...path]]/route": "app/api/rpc/[[...path]]/route.js"
-}

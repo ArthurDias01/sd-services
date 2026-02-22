@@ -13,7 +13,7 @@ function isValidUrl(s: string): boolean {
 
 export const env = createEnv({
   client: {
-    /** Optional: used only for server-side oRPC base URL (e.g. fetch from RSC). Leave unset for same-origin. */
+    /** Optional: used only when the app makes HTTP RPC calls (e.g. browser or fallback). SSR uses a direct server client and does not depend on this. No trailing slash. */
     NEXT_PUBLIC_APP_URL: z
       .string()
       .optional()

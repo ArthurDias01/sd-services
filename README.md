@@ -22,7 +22,7 @@ bun install
 Create `.env` at the repo root (or set in Vercel):
 
 - **Required:** `DATABASE_URL`, `BETTER_AUTH_SECRET`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`
-- **Optional:** `BETTER_AUTH_URL` (defaults to `https://$VERCEL_URL` or `http://localhost:3001`), `CMS_ALLOWED_EMAILS` (comma-separated emails for CMS), R2 vars for uploads
+- **Optional:** `BETTER_AUTH_URL` (defaults to `https://$VERCEL_URL` or `http://localhost:3001`), `CMS_ALLOWED_EMAILS` (comma-separated emails for CMS), R2 vars for uploads, `NEXT_PUBLIC_APP_URL` (no trailing slash; only used for HTTP RPC fallback — SSR uses a direct server client)
 
 For local dev you can omit `BETTER_AUTH_URL`; the app uses `http://localhost:3001` by default.
 
