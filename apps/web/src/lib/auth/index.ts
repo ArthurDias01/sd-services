@@ -7,7 +7,8 @@ import { nextCookies } from "better-auth/next-js";
 
 let _auth: ReturnType<typeof betterAuth> | null = null;
 
-function getAuth() {
+/** Real auth instance (used by API route so handler is created with valid env, not stub). */
+export function getAuth() {
   if (!_auth) {
     const env = getServerEnv();
     const baseURL = getBaseUrl();

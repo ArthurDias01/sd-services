@@ -42,7 +42,11 @@ export default async function Home() {
   } catch {
     // API unreachable (e.g. NEXT_PUBLIC_SERVER_URL not set in production)
   }
-  const heroImage = heroImageSetting || projects[0]?.featuredImageUrl || null;
+  const rawHero = heroImageSetting || projects[0]?.featuredImageUrl || null;
+  const heroImage =
+    rawHero && rawHero.startsWith("/") && process.env.R2_PUBLIC_URL
+      ? `${process.env.R2_PUBLIC_URL.replace(/\/$/, "")}${rawHero}`
+      : rawHero;
   const email = contactEmail || "contact@example.com";
   const phone = contactPhone || null;
 

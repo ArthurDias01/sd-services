@@ -1,9 +1,7 @@
-import { auth } from "@/lib/auth";
+import { getAuth } from "@/lib/auth";
 import { toNextJsHandler } from "better-auth/next-js";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
-
-const baseHandler = toNextJsHandler(auth);
 
 async function withRequestFix(
   request: Request,
@@ -33,9 +31,13 @@ async function withRequestFix(
 }
 
 export async function GET(request: Request) {
-  return withRequestFix(request, baseHandler.GET);
+  const auth = getAuth();
+  const { GET: handler } = toNextJsHandler(auth);
+  return withRequestFix(request, handler);
 }
 
 export async function POST(request: Request) {
-  return withRequestFix(request, baseHandler.POST);
+  const auth = getAuth();
+  const { POST: handler } = toNextJsHandler(auth);
+  return withRequestFix(request, handler);
 }

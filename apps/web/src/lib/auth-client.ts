@@ -1,5 +1,9 @@
 import { createAuthClient } from "better-auth/react";
 
+/**
+ * Always use same-origin for auth (no external server).
+ * Explicit baseURL in the browser ensures the client never uses a cached or env-based old server URL.
+ */
 export const authClient = createAuthClient({
-  // Same-origin: auth runs at /api/auth in this app
+  ...(typeof window !== "undefined" && { baseURL: window.location.origin }),
 });
