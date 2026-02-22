@@ -1,0 +1,19 @@
+{
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/auth/[...all]/route": "app/api/auth/[...all]/route.js",
+  "/api/image/route": "app/api/image/route.js",
+  "/api/rpc/[[...path]]/route": "app/api/rpc/[[...path]]/route.js",
+  "/api/upload/route": "app/api/upload/route.js",
+  "/cms/page": "app/cms/page.js",
+  "/cms/projects/[id]/edit/page": "app/cms/projects/[id]/edit/page.js",
+  "/cms/projects/new/page": "app/cms/projects/new/page.js",
+  "/cms/projects/page": "app/cms/projects/page.js",
+  "/cms/settings/page": "app/cms/settings/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/login/page": "app/login/page.js",
+  "/page": "app/page.js",
+  "/projects/[slug]/page": "app/projects/[slug]/page.js",
+  "/projects/page": "app/projects/page.js"
+}
