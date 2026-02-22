@@ -3,6 +3,7 @@
 import { useCallback, useRef, useState } from "react";
 import { toast } from "sonner";
 
+import { proxyImageUrlIfNeeded } from "@/lib/image-url";
 import { cn } from "@/lib/utils";
 
 export type UploadedImage = { url: string; previewUrl: string };
@@ -104,7 +105,7 @@ export function ImageUploader({
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={url}
+                src={proxyImageUrlIfNeeded(url)}
                 alt=""
                 className="size-full object-cover"
               />

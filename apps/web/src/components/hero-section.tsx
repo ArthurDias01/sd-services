@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useReducedMotion } from "motion/react";
 import { motion } from "motion/react";
 
+import { proxyImageUrlIfNeeded } from "@/lib/image-url";
+
 interface HeroSectionProps {
   heroImage: string | null;
 }
@@ -86,7 +88,7 @@ export function HeroSection({ heroImage }: HeroSectionProps) {
             <>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={heroImage}
+                src={proxyImageUrlIfNeeded(heroImage)}
                 alt=""
                 className="absolute inset-0 size-full object-cover"
               />
@@ -105,7 +107,7 @@ export function HeroSection({ heroImage }: HeroSectionProps) {
           {...fadeIn(0.2)}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={heroImage} alt="" className="size-full object-cover" />
+          <img src={proxyImageUrlIfNeeded(heroImage)} alt="" className="size-full object-cover" />
         </motion.div>
       )}
     </section>

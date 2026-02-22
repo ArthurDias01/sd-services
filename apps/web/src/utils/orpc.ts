@@ -1,11 +1,18 @@
-import type { AppRouterClient } from "@sd-services/api/routers/index";
+import type { AppRouterClient } from "@/lib/api/routers";
 
 import { createORPCClient } from "@orpc/client";
 import { RPCLink } from "@orpc/client/fetch";
 import { createTanstackQueryUtils } from "@orpc/tanstack-query";
-import { env } from "@sd-services/env/web";
 import { QueryCache, QueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+
+function getRpcUrl(): string {
+  if (typeof window !== "undefined") return "/api/rpc";
+  const base = process.env.NEXT_PUBLIC_APP_URL ?? process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : "http://localhost:3001";
+  return `${base}/api/rpc`;
+}
 
 export const queryClient = new QueryClient({
   queryCache: new QueryCache({
@@ -21,7 +28,7 @@ export const queryClient = new QueryClient({
 });
 
 export const link = new RPCLink({
-  url: `${env.NEXT_PUBLIC_SERVER_URL}/rpc`,
+  url: getRpcUrl(),
   fetch(url, options) {
     return fetch(url, {
       ...options,

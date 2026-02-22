@@ -1,6 +1,5 @@
-import { env } from "@sd-services/env/web";
 import { createAuthClient } from "better-auth/react";
 
 export const authClient = createAuthClient({
-  baseURL: env.NEXT_PUBLIC_SERVER_URL,
+  // Same-origin: auth runs at /api/auth in this app
 });

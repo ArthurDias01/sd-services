@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
+import { proxyImageUrlIfNeeded } from "@/lib/image-url";
 import { cn } from "@/lib/utils";
 
 interface ProjectCardProps {
@@ -41,7 +42,7 @@ export function ProjectCard({ slug, title, featuredImageUrl, description }: Proj
           <>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={featuredImageUrl}
+              src={proxyImageUrlIfNeeded(featuredImageUrl)}
               alt=""
               className="size-full object-cover opacity-95 transition-opacity duration-300 group-hover:opacity-100"
             />

@@ -4,10 +4,10 @@ import { useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-import { client, queryClient } from "@/utils/orpc";
 import { ImageUploader } from "@/components/image-uploader";
-
+import { proxyImageUrlIfNeeded } from "@/lib/image-url";
 import { cn } from "@/lib/utils";
+import { client, queryClient } from "@/utils/orpc";
 
 const HERO_IMAGE_KEY = "hero_image_url";
 const CONTACT_EMAIL_KEY = "contact_email";
@@ -143,7 +143,7 @@ export default function SettingsPage() {
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={p.featuredImageUrl}
+                    src={proxyImageUrlIfNeeded(p.featuredImageUrl)}
                     alt={p.title}
                     className="size-full object-cover"
                   />

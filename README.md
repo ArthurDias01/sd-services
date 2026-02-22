@@ -1,142 +1,89 @@
 # sd-services
 
-This project was created with [Better-T-Stack](https://github.com/AmanVarshney01/create-better-t-stack), a modern TypeScript stack that combines Next.js, Elysia, ORPC, and more.
+A single Next.js app with Better Auth (Google OAuth), oRPC API, Drizzle, and Tailwind/shadcn.
 
 ## Features
 
-- **TypeScript** - For type safety and improved developer experience
-- **Next.js** - Full-stack React framework
-- **TailwindCSS** - Utility-first CSS for rapid UI development
-- **shadcn/ui** - Reusable UI components
-- **Elysia** - Type-safe, high-performance framework
-- **oRPC** - End-to-end type-safe APIs with OpenAPI integration
-- **Bun** - Runtime environment
-- **Drizzle** - TypeScript-first ORM
-- **PostgreSQL** - Database engine
-- **Authentication** - Better-Auth
-- **Oxlint** - Oxlint + Oxfmt (linting & formatting)
-- **Turborepo** - Optimized monorepo build system
+- **Next.js** – App Router, React 19
+- **Better Auth** – Google sign-in for CMS (no passwords)
+- **oRPC** – Type-safe API at `/api/rpc`
+- **Drizzle** – PostgreSQL (Neon) with schema in `apps/web/src/lib/db`
+- **TailwindCSS** + **shadcn/ui**
+- **Bun** – runtime and package manager
 
-## Getting Started
-
-First, install the dependencies:
+## Getting started
 
 ```bash
-bun install
+cd apps/web && bun install
 ```
 
-## Database Setup
+## Environment (apps/web)
 
-This project uses PostgreSQL with Drizzle ORM.
+Create `apps/web/.env` (or set in Vercel):
 
-1. Make sure you have a PostgreSQL database set up.
-2. Create `apps/server/.env` with at least: `DATABASE_URL`, `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, `CORS_ORIGIN`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`. See the Authentication section below for Google OAuth. Optional: `CMS_ALLOWED_EMAILS` (comma-separated emails allowed to access the CMS).
-3. Apply the schema to your database:
+- **Required:** `DATABASE_URL`, `BETTER_AUTH_SECRET`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`
+- **Optional:** `BETTER_AUTH_URL` (defaults to `https://$VERCEL_URL` or `http://localhost:3001`), `CMS_ALLOWED_EMAILS` (comma-separated emails for CMS), R2 vars for uploads
+
+For local dev you can omit `BETTER_AUTH_URL`; the app uses `http://localhost:3001` by default.
+
+## Database
 
 ```bash
-bun run db:push
+bun run db:push     # from repo root or apps/web
+bun run db:studio
+bun run db:generate
+bun run db:migrate
 ```
 
-## Authentication (Google OAuth for CMS)
+Schema and migrations live in `apps/web/src/lib/db`.
 
-CMS access uses Google sign-in only (no passwords).
+## Auth (Google OAuth)
 
-1. In [Google Cloud Console](https://console.cloud.google.com/apis/credentials), create OAuth 2.0 Client ID credentials (Web application).
-2. Set the authorized redirect URI to `{BETTER_AUTH_URL}/api/auth/callback/google` (e.g. `http://localhost:3000/api/auth/callback/google` for local dev).
-3. Set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in `apps/server/.env`.
-4. Optional: set `CMS_ALLOWED_EMAILS` to a comma-separated list of emails that may access the CMS. If unset, any signed-in Google user can access it.
+1. In [Google Cloud Console](https://console.cloud.google.com/apis/credentials), create OAuth 2.0 Client ID (Web application).
+2. Set authorized redirect URI to `{YOUR_APP_URL}/api/auth/callback/google` (e.g. `http://localhost:3001/api/auth/callback/google` locally).
+3. Set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in `apps/web/.env`.
 
-Then, run the development server:
+Auth and API run in the same app (no CORS, no separate server).
 
-```bash
-bun run dev
-```
+## Scripts (from repo root)
 
-Open [http://localhost:3001](http://localhost:3001) in your browser to see the web application.
-The API is running at [http://localhost:3000](http://localhost:3000).
+- `bun run dev` – start Next.js at [http://localhost:3001](http://localhost:3001)
+- `bun run build` – build (run from `apps/web` or root)
+- `bun run start` – production start
+- `bun run db:*` – Drizzle commands (run from `apps/web` or root)
+- `bun run check` – Oxlint + Oxfmt
 
-## Git Hooks and Formatting
-
-- Format and lint fix: `bun run check`
-
-## Project Structure
+## Project structure
 
 ```
 sd-services/
-├── apps/
-│   ├── web/         # Frontend application (Next.js)
-│   └── server/      # Backend API (Elysia, ORPC)
-├── packages/
-│   ├── api/         # API layer / business logic
-│   ├── auth/        # Authentication configuration & logic
-│   └── db/          # Database schema & queries
+├── apps/web/                 # Single Next.js app
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── api/
+│   │   │   │   ├── auth/[...all]/   # Better Auth
+│   │   │   │   ├── rpc/[[...path]]  # oRPC
+│   │   │   │   └── upload/          # Upload (R2 or local)
+│   │   │   ├── cms/                 # CMS (admin)
+│   │   │   ├── projects/
+│   │   │   └── ...
+│   │   └── lib/
+│   │       ├── api/         # oRPC routers & context
+│   │       ├── auth/        # Better Auth config
+│   │       ├── db/          # Drizzle schema & client
+│   │       └── env/         # Env validation
+│   ├── drizzle.config.ts
+│   └── package.json
+├── package.json             # Root scripts (dev, build, db:*)
+└── README.md
 ```
 
-## Available Scripts
+## Deploy (Vercel)
 
-- `bun run dev`: Start all applications in development mode
-- `bun run build`: Build all applications
-- `bun run dev:web`: Start only the web application
-- `bun run dev:server`: Start only the server
-- `bun run check-types`: Check TypeScript types across all apps
-- `bun run db:push`: Push schema changes to database
-- `bun run db:generate`: Generate database client/types
-- `bun run db:migrate`: Run database migrations
-- `bun run db:studio`: Open database studio UI
-- `bun run check`: Run Oxlint and Oxfmt
+1. One Vercel project; **Root Directory** = `apps/web`.
+2. Set **Environment Variables** (Production and Preview):
+   - `DATABASE_URL`, `BETTER_AUTH_SECRET`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`
+   - Optional: `BETTER_AUTH_URL` (your app URL, or leave unset to use Vercel URL), `CMS_ALLOWED_EMAILS`, R2 vars.
+3. Optional: `NEXT_PUBLIC_APP_URL` = your app URL (for server-side oRPC base URL); if unset, the app uses `VERCEL_URL` or `http://localhost:3001`.
 
-## Deploying to Vercel (Turborepo)
-
-Per [Vercel’s Turborepo docs](https://vercel.com/docs/monorepos/turborepo):
-
-1. **Set Root Directory** in the Vercel project: [Dashboard](https://vercel.com) → your project → **Settings** → **Build and Deployment** → **Root Directory** → `apps/web` → **Save**.
-2. Deploy from the **repository root** (so the full monorepo is used):
-   ```bash
-   vercel deploy --prod --scope <your-team-slug>
-   ```
-   Or connect the repo in Vercel and push to your main branch for automatic deploys.
-
-### Deploy the API (Elysia) on Vercel
-
-Use a **second Vercel project** for the backend so the Next.js app can call it:
-
-1. In Vercel: [New Project](https://vercel.com/new) → import the **same** Git repo (`sd-services`).
-2. Set **Root Directory** to `apps/server` (Settings → Build and Deployment).
-3. Add **Environment Variables** (Production and Preview):
-   - `BETTER_AUTH_URL` = **your server’s production URL** (e.g. `https://sd-services-server.vercel.app` — you’ll get this after the first deploy).
-   - `CORS_ORIGIN` = **your web app URL** (e.g. `https://web-theta-seven-99.vercel.app`).
-   - Plus all other server env vars: `DATABASE_URL`, `BETTER_AUTH_SECRET`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, and optionally `CMS_ALLOWED_EMAILS`, R2 vars, etc.
-4. Deploy. Copy the **production URL** of the server (e.g. `https://sd-services-server.vercel.app`).
-
-### Connect web app to the API
-
-In the **web** Vercel project (Settings → Environment Variables):
-
-- **`NEXT_PUBLIC_SERVER_URL`** = the **server** project’s URL (e.g. `https://sd-services-server.vercel.app`).
-
-Redeploy the web app after setting this so the frontend uses the correct API URL.
-
-### Deploy both (server + web)
-
-From the repo root, deploy server then web and print env blocks:
-
-```bash
-./scripts/deploy-and-print-env.sh --deploy-all
-```
-
-To deploy only the server (and print env blocks): `./scripts/deploy-and-print-env.sh`  
-To deploy only the web app: `vercel deploy --prod` (from repo root; ensure Root Directory is `apps/web` in the web project).
-
-### Troubleshooting: CORS / 404 DEPLOYMENT_NOT_FOUND
-
-If the browser shows **CORS** errors or the Network tab shows **404** with **X-Vercel-Error: DEPLOYMENT_NOT_FOUND** for `server-...vercel.app/api/auth/...`, the **server has no successful production deployment**. Vercel is returning 404 before your app runs, so no CORS headers are sent.
-
-1. **Server project (Vercel → server → Settings → Build and Deployment):**
-   - **Root Directory:** `apps/server`
-   - **Install Command:** `bun install` (override any existing value)
-2. **Redeploy the server** from the repo root so the full monorepo is used:
-   ```bash
-   ./scripts/deploy-and-print-env.sh
-   ```
-3. In the deploy log, confirm the **server** build completes (no "Bun could not find a package.json" or similar). Then open `https://server-arthurcoally-7500s-projects.vercel.app/` — it should return `OK`.
-4. **CORS:** In the server project, set **CORS_ORIGIN** (Production) to your web URL, e.g. `https://web-theta-seven-99.vercel.app` (no trailing slash). Multiple origins: comma-separated.
+No separate server project and no `NEXT_PUBLIC_SERVER_URL`; auth and API are same-origin.

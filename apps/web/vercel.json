@@ -1,4 +1,5 @@
 {
-  "buildCommand": "turbo build",
+  "buildCommand": "bun run build",
+  "installCommand": "bun install",
   "outputDirectory": ".next"
 }

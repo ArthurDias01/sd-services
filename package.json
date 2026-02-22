@@ -1,50 +1,16 @@
 {
   "name": "sd-services",
   "private": true,
-  "workspaces": {
-    "packages": [
-      "apps/*",
-      "packages/*"
-    ],
-    "catalog": {
-      "dotenv": "^17.2.2",
-      "zod": "^4.1.13",
-      "typescript": "^5",
-      "@types/bun": "^1.3.4",
-      "elysia": "^1.4.21",
-      "@orpc/server": "^1.12.2",
-      "@orpc/openapi": "^1.12.2",
-      "@orpc/zod": "^1.12.2",
-      "better-auth": "^1.4.18",
-      "@orpc/client": "^1.12.2"
-    }
-  },
   "type": "module",
   "scripts": {
-    "dev": "turbo dev",
-    "build": "turbo build",
-    "check-types": "turbo check-types",
-    "dev:native": "turbo -F native dev",
-    "dev:web": "turbo -F web dev",
-    "dev:server": "turbo -F server dev",
-    "db:push": "turbo -F @sd-services/db db:push",
-    "db:studio": "turbo -F @sd-services/db db:studio",
-    "db:generate": "turbo -F @sd-services/db db:generate",
-    "db:migrate": "turbo -F @sd-services/db db:migrate",
+    "dev": "cd apps/web && bun run dev",
+    "build": "cd apps/web && bun run build",
+    "start": "cd apps/web && bun run start",
+    "db:push": "cd apps/web && bun run db:push",
+    "db:generate": "cd apps/web && bun run db:generate",
+    "db:studio": "cd apps/web && bun run db:studio",
+    "db:migrate": "cd apps/web && bun run db:migrate",
     "check": "oxlint && oxfmt --write"
-  },
-  "dependencies": {
-    "@sd-services/env": "workspace:*",
-    "dotenv": "catalog:",
-    "zod": "catalog:"
-  },
-  "devDependencies": {
-    "@sd-services/config": "workspace:*",
-    "@types/bun": "catalog:",
-    "oxfmt": "^0.26.0",
-    "oxlint": "^1.41.0",
-    "turbo": "^2.6.3",
-    "typescript": "catalog:"
   },
   "packageManager": "bun@1.3.9"
 }

@@ -3,6 +3,7 @@
 import useEmblaCarousel from "embla-carousel-react";
 import { useCallback, useEffect, useState } from "react";
 
+import { proxyImageUrlIfNeeded } from "@/lib/image-url";
 import { cn } from "@/lib/utils";
 
 type ProjectCarouselProps = {
@@ -55,7 +56,7 @@ export function ProjectCarousel({ urls, className }: ProjectCarouselProps) {
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={url}
+                src={proxyImageUrlIfNeeded(url)}
                 alt=""
                 className="size-full object-cover"
                 sizes="100vw"

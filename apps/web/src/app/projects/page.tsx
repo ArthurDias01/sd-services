@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { proxyImageUrlIfNeeded } from "@/lib/image-url";
 import { client } from "@/utils/orpc";
 
 import { cn } from "@/lib/utils";
@@ -41,7 +42,7 @@ export default async function ProjectsPage() {
                   <div className="aspect-4/3 overflow-hidden border-b border-[var(--p-tan)]">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      src={p.featuredImageUrl}
+                      src={proxyImageUrlIfNeeded(p.featuredImageUrl)}
                       alt=""
                       className="size-full object-cover opacity-95 transition-opacity group-hover:opacity-100"
                     />
