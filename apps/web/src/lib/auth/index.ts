@@ -12,13 +12,19 @@ export function getAuth() {
   if (!_auth) {
     const env = getServerEnv();
     const baseURL = getBaseUrl();
-    const origins = [baseURL];
-    if (env.VERCEL_URL) {
-      origins.push(`https://${env.VERCEL_URL}`);
-    }
     _auth = betterAuth({
       baseURL,
-      trustedOrigins: origins,
+      trustedOrigins: async (request) => {
+        const list = [baseURL];
+        if (env.VERCEL_URL) {
+          list.push(`https://${env.VERCEL_URL}`);
+        }
+        const origin = request?.headers?.get?.("origin");
+        if (origin && !list.includes(origin)) {
+          list.push(origin);
+        }
+        return list;
+      },
       database: drizzleAdapter(db, {
         provider: "pg",
         schema,

@@ -40,10 +40,11 @@ Schema and migrations live in `apps/web/src/lib/db`.
 ## Auth (Google OAuth)
 
 1. In [Google Cloud Console](https://console.cloud.google.com/apis/credentials), create OAuth 2.0 Client ID (Web application).
-2. Set authorized redirect URI to `{YOUR_APP_URL}/api/auth/callback/google` (e.g. `http://localhost:3001/api/auth/callback/google` locally).
-3. Set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in `apps/web/.env`.
+2. **Authorized JavaScript origins:** add `http://localhost:3001` (local; app runs on port 3001) and your production URL e.g. `https://web-theta-seven-99.vercel.app`.
+3. **Authorized redirect URIs:** add `http://localhost:3001/api/auth/callback/google` and `https://web-theta-seven-99.vercel.app/api/auth/callback/google` (or your production URL + `/api/auth/callback/google`).
+4. Set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in `apps/web/.env` (and in Vercel env vars).
 
-Auth and API run in the same app (no CORS, no separate server).
+**Vercel (fix 403 / Invalid callbackURL):** Set **BETTER_AUTH_URL** to your canonical app URL (e.g. `https://web-theta-seven-99.vercel.app`). Otherwise the server uses the deployment hostname and the redirect URI sent to Google won’t match your Google Console entries.
 
 ## Scripts (from repo root)
 
